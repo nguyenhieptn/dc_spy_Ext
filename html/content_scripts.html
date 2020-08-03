@@ -1,0 +1,87 @@
+
+<div id="sticky">
+	<a href="#">
+		<img width="45px" src="https://www.dropbox.com/s/yr6842rpl1g73lp/gears.gif?dl=1">
+	</a>
+</div>
+<div class="body hidden">
+	<div class="content">
+		<article id="customer-information">
+			<div class="card has-sections">
+				<div class="card-section">
+					<h5 class="title">Product Information</h5>
+					<form id="product-info" action="https://amz.tokamedia.com/extension/campaign/importOne" method="POST">
+						<div class="row">
+							<div class="column one-half">
+								<label>Type</label>
+								<select required  name="type">
+									<option value="">Select one</option>
+									<option value="mugs">Mug</option>
+									<option value="shirts">Shirt</option>
+								</select>
+							</div>
+							<div class="column one-half">
+								<label>Color Type</label>
+								<select name="color_type" required>
+									<option value="">Select</option>
+									<option value="light">Light</option>
+									<option value="dark">Dark</option>
+								</select>
+							</div>
+						</div>
+						<div class="row">
+							<div class="column">
+								<label>Tags</label>
+								<input type="text" name="tags" value="" placeholder="valentine, mug">
+							</div>
+						</div>
+						<div class="row">
+							<div class="column one-half">
+								<label>Market</label>
+								<input type="text" name="market" value="" placeholder="Market" required>
+							</div>
+							<div class="column one-half">
+								<label>Store</label>
+								<input type="text" name="store" value="" placeholder="Store" required>
+							</div>
+						</div>
+						<div class="row">
+							<div class="column">
+								<label>Product Title</label>
+								<input type="text" name="title" value="" placeholder="Product title" required>
+							</div>
+						</div>
+						<div class="row">
+							<div class="column">
+								<label>Product banner</label>
+								<input type="text" name="banner" value="" placeholder="https://..." required>
+							</div>
+						</div>
+						<div class="row">
+							<div class="column">
+								<label></label>
+								<button type="submit">Push</button>
+							</div>
+						</div>
+						<div class="row" id="alert">
+							<div class="alert success d-none">
+								<dl>
+									<dt>Thành công!</dt>
+								</dl>
+							</div>
+							<div class="alert error d-none">
+								<dl>
+									<dt>Thất bại!</dt>
+								</dl>
+							</div>
+						</div>
+					</form>
+				</div>
+				<div class="card-section">
+					<img class="preview" style="width:100%;">
+				</div>
+				<div id="exp-spy-snackbar"></div>
+			</div>
+		</article>
+	</div>
+</div>

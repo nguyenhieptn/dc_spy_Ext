@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/.idea/Datacenter EXT.iml" filepath="$PROJECT_DIR$/.idea/Datacenter EXT.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../Fulfilled By AMZ/.idea/Fulfilled By AMZ.iml" filepath="$PROJECT_DIR$/../Fulfilled By AMZ/.idea/Fulfilled By AMZ.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../Fulfilled By AMZ - FF/.idea/Fulfilled By AMZ - FF.iml" filepath="$PROJECT_DIR$/../Fulfilled By AMZ - FF/.idea/Fulfilled By AMZ - FF.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../eBay Extension/.idea/eBay Extension.iml" filepath="$PROJECT_DIR$/../eBay Extension/.idea/eBay Extension.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../Fulfilled By AMZ/.idea/nongthihoat.iml" filepath="$PROJECT_DIR$/../Fulfilled By AMZ/.idea/nongthihoat.iml" />
+    </modules>
+  </component>
+</project>

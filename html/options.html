@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>DataCenter Extension Options</title>
+	<link rel="stylesheet" href="../css/bootstrap.min.css">
+	<link rel="stylesheet" href="../DataTables/datatables.min.css">
+	<link rel="stylesheet" href="../css/options.css">
+</head>
+<body data-gr-c-s-loaded="true">
+
+<!-- Begin page content -->
+<main role="main" class="container-fluid">
+	<h1 class="mt-5 text-center">Woocommerce Config</h1>
+	<div class="table-responsive">
+		<table id="dataTable" class="table table-borderless">
+			<thead>
+			<tr>
+				<th rowspan="2">STT</th>
+				<th rowspan="2">Domain</th>
+				<th colspan="2">Option</th>
+				<th rowspan="2">Actions</th>
+			</tr>
+			<tr>
+				<th>Title</th>
+				<th>Banner</th>
+			</tr>
+			</thead>
+			<tfoot>
+			<tr>
+				<th rowspan="2">STT</th>
+				<th rowspan="2">Domain</th>
+				<th>Title</th>
+				<th>Banner</th>
+				<th rowspan="2">Actions</th>
+			</tr>
+			<tr>
+				<th colspan="2">Option</th>
+			</tr>
+			</tfoot>
+			<tbody id="table-body">
+				<tr>
+					<td>1</td>
+					<td>gooddoggiftshop.com</td>
+					<td>.single-product .product-title|innerText</td>
+					<td>.single-product .product-images figure img|attr:src</td>
+					<td>
+						<a href="#" class="text-secondary">Edit</a>
+						<a href="#" class="text-danger">Delete</a>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+</main>
+<footer class="footer">
+	<div class="container">
+		<span class="text-muted">Copyright © 2020 Data center extension options page. All Rights Reserved</span>
+	</div>
+</footer>
+<script src="../DataTables/jQuery-3.3.1/jquery-3.3.1.min.js"></script>
+<script src="../js/bootstrap.min.js"></script>
+<script src="../DataTables/datatables.min.js"></script>
+<script src="../js/options.js"></script>
+</body>
+</html>

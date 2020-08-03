@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>eBay Account</title>
+	<link rel="stylesheet" type="text/css" href="../css/popup.css">
+</head>
+<body>
+<div class="container">
+	<section>
+		<form>
+			<div class="row">
+				<div class="col">
+					<input id="host" type="text" name="host" value="" placeholder="Host: datacenter.tokamedia.com" required autocomplete="new-password">
+				</div>
+				<div class="col">
+					<input id="token" type="text" name="token" value="" placeholder="API token" required autocomplete="new-password">
+				</div>
+			</div>
+			<div class="row">
+				<div class="col">
+					<button id="submit" type="submit">Submit</button>
+				</div>
+				<div class="col">
+					<small id="error" style="display: none;"></small>
+				</div>
+			</div>
+		</form>
+		<hr>
+	</section>
+</div>
+<script src="../js/popup.js"></script>
+</body>
+</html>
