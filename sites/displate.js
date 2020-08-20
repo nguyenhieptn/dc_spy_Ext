@@ -92,10 +92,9 @@ let Displate = class {
         let productSlice = document.getElementsByClassName('product-page-image-slider-container')[0];
         let firstImage = productSlice.querySelector('.nav-btn-box').firstChild;
         let imageUrl = firstImage.querySelector('img').getAttribute('src');
-        imageUrl = new URL(imageUrl);
-        let pathName = imageUrl.pathname.split('/');
-        let filename = pathName[pathName.length - 1];
-        let banner = location.origin + '/displates/' + filename;
+        let banner = imageUrl;
+        // let pathName = imageUrl.pathname.split('/');
+        // let filename = pathName[pathName.length - 1];
         let pId = window.location.pathname.split('/');
         pId = pId[pId.length-1];
         let products = [{
@@ -179,7 +178,7 @@ let Displate = class {
         let that = this;
         let products = [];
         chrome.runtime.sendMessage({
-                method: 'GET',
+                method: 'GET',a
                 action: 'xhttp',
                 url: productUrl,
             }, function (responseText) {
@@ -188,10 +187,11 @@ let Displate = class {
                 if (data.length > 0) {
                     let temp_products = [];
                     data.forEach(function (v, k) {
-                        let imageUrl = new URL(v.imageUrl)
+                        let imageUrl = new URL(v.imageUrl);
                         let pathName = imageUrl.pathname.split('/');
-                        let filename = pathName[pathName.length - 1];
-                        let banner = location.origin + '/displates/' + filename
+                        pathName[1] = '857x1200';
+                        pathName = pathName.join('/');
+                        let banner = imageUrl.origin+pathName;
                         let images = [];
                         let tags = [];
                         // if (typeof v.images != "undefined")

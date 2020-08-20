@@ -81,14 +81,11 @@ let Shopify = class {
             let pathName = banner.pathname;
             console.log(pathName);
             let fileName = pathName.substring(pathName.lastIndexOf('/') + 1);
-            if (fileName.lastIndexOf('_') != -1 && fileName.lastIndexOf('.') != -1)
-            {
-                fileName = fileName.slice(0,fileName.lastIndexOf('_')) + fileName.slice(fileName.lastIndexOf('.'), fileName.length);
-                pathName = pathName.substring(0, pathName.lastIndexOf('/')+1);
+            if (fileName.lastIndexOf('_') != -1 && fileName.lastIndexOf('.') != -1) {
+                fileName = fileName.slice(0, fileName.lastIndexOf('_')) + fileName.slice(fileName.lastIndexOf('.'), fileName.length);
+                pathName = pathName.substring(0, pathName.lastIndexOf('/') + 1);
                 banner = banner.origin + pathName + fileName;
-            }
-            else
-            {
+            } else {
                 console.log(_product);
                 banner = banner.origin + banner.pathname;
             }
@@ -163,10 +160,16 @@ let Shopify = class {
             _products.forEach((_product) => {
                 let _images = _product.images;
                 let images = [];
-                _images.forEach((_image) => {
-                    images.push(_image.src);
-                });
-                let banner = images.shift();
+                let banner = null;
+                let bannerWidth = 0;
+                if (_images != undefined)
+                    _images.forEach((_image) => {
+                        images.push(_image.src);
+                        if (_image.width != undefined && _image.width > bannerWidth) {
+                            banner = _image.src;
+                            bannerWidth = _image.width;
+                        }
+                    });
                 let product = {
                     type: type,
                     title: _product.title,
@@ -278,7 +281,7 @@ let Shopify = class {
     }
 
     getProduct(callback) {
-        // let keyword = document.querySelector("input[name=\"search_query\"]").value;
+        let type = document.querySelector(".exp-template .exp-select[name=\"product_type\"]").value;
         let campaign_id = document.querySelector(".exp-template .exp-input[name=\"campaign_id\"]").value;
         if (campaign_id.length === 0) {
             expToast("error", "Please input campaign ID!");
@@ -292,15 +295,28 @@ let Shopify = class {
             url: nUrl,
         }, function (responseText) {
             let _product = JSON.parse(responseText);
-            let _images = _product.image;
+            if (_product.product != undefined)
+                _product = _product.product;
+            let _images = _product.images;
             let images = [];
-            _images.forEach((_image) => {
-                images.push(_image.src);
-            });
+            let banner = _product.image.src;
+            let bannerWidth = null;
+            if (_product.image.width != undefined) {
+                bannerWidth = _product.image.width;
+            }
+            if (_images != undefined)
+                _images.forEach((_image) => {
+                    images.push(_image.src);
+                    console.log(bannerWidth != null && _image.width != undefined && _image.width > bannerWidth)
+                    if (bannerWidth != null && _image.width != undefined && _image.width > bannerWidth) {
+                        banner = _image.src;
+                        bannerWidth = _image.width;
+                    }
+                });
             let product = {
                 type: type,
                 title: _product.title,
-                banner: _product.image.src,
+                banner: banner,
                 images: images,
                 item_id: _product.handle,
                 tags: [],
