@@ -178,7 +178,7 @@ let Displate = class {
         let that = this;
         let products = [];
         chrome.runtime.sendMessage({
-                method: 'GET',a
+                method: 'GET',
                 action: 'xhttp',
                 url: productUrl,
             }, function (responseText) {
