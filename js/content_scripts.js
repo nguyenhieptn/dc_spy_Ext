@@ -13,12 +13,14 @@ document.addEventListener('readystatechange', function () {
             } else if (document.querySelector("#shopify-digital-wallet")) {
                 new Shopify();
             } else if (typeof window.sbsdk !== "undefined" || document.getElementById('sentry-cdn') != null ) {
-                console.log('d');
                 new Klaviyo();
             } else if (location.host === "puzzlehd.com") {
                 new Puzzlehd();
             } else if (location.host === "displate.com") {
                 new Displate();
+            }else if (location.host === 'www.impawards.com')
+            {
+                new Impawards();
             }
         }
     },

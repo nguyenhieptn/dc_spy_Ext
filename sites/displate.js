@@ -123,7 +123,6 @@ let Displate = class {
         }
         let url = window.location;
         let pathName = window.location.pathname.split('/');
-        console.log(pathName);
         let productUrl, page;
         if (pathName.indexOf('sr-artworks') != -1) {
             let search;
