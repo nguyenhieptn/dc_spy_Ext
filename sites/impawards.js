@@ -101,7 +101,12 @@ let Impawards = class {
 		let locationBaseName = location.href.replace(/^.*\/|\.[^.]*$/g, '');
 		let origin = location.href.slice(location.href.indexOf(locationBaseName), location.href.length);
 		origin = location.href.replace(origin, '');
-		let banner = productContainer.querySelector('.col-sm-6:first-child p[class="small"] a img').getAttribute('src');
+		let banner = productContainer.querySelector('.col-sm-6:first-child p[class="small"] a img');
+		if(banner == null)
+		{
+			banner = productContainer.querySelector('.col-sm-6:first-child p[class="small"] img');
+		}
+		banner = banner.getAttribute('src');
 		let bannerPath = banner.split('/')[0];
 		let bannerBaseName = banner.replace(/^.*\/|\.[^.]*$/g, '');
 		let bannerExtension = banner.split('.').pop();
@@ -134,12 +139,12 @@ let Impawards = class {
 			store: location.host,
 			market: 'impawards',
 		};
-		let altDesign = productContainer.querySelector('.col-sm-6:first-child div[id="altdesigns"]')
-		if (altDesign != null) {
-			let designs = altDesign.querySelectorAll('a');
-			designs = Array.from(designs);
-			this._getProduct(callback, campaign_id, product, designs, origin);
-		} else
+		// let altDesign = productContainer.querySelector('.col-sm-6:first-child div[id="altdesigns"]')
+		// if (altDesign != null) {
+		// 	let designs = altDesign.querySelectorAll('a');
+		// 	designs = Array.from(designs);
+		// 	this._getProduct(callback, campaign_id, product, designs, origin);
+		// } else
 			this.pushProduct(callback, campaign_id, [product]);
 	}
 
@@ -171,17 +176,22 @@ let Impawards = class {
 					if (designs.length > 0) {
 						that._getProduct(callback, campaign_id, product, designs, origin)
 					} else
+					{
 						that.pushProduct(callback, campaign_id, [product]);
+					}
 				} else if (url.indexOf('_xxlg') !== -1) {
 					url = url.replace('_xxlg', '_xlg');
 					that.___getProduct(callback, campaign_id, product, designs, origin, url)
 				} else if (url.indexOf('_xlg') !== -1) {
-					url = url.replace('_xxlg', '');
+					url = url.replace('_xlg', '');
 					product.images.push(origin + url);
 					if (designs.length > 0) {
 						that._getProduct(callback, campaign_id, product, designs, origin)
 					} else
+					{
 						that.pushProduct(callback, campaign_id, [product]);
+						console.log(product);
+					}
 				}
 			}
 		};
