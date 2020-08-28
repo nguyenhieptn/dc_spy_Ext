@@ -22,9 +22,12 @@
       <option name="queries" value="trace,write,forEach,length,size" />
       <option name="updates" value="pop,push,shift,splice,unshift,add,insert,remove,reverse,copyWithin,fill,sort" />
     </inspection_tool>
+    <inspection_tool class="JSObjectNullOrUndefined" enabled="false" level="WARNING" enabled_by_default="false" />
     <inspection_tool class="JSPotentiallyInvalidUsageOfClassThis" enabled="false" level="WARNING" enabled_by_default="false" />
     <inspection_tool class="PhpInconsistentReturnPointsInspection" enabled="false" level="WARNING" enabled_by_default="false" />
     <inspection_tool class="PhpUndefinedClassInspection" enabled="false" level="WARNING" enabled_by_default="false" />
     <inspection_tool class="PhpUndefinedFieldInspection" enabled="false" level="WARNING" enabled_by_default="false" />
+    <inspection_tool class="PointlessBooleanExpressionJS" enabled="false" level="WARNING" enabled_by_default="false" />
+    <inspection_tool class="UnnecessaryReturnJS" enabled="false" level="WARNING" enabled_by_default="false" />
   </profile>
 </component>

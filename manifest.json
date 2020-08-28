@@ -1,6 +1,6 @@
 {
   "name": "Data Center Spy",
-  "version": "2.0.3.2",
+  "version": "2.0.3.3",
   "description": "A tool help users get item from some markets then push to Data Center",
   "permissions": [
     "activeTab","cookies","storage",
@@ -37,6 +37,7 @@
         "sites/puzzlehd.js",
         "sites/displate.js",
         "sites/impawards.js",
+        "sites/dzeetee.js",
         "js/content_scripts.js"
       ],
       "css" : ["css/content-scripts.css"]

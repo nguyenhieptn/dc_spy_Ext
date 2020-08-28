@@ -22,6 +22,11 @@ document.addEventListener('readystatechange', function () {
             {
                 new Impawards();
             }
+            else if (location.host === 'www.dzeetee.com')
+            {
+                console.log('dvh');
+                new Dzeetee();
+            }
         }
     },
     false
