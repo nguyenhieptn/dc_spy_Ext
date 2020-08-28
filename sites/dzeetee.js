@@ -134,26 +134,61 @@ let Dzeetee = class {
 			expToast("error", "Please select type!");
 			return;
 		}
+		let productContent = document.querySelector('.ProductDetails');
 		let productContainer = document.querySelector('.ProductImageShowcase');
-		if(productContainer === undefined)
-		{
+		if (productContainer === undefined || productContent === undefined) {
 			expToast("error", "Can't push product in this page!");
 			return;
 		}
-		let product_id = location.pathname+location.search;
+		let product_id = location.pathname + location.search;
 		let banner = productContainer.querySelector('img').getAttribute('src');
-		let title = productContainer.querySelector('img').getAttribute('alt')
+		let title = productContainer.querySelector('img').getAttribute('alt');
+		let images = [];
+		let variationColor = productContent.getElementsByClassName('color-tiles-container')[0];
+		let tags = [];
+		productContent.querySelectorAll('a[href^="/tags/"]').forEach(function (el) {
+			tags.push(el.textContent);
+		});
 		let product = {
 			type: type,
 			title: title,
 			banner: banner,
-			images: [],
+			images: images,
 			item_id: product_id,
-			tags: [],
+			tags: tags,
 			store: location.host,
 			market: location.host
 		}
-		this.pushProduct(cb, campaign_id, [product]);
+		if (variationColor !== undefined) {
+			let colorButtons = variationColor.querySelectorAll(':scope > div');
+			colorButtons = Array.from(colorButtons);
+			colorButtons.shift();
+			return this.getImages(colorButtons, cb, campaign_id, product);
+		} else
+			this.pushProduct(cb, campaign_id, [product]);
+	}
+
+	getImages(buttons, cb, campaign_id, product, reClick = false) {
+		if (!reClick) {
+			buttons[0].querySelector("div.cursor-pointer").click();
+			buttons.shift();
+		}
+		let that = this;
+		setTimeout(function () {
+			let productContainer = document.querySelector('.ProductImageShowcase');
+			let image = productContainer.querySelector('img').getAttribute('src');
+			if (product.images[product.images.length - 1] === image) {
+				return that.getImages(buttons, cb, campaign_id, product, true);
+			} else {
+				if (buttons.length > 0) {
+					product.images.push(image);
+					return that.getImages(buttons, cb, campaign_id, product);
+				} else {
+					product.images.push(image);
+					that.pushProduct(cb, campaign_id, [product])
+				}
+			}
+		}, 500);
 	}
 
 	pushProduct(callback, campaign_id, products) {
