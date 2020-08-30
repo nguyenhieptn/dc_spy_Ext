@@ -78,6 +78,8 @@ let Dzeetee = class {
 	}
 
 	getProducts(cb) {
+		expToast("error", "Can't push product in this page!");
+		return;
 		let campaign_id = document.querySelector(".exp-template .exp-input[name=\"campaign_id\"]").value;
 		if (campaign_id.length === 0) {
 			expToast("error", "Please input campaign ID!");
@@ -140,7 +142,7 @@ let Dzeetee = class {
 			expToast("error", "Can't push product in this page!");
 			return;
 		}
-		let product_id = location.pathname + location.search;
+		let product_id = location.pathname;
 		let banner = productContainer.querySelector('img').getAttribute('src');
 		let title = productContainer.querySelector('img').getAttribute('alt');
 		let images = [];
@@ -185,7 +187,14 @@ let Dzeetee = class {
 					return that.getImages(buttons, cb, campaign_id, product);
 				} else {
 					product.images.push(image);
-					that.pushProduct(cb, campaign_id, [product])
+					let productContent = document.querySelector('.ProductDetails');
+					let variationColor = productContent.getElementsByClassName('color-tiles-container')[0];
+					if (variationColor !== undefined) {
+						let colorButtons = variationColor.querySelectorAll(':scope > div');
+						colorButtons = Array.from(colorButtons);
+						colorButtons[0].querySelector("div.cursor-pointer").click();
+					}
+					return that.pushProduct(cb, campaign_id, [product])
 				}
 			}
 		}, 500);
