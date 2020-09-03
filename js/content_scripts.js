@@ -27,6 +27,9 @@ document.addEventListener('readystatechange', function () {
                 console.log('dvh');
                 new Dzeetee();
             }
+            else if(location.host === 'viralstyle.com'){
+                new Viralstyle();
+            }
         }
     },
     false
