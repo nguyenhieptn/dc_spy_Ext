@@ -133,7 +133,7 @@ let Ebay = class {
 					let banner = listItems[i].querySelector('div.img a img').getAttribute('src');
 					if (!isURL(banner)) continue;
 					banner = banner.substring(0, banner.lastIndexOf("/"));
-					banner += "/s-l1600.jpg";
+					banner += "/s-l1000.jpg";
 					let url = listItems[i].querySelector('h3 a').getAttribute("href");
 					url = url.substring(0, url.indexOf("?"));
 					let pId = url.substr(url.lastIndexOf("/") + 1);
@@ -195,7 +195,7 @@ let Ebay = class {
 
 		let banner = document.getElementById('icImg').getAttribute('src');
 		banner = banner.substring(0, banner.lastIndexOf("/"));
-		banner += "/s-l1600.jpg";
+		banner += "/s-l1000.jpg";
 		let images = [];
 		document.querySelectorAll("#vi_main_img_fs td.tdThumb img[src]").forEach(function (el) {
 			let url = el.getAttribute("src");
