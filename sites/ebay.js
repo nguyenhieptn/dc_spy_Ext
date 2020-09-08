@@ -212,7 +212,7 @@ let Ebay = class {
 			banner: banner,
 			images: images,
 			item_id: pId,
-			store: store,
+			store: "ebay",
 			market: "ebay"
 		};
 		chrome.runtime.sendMessage({
