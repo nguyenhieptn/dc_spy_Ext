@@ -88,7 +88,26 @@ let Woo = class {
             return;
         }
         let title = document.querySelector(".single-product .product-title").innerText;
-        let banner = document.querySelector("img[data-large_image]").getAttribute("data-large_image");
+        let banner = null;
+        let _images = [];
+        if(document.querySelector("img[data-large_image]") === null)
+        {
+            if(location.origin == "https://wozoro.com") {
+                banner = document.querySelector(".single-product-main-image img").getAttribute("src");
+                if (document.querySelectorAll(".slick-slider .slick-list .slick-slide:not(.slick-active)"))
+                {
+                    document.querySelectorAll(".slick-slider .slick-list .slick-slide:not(.slick-active)").forEach((e)=>{
+                       let imageUrl =  new URL(e.querySelector('img').getAttribute('src'));
+                       imageUrl = imageUrl.origin+imageUrl.pathname;
+                        _images.push(imageUrl);
+                    })
+                }
+            }
+        }
+        else
+        {
+            banner = document.querySelector("img[data-large_image]").getAttribute("data-large_image");
+        }
         if (!isURL(banner)) return;
         let pId = null;
         // document.body.classList.forEach((item)=>{
@@ -104,10 +123,26 @@ let Woo = class {
         if (elm) {
             tags = JSON.parse(elm.getAttribute("data-content_category"));
         }
+        if(tags.length === 0)
+        {
+            if(document.querySelector('span.tagged_as') !== null)
+            {
+                document.querySelectorAll('span.tagged_as a').forEach((e)=>{
+                    tags.push(e.textContent);
+                });
+            }
+        }
+
         let images = [];
-        document.querySelectorAll(".product-thumbnails .attachment-woocommerce_thumbnail").forEach(function (el) {
-            images.push(el.getAttribute("src"));
-        })
+        if(_images.length > 0)
+        {
+            images = _images;
+        }
+        else {
+            document.querySelectorAll(".product-thumbnails .attachment-woocommerce_thumbnail").forEach(function (el) {
+                images.push(el.getAttribute("src"));
+            })
+        }
         let product = {
             type: type,
             title: title,
@@ -118,6 +153,7 @@ let Woo = class {
             store: location.host,
             market: "woo"
         };
+        console.log(product);
         chrome.runtime.sendMessage({
             action: 'xhttp',
             method: 'POST',
