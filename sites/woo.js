@@ -157,12 +157,12 @@ let Woo = class {
         chrome.runtime.sendMessage({
             action: 'xhttp',
             method: 'POST',
-            url: DataCenter + "/api/campaigns/product",
+            url: DataCenter + "/api/campaigns/products",
             headers: {
                 token: token
             },
             data: JSON.stringify({
-                product: product,
+                products: [product],
                 campaign_id: campaign_id
             })
         }, function (responseText) {

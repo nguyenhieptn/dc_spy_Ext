@@ -82,7 +82,12 @@ let Klaviyo = class {
         if (typeof url.search != "undefined" && typeof url.search != undefined && url.search != "") {
             search = url.search;
             productUrl = url.origin + '/api/catalog/products_v2.json' + search + '&';
-        } else {
+        }
+        else if(url.hostname === 'www.auzaras.com')
+        {
+            productUrl = url.origin + '/api/catalog/products_v2.json?';
+        }
+        else {
             expToast("error", "Cant push this page!");
             return;
         }
@@ -124,7 +129,7 @@ let Klaviyo = class {
                 if (data.products.length > 0) {
                     let temp_products = [];
                     data.products.forEach(function (v, k) {
-                        if (typeof v.images == "undefined" || typeof v.images == undefined)
+                        if (typeof v.images == "undefined" || typeof v.images === undefined)
                             return;
                         let banner = v.images[0].src;
                         let images = [];
