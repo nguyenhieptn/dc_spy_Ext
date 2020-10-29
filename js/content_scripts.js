@@ -1,5 +1,4 @@
 document.addEventListener('readystatechange', function () {
-
         if (location.host === "www.etsy.com") {
             new Etsy();
         } else if (location.host === "www.redbubble.com") {

@@ -120,8 +120,7 @@ let Dzeetee = class {
 				market: location.host
 			})
 		}
-		console.log(products);
-		// this.pushProduct(cb, campaign_id, products);
+		this.pushProduct(cb, campaign_id, products);
 	}
 
 	getProduct(cb) {
