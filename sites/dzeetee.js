@@ -78,8 +78,6 @@ let Dzeetee = class {
 	}
 
 	getProducts(cb) {
-		expToast("error", "Can't push product in this page!");
-		return;
 		let campaign_id = document.querySelector(".exp-template .exp-input[name=\"campaign_id\"]").value;
 		if (campaign_id.length === 0) {
 			expToast("error", "Please input campaign ID!");
@@ -122,7 +120,8 @@ let Dzeetee = class {
 				market: location.host
 			})
 		}
-		this.pushProduct(cb, campaign_id, products);
+		console.log(products);
+		// this.pushProduct(cb, campaign_id, products);
 	}
 
 	getProduct(cb) {

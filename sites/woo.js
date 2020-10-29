@@ -6,6 +6,7 @@ let Woo = class {
     }
 
     init() {
+        console.log('dvh');
         let template = document.createElement("div");
         template.classList.add("exp-template");
         let input = document.createElement("input");
@@ -173,7 +174,8 @@ let Woo = class {
 
     getProducts(callback) {
         let campaign_id = document.querySelector(".exp-template .exp-input[name=\"campaign_id\"]").value;
-        if (campaign_id.length === 0) {
+        console.log(campaign_id);
+        if (campaign_id === "" || campaign_id === 0) {
             expToast("error", "Please input campaign ID!");
             return;
         }

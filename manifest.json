@@ -39,8 +39,9 @@
         "sites/impawards.js",
         "sites/dzeetee.js",
         "sites/viralstyle.js",
-        "js/content_scripts.js",
-        "sites/store_front.js"
+        "sites/store_front.js",
+        "sites/grand_matee.js",
+        "js/content_scripts.js"
       ],
       "css" : ["css/content-scripts.css"]
     }
