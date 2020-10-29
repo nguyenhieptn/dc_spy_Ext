@@ -4,9 +4,9 @@ let Woo = class {
         this.href = location.href;
         this.init();
     }
+
     init() {
-        if(document.querySelector('.exp-template') === null)
-        {
+        if (document.querySelector('.exp-template') === null) {
             let template = document.createElement("div");
             template.classList.add("exp-template");
             let input = document.createElement("input");
@@ -92,22 +92,18 @@ let Woo = class {
         let title = document.querySelector(".single-product .product-title").innerText;
         let banner = null;
         let _images = [];
-        if(document.querySelector("img[data-large_image]") === null)
-        {
-            if(location.origin == "https://wozoro.com") {
+        if (document.querySelector("img[data-large_image]") === null) {
+            if (location.origin == "https://wozoro.com") {
                 banner = document.querySelector(".single-product-main-image img").getAttribute("src");
-                if (document.querySelectorAll(".slick-slider .slick-list .slick-slide:not(.slick-active)"))
-                {
-                    document.querySelectorAll(".slick-slider .slick-list .slick-slide:not(.slick-active)").forEach((e)=>{
-                       let imageUrl =  new URL(e.querySelector('img').getAttribute('src'));
-                       imageUrl = imageUrl.origin+imageUrl.pathname;
+                if (document.querySelectorAll(".slick-slider .slick-list .slick-slide:not(.slick-active)")) {
+                    document.querySelectorAll(".slick-slider .slick-list .slick-slide:not(.slick-active)").forEach((e) => {
+                        let imageUrl = new URL(e.querySelector('img').getAttribute('src'));
+                        imageUrl = imageUrl.origin + imageUrl.pathname;
                         _images.push(imageUrl);
                     })
                 }
             }
-        }
-        else
-        {
+        } else {
             banner = document.querySelector("img[data-large_image]").getAttribute("data-large_image");
         }
         if (!isURL(banner)) return;
@@ -125,22 +121,18 @@ let Woo = class {
         if (elm) {
             tags = JSON.parse(elm.getAttribute("data-content_category"));
         }
-        if(tags.length === 0)
-        {
-            if(document.querySelector('span.tagged_as') !== null)
-            {
-                document.querySelectorAll('span.tagged_as a').forEach((e)=>{
+        if (tags.length === 0) {
+            if (document.querySelector('span.tagged_as') !== null) {
+                document.querySelectorAll('span.tagged_as a').forEach((e) => {
                     tags.push(e.textContent);
                 });
             }
         }
 
         let images = [];
-        if(_images.length > 0)
-        {
+        if (_images.length > 0) {
             images = _images;
-        }
-        else {
+        } else {
             document.querySelectorAll(".product-thumbnails .attachment-woocommerce_thumbnail").forEach(function (el) {
                 images.push(el.getAttribute("src"));
             })
@@ -188,52 +180,55 @@ let Woo = class {
         let products = [];
         document.querySelectorAll("body.archive .products .product").forEach((el) => {
                 let title = el.querySelector(".product-title a").innerText;
-                let banner = el.querySelector("img.attachment-woocommerce_thumbnail").getAttribute("src");
-                let src = banner;
-                if (!isURL(banner)) return;
-                let ext = banner.substr(banner.lastIndexOf("."));
-                let url = new URL(banner);
-                if (url.origin !== location.origin) {
-                    banner = url.origin + url.pathname;
-                    if (banner.indexOf('wp-content') == -1) {
-                        banner = banner.substring(0, banner.lastIndexOf("-")) + ext;
-                    }
-                    else{
-                        let elImage = el.querySelector("img.attachment-woocommerce_thumbnail");
-                        if (elImage.hasAttributes(['width', 'height'])) {
-                            let width = el.querySelector("img.attachment-woocommerce_thumbnail").getAttribute('width');
-                            let height = el.querySelector("img.attachment-woocommerce_thumbnail").getAttribute('height');
-                            banner = url.origin + url.pathname.replace('-' + width + 'x' + height, '');
+                if(el.querySelector("img.attachment-woocommerce_thumbnail") !== null)
+                {
+                    let banner = el.querySelector("img.attachment-woocommerce_thumbnail").getAttribute("src");
+                    if (isURL(banner) && banner != null)
+                    {
+                        let ext = banner.substr(banner.lastIndexOf("."));
+                        let url = new URL(banner);
+                        if (url.origin !== location.origin) {
+                            banner = url.origin + url.pathname;
+                            if (banner.indexOf('wp-content') == -1) {
+                                banner = banner.substring(0, banner.lastIndexOf("-")) + ext;
+                            } else {
+                                let elImage = el.querySelector("img.attachment-woocommerce_thumbnail");
+                                if (elImage.hasAttributes(['width', 'height'])) {
+                                    let width = el.querySelector("img.attachment-woocommerce_thumbnail").getAttribute('width');
+                                    let height = el.querySelector("img.attachment-woocommerce_thumbnail").getAttribute('height');
+                                    banner = url.origin + url.pathname.replace('-' + width + 'x' + height, '');
+                                }
+                            }
+                        } else {
+                            if (banner.indexOf('wp-content') == -1) {
+                                banner = banner.substring(0, banner.lastIndexOf("-")) + ext;
+                            } else {
+                                let elImage = el.querySelector("img.attachment-woocommerce_thumbnail");
+                                if (elImage.hasAttributes(['width', 'height'])) {
+                                    let width = el.querySelector("img.attachment-woocommerce_thumbnail").getAttribute('width');
+                                    let height = el.querySelector("img.attachment-woocommerce_thumbnail").getAttribute('height');
+                                    banner = url.origin + url.pathname.replace('-' + width + 'x' + height, '');
+                                }
+                            }
                         }
-                    }
-                } else {
-                    if (banner.indexOf('wp-content') == -1) {
-                        banner = banner.substring(0, banner.lastIndexOf("-")) + ext;
-                    } else {
-                        let elImage = el.querySelector("img.attachment-woocommerce_thumbnail");
-                        if (elImage.hasAttributes(['width', 'height'])) {
-                            let width = el.querySelector("img.attachment-woocommerce_thumbnail").getAttribute('width');
-                            let height = el.querySelector("img.attachment-woocommerce_thumbnail").getAttribute('height');
-                            banner = url.origin + url.pathname.replace('-' + width + 'x' + height, '');
+                        let pId = el.querySelector(".product-title a").getAttribute("href");
+                        let elm = el.querySelector("[data-content_category]");
+                        let tags = [];
+                        if (elm) {
+                            tags = JSON.parse(elm.getAttribute("data-content_category"));
                         }
+                        let product = {
+                            type: type,
+                            title: title,
+                            banner: banner,
+                            item_id: pId,
+                            tags: tags,
+                            store: location.host,
+                            market: "woo"
+                        };
+                        products.push(product);
                     }
                 }
-                let pId = el.querySelector(".product-title a").getAttribute("href");
-                let elm = el.querySelector("[data-content_category]");
-                let tags = [];
-                if (elm) {
-                    tags = JSON.parse(elm.getAttribute("data-content_category"));
-                }
-                let product = {
-                    type: type,
-                    title: title,
-                    banner: banner,
-                    item_id: pId,
-                    tags: tags,
-                    store: location.host,
-                    market: "woo"
-                };
-                products.push(product);
             }
         );
         chrome.runtime.sendMessage({
