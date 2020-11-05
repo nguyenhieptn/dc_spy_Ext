@@ -106,7 +106,15 @@ let Woo = class {
         } else {
             banner = document.querySelector("img[data-large_image]").getAttribute("data-large_image");
         }
-        if (!isURL(banner)) return;
+        if(!banner)
+        {
+            banner = document.querySelector(".slick-slider .slick-current img").getAttribute("data-large-file")
+        }
+        if (!isURL(banner))
+        {
+            expToast("error", "Cant get image!");
+            return;
+        }
         let pId = null;
         // document.body.classList.forEach((item)=>{
         //   if(item.indexOf("postid-") === 0){
@@ -137,6 +145,13 @@ let Woo = class {
                 images.push(el.getAttribute("src"));
             })
         }
+        if(images.length === 0)
+        {
+            document.querySelectorAll(".slick-slider div.slick-active:not(.slick-current)").forEach(function (el) {
+                images.push(el.querySelector('img').getAttribute('data-large-file'));
+            })
+        }
+        console.log(images, banner);
         let product = {
             type: type,
             title: title,
