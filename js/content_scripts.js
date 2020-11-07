@@ -28,6 +28,9 @@ document.addEventListener('readystatechange', function () {
             } else if (location.host === 'designby9.net') {
                 new StoreFront();
             }
+            else{
+                // new Manualy();
+            }
         }
     }, false
 )

@@ -54,14 +54,16 @@ let Klaviyo = class {
             button.addEventListener("click", (e) => {
                 e.preventDefault();
                 button.classList.add("is-loading");
-                that.getProducts((data) => {
-                    button.classList.remove("is-loading");
-                    if (data.status === "succeed") {
-                        expToast("success", "Push Successfully!");
-                    } else {
-                        expToast("error", data.msg);
-                    }
-                })
+                if (document.getElementById('search'))
+                    that.getProducts((data) => {
+                        button.classList.remove("is-loading");
+                        if (data.status === "succeed") {
+                            expToast("success", "Push Successfully!");
+                        } else {
+                            expToast("error", data.msg);
+                        }
+                    })
+                // else if (document.getElementById('search'))
             })
         }
     }
@@ -82,12 +84,11 @@ let Klaviyo = class {
         if (typeof url.search != "undefined" && typeof url.search != undefined && url.search != "") {
             search = url.search;
             productUrl = url.origin + '/api/catalog/products_v2.json' + search + '&';
-        }
-        else if(url.hostname === 'www.auzaras.com')
-        {
+        } else if (url.hostname === 'www.auzaras.com') {
             productUrl = url.origin + '/api/catalog/products_v2.json?';
-        }
-        else {
+        } else if (document.getElementById('collection')) {
+            productUrl = url.origin + '/api/catalog/products_v2.json?';
+        } else {
             expToast("error", "Cant push this page!");
             return;
         }
@@ -96,7 +97,7 @@ let Klaviyo = class {
     }
 
     pushProduct(callback, campaign_id, products) {
-        if (products.length == 0) {
+        if (products.length === 0) {
             expToast("error", "No more product!");
             return;
         } else {
@@ -113,6 +114,7 @@ let Klaviyo = class {
                 })
             }, function (responseText) {
                 let data = JSON.parse(responseText);
+                console.log(data);
                 callback(data);
             });
         }
@@ -145,7 +147,7 @@ let Klaviyo = class {
                             item_id: v.handle,
                             tags: v.tags,
                             store: location.host,
-                            market: location.host
+                            market: "shopbase",
                         })
                     });
                     if (data.products.length == limit) {
