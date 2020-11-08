@@ -28,8 +28,8 @@ document.addEventListener('readystatechange', function () {
             } else if (location.host === 'designby9.net') {
                 new StoreFront();
             }
-            else{
-                // new Manualy();
+            else if (location.host === 'www.teepublic.com') {
+                new TeenPublic();
             }
         }
     }, false
