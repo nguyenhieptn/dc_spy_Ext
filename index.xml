@@ -3,5 +3,6 @@
     <app>
         <updatecheck codebase='http://datacenter-ext.tokamedia.com/dc_spy_Ext.crx' version='5.0' />
     </app>
+
 </gupdate>
 
