@@ -1,6 +1,6 @@
 {
   "name": "Data Center Spy",
-  "version": "2.0.4.7",
+  "version": "2.0.4.8",
   "update_url": "http://datacenter-ext.tokamedia.com",
   "description": "A tool help users get item from some markets then push to Data Center",
   "permissions": [
