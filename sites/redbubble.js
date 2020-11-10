@@ -88,7 +88,7 @@ let Redbubble = class {
       let data = JSON.parse(responseText);
       callback(data);
     });
-    console.log(products);
+    console.log(products.length);
   }
   getProduct(callback){
     let title = document.querySelector("[class*=\"ArtworkDetails__workTitle\"] strong").innerText;
