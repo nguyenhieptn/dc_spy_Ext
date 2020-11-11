@@ -256,7 +256,7 @@ let Shopify = class {
             });
         }
 
-        ajaxLoadProduct(campaign_id, nUrl, page = 1, limit = 100, products = []) {
+        ajaxLoadProduct(campaign_id, nUrl, page = 1, limit = 50, products = []) {
             let that = this;
             chrome.runtime.sendMessage({
                 action: 'xhttp',
@@ -290,10 +290,17 @@ let Shopify = class {
                     };
                     products.push(product);
                 });
-                if (_products.length === limit) {
+                if(products.length >= 300 && _products.length === limit)
+                {
+                    that.pushProduct(products, campaign_id);
+                    setTimeout(function () {
+                        return that.ajaxLoadProduct(campaign_id, nUrl, ++page, limit, [])
+                    }, 1200);
+                }
+                else if (_products.length === limit) {
                     setTimeout(function () {
                         return that.ajaxLoadProduct(campaign_id, nUrl, ++page, limit, products)
-                    }, 1000);
+                    }, 1200);
                 } else {
                     that.pushProduct(products, campaign_id)
                 }

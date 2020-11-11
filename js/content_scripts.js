@@ -31,6 +31,10 @@ document.addEventListener('readystatechange', function () {
             else if (location.host === 'www.teepublic.com') {
                 new TeenPublic();
             }
+            else if (location.host === 'www.zazzle.com')
+            {
+                new Zazzle();
+            }
         }
     }, false
 )

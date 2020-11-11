@@ -145,7 +145,7 @@ let Amazon = class {
         let store = (elm) ? elm.innerText : "";
         let pId;
         if (document.querySelector('#averageCustomerReviews') != null) {
-            if (document.getElementById('variation_color_name') != null) {
+            if (document.getElementById('variation_color_name ul') != null) {
                 let colorSelected = document.getElementById('variation_color_name').querySelector('ul .swatchSelect');
                 pId =  colorSelected.getAttribute('data-defaultasin');
             } else

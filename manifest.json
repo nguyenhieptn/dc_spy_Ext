@@ -1,7 +1,6 @@
 {
   "name": "Data Center Spy",
-  "version": "2.0.4.8",
-  "update_url": "http://datacenter-ext.tokamedia.com",
+  "version": "2.0.4.9",
   "description": "A tool help users get item from some markets then push to Data Center",
   "permissions": [
     "activeTab","cookies","storage",
@@ -43,6 +42,7 @@
         "sites/store_front.js",
         "sites/grand_matee.js",
         "sites/teenpublic.js",
+        "sites/zazzle.js",
         "js/content_scripts.js"
       ],
       "css" : ["css/content-scripts.css"]
