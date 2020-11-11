@@ -55,16 +55,21 @@ let Zazzle = class {
             return;
         }
         document.querySelectorAll("div.SearchResults div.SearchResults-cell").forEach((el)=>{
-            let elm = el.querySelector("div.SearchResultsGridCellRealview-altRealviewWrapper img");
-            if(elm === null)
-            {elm = el.querySelector("div.SearchResultsGridCellRealview--loaded img");
-            }
+            let elm = el.querySelector("div.SearchResultsGridCellRealview--loaded img");
             if(elm === null)
             {
                 return;
             }
             let banner = elm.getAttribute("src");
-            banner = banner.replace("fomui_307", "fomui_5000");
+            banner = banner.replace("307.jpg", "5000.jpg");
+            let images = [];
+            let image_alt  = el.querySelector("div.SearchResultsGridCellRealview-altRealviewWrapper img");
+            if(image_alt)
+            {
+                image_alt = image_alt.getAttribute('src')
+                image_alt = image_alt.replace("307.jpg", "5000.jpg");
+                images.push(image_alt);
+            }
             if(!isURL(banner))
             {
                 return;
@@ -79,6 +84,7 @@ let Zazzle = class {
                 type:type,
                 title:title,
                 banner:banner,
+                images: images,
                 item_id:pId,
                 tags:tags,
                 store:store,

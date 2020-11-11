@@ -107,7 +107,7 @@ let Shopify = class {
             if(location.pathname.indexOf('collections') !== -1)
             {
                 let nUrl = location.protocol + location.host + location.pathname + "/products.json";
-                this.ajaxLoadProduct(campaign_id, nUrl);
+                this.ajaxLoadProduct(callback, campaign_id, nUrl);
             }
             else
             {
@@ -256,7 +256,7 @@ let Shopify = class {
             });
         }
 
-        ajaxLoadProduct(campaign_id, nUrl, page = 1, limit = 50, products = []) {
+        ajaxLoadProduct(callback, campaign_id, nUrl, page = 1, limit = 50, products = []) {
             let that = this;
             chrome.runtime.sendMessage({
                 action: 'xhttp',
@@ -294,21 +294,21 @@ let Shopify = class {
                 {
                     that.pushProduct(products, campaign_id);
                     setTimeout(function () {
-                        return that.ajaxLoadProduct(campaign_id, nUrl, ++page, limit, [])
+                        return that.ajaxLoadProduct(callback, campaign_id, nUrl, ++page, limit, [])
                     }, 1200);
                 }
                 else if (_products.length === limit) {
                     setTimeout(function () {
-                        return that.ajaxLoadProduct(campaign_id, nUrl, ++page, limit, products)
+                        return that.ajaxLoadProduct(callback, campaign_id, nUrl, ++page, limit, products)
                     }, 1200);
                 } else {
-                    that.pushProduct(products, campaign_id)
+                    that.pushProduct(callback, products, campaign_id)
                 }
 
             });
         }
 
-        pushProduct(products, campaign_id) {
+        pushProduct(callback, products, campaign_id) {
             chrome.runtime.sendMessage({
                 action: 'xhttp',
                 method: 'POST',
