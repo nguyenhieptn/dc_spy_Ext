@@ -12,38 +12,6 @@ let Etsy = class {
         input.placeholder = "Campaign ID";
         input.classList.add("exp-input");
         template.appendChild(input);
-        let select = document.createElement("select");
-        select.name = "product_type";
-        select.classList.add("exp-select");
-        let option = document.createElement("option");
-        option.value = "";
-        option.innerText = "Select Type";
-        select.appendChild(option);
-        option = option.cloneNode();
-        option.value = "mug";
-        option.innerText = "Mug";
-        select.appendChild(option);
-        option = option.cloneNode();
-        option.value = "shirt";
-        option.innerText = "Shirt";
-        select.appendChild(option);
-        option = option.cloneNode();
-        option.value = "quilt";
-        option.innerText = "Quilt";
-        select.appendChild(option);
-        option = option.cloneNode();
-        option.value = "shirt3d";
-        option.innerText = "3D Shirt";
-        select.appendChild(option);
-        option = option.cloneNode();
-        option.value = "mask";
-        option.innerText = "Mask";
-        select.appendChild(option);
-        option = option.cloneNode();
-        option.value = "other";
-        option.innerText = "Other";
-        select.appendChild(option);
-        template.appendChild(select);
         let button = document.createElement("button");
         button.classList.add("exp-btn");
         button.innerText = "Push Data";
@@ -52,7 +20,7 @@ let Etsy = class {
         button.addEventListener("click", (e)=> {
             e.preventDefault();
             button.classList.add("is-loading");
-            if(this.href.indexOf("listing") !== -1){
+            if(window.location.pathname.indexOf("listing") !== -1){
                 this.getProduct((data)=>{
                     button.classList.remove("is-loading");
                     if (data.status === "succeed") {
@@ -92,12 +60,6 @@ let Etsy = class {
             expToast("error","Please input campaign ID!");
             return;
         }
-        let type = document.querySelector(".exp-template .exp-select[name=\"product_type\"]").value;
-        if(type.length === 0){
-            expToast("error","Please select type!");
-            return;
-
-        }
         let store = "";
         if(document.querySelector(".shop-name-and-title-container h1")){
             store = document.querySelector(".shop-name-and-title-container h1").innerText;
@@ -106,7 +68,10 @@ let Etsy = class {
             let elm = el.querySelector(".v2-listing-card__img img[data-listing-card-listing-image]");
             if(!elm) return;
             let url = elm.getAttribute("src");
-            if(!isURL(url)) return;
+            if(!isURL(url))
+            {
+                return;
+            }
             let banner = url.replace(/340x270/g,"fullxfull");
             let title = el.querySelector(".v2-listing-card .listing-link").getAttribute("title");
             if(el.querySelector(".v2-listing-card__shop p")) {
@@ -116,7 +81,7 @@ let Etsy = class {
             let item_id = elm.getAttribute("data-listing-id");
             if(!isURL(banner)) return;
             let product = {
-                type:type,
+                type:"",
                 title:title,
                 banner:banner,
                 item_id:item_id,
@@ -126,6 +91,7 @@ let Etsy = class {
             };
             products.push(product);
         });
+        console.log(products);
         chrome.runtime.sendMessage({
             action: 'xhttp',
             method: 'POST',
@@ -143,6 +109,7 @@ let Etsy = class {
         });
     }
     getProduct(callback){
+        console.log('dvh');
         let keyword = document.querySelector("input[name=\"search_query\"]").value;
         let campaign_id = document.querySelector(".exp-template .exp-input[name=\"campaign_id\"]").value;
         if(campaign_id.length === 0){
@@ -156,18 +123,13 @@ let Etsy = class {
                 images.push(url.replace(/794xN/g, "fullxfull"));
             }
         });
-        let type = document.querySelector(".exp-template .exp-select[name=\"product_type\"]").value;
-        if(type.length === 0){
-            expToast("error","Please select type!");
-            return;
-        }
         let banner = images.shift();
         let item_id = document.querySelector("[data-buy-box-listing-title]").getAttribute("data-listing-id");
         let data = JSON.parse(document.querySelector("[type=\"application/ld+json\"]").innerText);
         let title = data.name;
         let store = data.brand;
         let product = {
-            type:type,
+            type:"",
             title:title,
             banner:banner,
             item_id:item_id,
