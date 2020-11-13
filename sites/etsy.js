@@ -52,7 +52,7 @@ let Etsy = class {
         button.addEventListener("click", (e)=> {
             e.preventDefault();
             button.classList.add("is-loading");
-            if(this.href.indexOf("www.etsy.com/listing") !== -1){
+            if(this.href.indexOf("listing") !== -1){
                 this.getProduct((data)=>{
                     button.classList.remove("is-loading");
                     if (data.status === "succeed") {
@@ -82,10 +82,9 @@ let Etsy = class {
                 return;
             }
         });
-
-        if(keyword.length === 0){
-            expToast("error","No keywords found!");
-            return;
+        let tags = [];
+        if(keyword.length > 0){
+            tags = keyword;
         }
         let products = [];
         let campaign_id = document.querySelector(".exp-template .exp-input[name=\"campaign_id\"]").value;
@@ -121,7 +120,7 @@ let Etsy = class {
                 title:title,
                 banner:banner,
                 item_id:item_id,
-                tags:[keyword],
+                tags: tags,
                 store:store,
                 market:"etsy"
             };

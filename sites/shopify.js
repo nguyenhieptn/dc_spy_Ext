@@ -120,7 +120,6 @@ let Shopify = class {
         }
 
         getProduct(callback) {
-            let type = document.querySelector(".exp-template .exp-select[name=\"product_type\"]").value;
             let campaign_id = document.querySelector(".exp-template .exp-input[name=\"campaign_id\"]").value;
             if (campaign_id.length === 0) {
                 expToast("error", "Please input campaign ID!");
@@ -128,6 +127,7 @@ let Shopify = class {
             }
             let nUrl = location.protocol + location.host + location.pathname + ".json" + location.search;
             let images = [];
+            let that = this;
             chrome.runtime.sendMessage({
                 action: 'xhttp',
                 method: 'GET',
@@ -146,14 +146,13 @@ let Shopify = class {
                 if (_images != undefined)
                     _images.forEach((_image) => {
                         images.push(_image.src);
-                        console.log(bannerWidth != null && _image.width != undefined && _image.width > bannerWidth)
                         if (bannerWidth != null && _image.width != undefined && _image.width > bannerWidth) {
                             banner = _image.src;
                             bannerWidth = _image.width;
                         }
                     });
                 let product = {
-                    type: type,
+                    type: "",
                     title: _product.title,
                     banner: banner,
                     images: images,
@@ -162,97 +161,83 @@ let Shopify = class {
                     store: location.host,
                     market: "shopify"
                 };
-                if (type === "shirt3d") {
-                    let _variants = _product.variants;
-                    let _options = _product.options;
-                    let options = {};
-                    _options.forEach((_option) => {
-                        options["option" + _option.position] = {
-                            name: _option.name,
-                            values: _option.values
-                        }
-                    });
-                    let variations = [];
-                    let getVariant = (_variant, variations) => {
-                        let _image = _variant.featured_image;
-                        let key = "na";
-                        let src = "";
-                        if (_image != null && _image.id !== undefined) {
-                            key = _image.id;
-                            src = _image.src;
-                        }
-                        if (variations[key] === undefined) {
-                            variations[key] = {
-                                attributes: {},
-                                image: src
-                            }
-                        }
-                        let temp = variations[key];
-                        if (temp.attributes === undefined) temp["attributes"] = {};
-                        let attribute = temp["attributes"];
-                        if (attribute["option1"] === undefined) attribute["option1"] = [];
-                        if (attribute["option1"].indexOf(_variant.option1) === -1 && _variant.option1)
-                            attribute["option1"].push(_variant.option1);
-                        if (attribute["option2"] === undefined) attribute["option2"] = [];
-                        if (attribute["option2"].indexOf(_variant.option2) === -1 && _variant.option2)
-                            attribute["option2"].push(_variant.option2);
-                        if (attribute["option3"] === undefined) attribute["option3"] = [];
-                        if (attribute["option3"].indexOf(_variant.option3) === -1 && _variant.option3)
-                            attribute["option3"].push(_variant.option3);
-                        variations[key] = {
-                            attributes: attribute,
-                            image: src
-                        };
-                        return variations;
-                    };
-                    while (_variants.length > 0) {
-                        let _variant = _variants.shift();
-                        variations = getVariant(_variant, variations);
-                    }
-                    let nVariations = [];
-                    for (let key in variations) {
-                        let variation = variations[key];
-                        let attributes = [];
-                        let _attributes = variation.attributes;
-                        if (_attributes.option1.length > 0)
-                            attributes.push({
-                                name: options.option1.name,
-                                values: _attributes.option1
-                            });
-                        if (_attributes.option2.length > 0)
-                            attributes.push({
-                                name: options.option2.name,
-                                values: _attributes.option2
-                            });
-                        if (_attributes.option3.length > 0)
-                            attributes.push({
-                                name: options.option3.name,
-                                values: _attributes.option3
-                            });
-                        nVariations.push({
-                            attributes: attributes,
-                            image: variation.image
-                        });
-                    }
-                    ;
-                    product["variations"] = nVariations;
-                }
-                ;
-                chrome.runtime.sendMessage({
-                    action: 'xhttp',
-                    method: 'POST',
-                    url: DataCenter + "/api/campaigns/product",
-                    headers: {
-                        token: token
-                    },
-                    data: JSON.stringify({
-                        product: product,
-                        campaign_id: campaign_id
-                    })
-                }, function (responseText) {
-                    let data = JSON.parse(responseText);
-                    callback(data);
-                });
+                // if (type === "shirt3d") {
+                //     let _variants = _product.variants;
+                //     let _options = _product.options;
+                //     let options = {};
+                //     _options.forEach((_option) => {
+                //         options["option" + _option.position] = {
+                //             name: _option.name,
+                //             values: _option.values
+                //         }
+                //     });
+                //     let variations = [];
+                //     let getVariant = (_variant, variations) => {
+                //         let _image = _variant.featured_image;
+                //         let key = "na";
+                //         let src = "";
+                //         if (_image != null && _image.id !== undefined) {
+                //             key = _image.id;
+                //             src = _image.src;
+                //         }
+                //         if (variations[key] === undefined) {
+                //             variations[key] = {
+                //                 attributes: {},
+                //                 image: src
+                //             }
+                //         }
+                //         let temp = variations[key];
+                //         if (temp.attributes === undefined) temp["attributes"] = {};
+                //         let attribute = temp["attributes"];
+                //         if (attribute["option1"] === undefined) attribute["option1"] = [];
+                //         if (attribute["option1"].indexOf(_variant.option1) === -1 && _variant.option1)
+                //             attribute["option1"].push(_variant.option1);
+                //         if (attribute["option2"] === undefined) attribute["option2"] = [];
+                //         if (attribute["option2"].indexOf(_variant.option2) === -1 && _variant.option2)
+                //             attribute["option2"].push(_variant.option2);
+                //         if (attribute["option3"] === undefined) attribute["option3"] = [];
+                //         if (attribute["option3"].indexOf(_variant.option3) === -1 && _variant.option3)
+                //             attribute["option3"].push(_variant.option3);
+                //         variations[key] = {
+                //             attributes: attribute,
+                //             image: src
+                //         };
+                //         return variations;
+                //     };
+                //     while (_variants.length > 0) {
+                //         let _variant = _variants.shift();
+                //         variations = getVariant(_variant, variations);
+                //     }
+                //     let nVariations = [];
+                //     for (let key in variations) {
+                //         let variation = variations[key];
+                //         let attributes = [];
+                //         let _attributes = variation.attributes;
+                //         if (_attributes.option1.length > 0)
+                //             attributes.push({
+                //                 name: options.option1.name,
+                //                 values: _attributes.option1
+                //             });
+                //         if (_attributes.option2.length > 0)
+                //             attributes.push({
+                //                 name: options.option2.name,
+                //                 values: _attributes.option2
+                //             });
+                //         if (_attributes.option3.length > 0)
+                //             attributes.push({
+                //                 name: options.option3.name,
+                //                 values: _attributes.option3
+                //             });
+                //         nVariations.push({
+                //             attributes: attributes,
+                //             image: variation.image
+                //         });
+                //     }
+                //     ;
+                //     product["variations"] = nVariations;
+                // };
+                console.log(product);
+                that.pushProduct(callback, [product], campaign_id);
             });
         }
 
