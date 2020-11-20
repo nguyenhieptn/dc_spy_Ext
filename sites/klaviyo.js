@@ -12,38 +12,13 @@ let Klaviyo = class {
         input.placeholder = "Campaign ID";
         input.classList.add("exp-input");
         template.appendChild(input);
-        let select = document.createElement("select");
-        select.name = "product_type";
-        select.classList.add("exp-select");
-        let option = document.createElement("option");
-        option.value = "";
-        option.innerText = "Select Type";
-        select.appendChild(option);
-        option = option.cloneNode();
-        option.value = "mug";
-        option.innerText = "Mug";
-        select.appendChild(option);
-        option = option.cloneNode();
-        option.value = "shirt";
-        option.innerText = "Shirt";
-        select.appendChild(option);
-        option = option.cloneNode();
-        option.value = "quilt";
-        option.innerText = "Quilt";
-        select.appendChild(option);
-        option = option.cloneNode();
-        option.value = "shirt3d";
-        option.innerText = "3D Shirt";
-        select.appendChild(option);
-        option = option.cloneNode();
-        option.value = "mask";
-        option.innerText = "Mask";
-        select.appendChild(option);
-        option = option.cloneNode();
-        option.value = "other";
-        option.innerText = "Other";
-        select.appendChild(option);
-        template.appendChild(select);
+        if (location.pathname.indexOf('collections') !== -1 && user.id === 1) {
+            input = document.createElement("input");
+            input.name = "collection_id";
+            input.placeholder = "collection id";
+            input.classList.add("exp-input");
+            template.appendChild(input);
+        }
         let button = document.createElement("button");
         button.classList.add("exp-btn");
         button.innerText = "Push Data";
@@ -54,7 +29,7 @@ let Klaviyo = class {
             button.addEventListener("click", (e) => {
                 e.preventDefault();
                 button.classList.add("is-loading");
-                if (document.getElementById('search'))
+                if (document.getElementById('search') || (document.getElementById('collection') && user.id === 1)) {
                     that.getProducts((data) => {
                         button.classList.remove("is-loading");
                         if (data.status === "succeed") {
@@ -63,10 +38,22 @@ let Klaviyo = class {
                             expToast("error", data.msg);
                         }
                     })
-                // else if (document.getElementById('search'))
+                } else if (document.getElementById('product')) {
+                   console.log(window);
+                } else {
+                    expToast("error", "cant push this page!!");
+                }
             })
         }
     }
+
+    // getProduct(callback){
+    //     let campaign_id = document.querySelector(".exp-template .exp-input[name=\"campaign_id\"]").value;
+    //     if (campaign_id.length === 0) {
+    //         expToast("error", "Please input campaign ID!");
+    //         return;
+    //     }
+    // }
 
     getProducts(callback) {
         let campaign_id = document.querySelector(".exp-template .exp-input[name=\"campaign_id\"]").value;
@@ -74,26 +61,29 @@ let Klaviyo = class {
             expToast("error", "Please input campaign ID!");
             return;
         }
-        let type = document.querySelector(".exp-template .exp-select[name=\"product_type\"]").value;
-        if (type.length === 0) {
-            expToast("error", "Please select type!");
-            return;
+        let collection_id = null;
+        if (document.querySelector(".exp-template .exp-input[name=\"collection_id\"]") && user.id === 1) {
+            collection_id = document.querySelector(".exp-template .exp-input[name=\"collection_id\"]").value;
+            if (collection_id.length === 0) {
+                expToast("error", "Please input collection id!");
+                return;
+            }
         }
         let url = window.location;
         let search, productUrl;
-        if (typeof url.search != "undefined" && typeof url.search != undefined && url.search != "") {
+        if (typeof url.search != "undefined" && typeof url.search !== undefined && url.search !== "" && collection_id === null) {
             search = url.search;
             productUrl = url.origin + '/api/catalog/products_v2.json' + search + '&';
         } else if (url.hostname === 'www.auzaras.com') {
             productUrl = url.origin + '/api/catalog/products_v2.json?';
-        } else if (document.getElementById('collection')) {
-            productUrl = url.origin + '/api/catalog/products_v2.json?';
+        } else if (collection_id) {
+            productUrl = url.origin + '/api/catalog/products_v2.json' + '?collection_ids=' + collection_id + '&';
         } else {
             expToast("error", "Cant push this page!");
             return;
         }
         let products = [];
-        this.subXhrGetProducts(callback, campaign_id, type, productUrl);
+        this.subXhrGetProducts(callback, campaign_id, productUrl);
     }
 
     pushProduct(callback, campaign_id, products) {
@@ -120,7 +110,7 @@ let Klaviyo = class {
         }
     }
 
-    subXhrGetProducts(callback, campaign_id, type, productUrl, limit = 50, page = 1, products = []) {
+    subXhrGetProducts(callback, campaign_id, productUrl, limit = 50, page = 1, products = []) {
         let that = this;
         chrome.runtime.sendMessage({
                 method: 'GET',
@@ -128,6 +118,11 @@ let Klaviyo = class {
                 url: productUrl + 'limit=' + limit + '&page=' + page,
             }, function (responseText) {
                 let data = JSON.parse(responseText);
+                if (data.success !== undefined && !data.success) {
+                    console.log(data);
+                    expToast("error", data.message);
+                    return;
+                }
                 if (data.products.length > 0) {
                     let temp_products = [];
                     data.products.forEach(function (v, k) {
@@ -140,7 +135,7 @@ let Klaviyo = class {
                                 images.push(value.src)
                             });
                         temp_products.push({
-                            type: type,
+                            type: "",
                             title: v.title,
                             banner: banner,
                             images: images,
@@ -150,10 +145,10 @@ let Klaviyo = class {
                             market: "shopbase",
                         })
                     });
-                    if (data.products.length == limit) {
+                    if (data.products.length === limit) {
                         products = products.concat(temp_products);
                         setTimeout(function () {
-                            return that.subXhrGetProducts(callback, campaign_id, type, productUrl, limit, ++page, products);
+                            return that.subXhrGetProducts(callback, campaign_id, productUrl, limit, ++page, products);
                         }, 5000);
                     } else if (data.products.length < limit) {
                         products = products.concat(temp_products);

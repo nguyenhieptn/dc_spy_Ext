@@ -21,7 +21,6 @@ document.addEventListener('readystatechange', function () {
             } else if (location.host === 'www.impawards.com') {
                 new Impawards();
             } else if (document.evaluate("/html/body//script[contains(text(),\"TeeChip\")]", document, null, XPathResult.BOOLEAN_TYPE, null).booleanValue) {
-                //teechip
                 new Dzeetee();
             } else if (location.host === 'viralstyle.com') {
                 new Viralstyle();
@@ -34,6 +33,9 @@ document.addEventListener('readystatechange', function () {
             else if (location.host === 'www.zazzle.com')
             {
                 new Zazzle();
+            } else if (location.host === 'www.walmart.com')
+            {
+                new Walmart();
             }
         }
     }, false

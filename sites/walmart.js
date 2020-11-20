@@ -1,4 +1,4 @@
-let TeenPublic = class {
+let Walmart = class {
     constructor() {
         this.domain = location.origin;
         this.init();
@@ -21,9 +21,8 @@ let TeenPublic = class {
         button.addEventListener("click", (e) => {
             e.preventDefault();
             button.classList.add("is-loading");
-            if(document.querySelector('section.m-search__designs')){
-                console.log("product");
-                that.getProducts((data)=>{
+            if (window.location.pathname.indexOf('search') !== -1) {
+                that.getProducts((data) => {
                     button.classList.remove("is-loading");
                     if (data.status === "succeed") {
                         expToast("success", "Push Successfully!");
@@ -31,8 +30,7 @@ let TeenPublic = class {
                         expToast("error", data.msg);
                     }
                 })
-            }else
-            if (document.querySelector('.m-design__content')) {
+            } else if (document.querySelector('#product-overview')) {
                 that.getProduct((data) => {
                     button.classList.remove("is-loading");
                     if (data.status === "succeed") {
@@ -47,63 +45,77 @@ let TeenPublic = class {
         });
     }
 
-    getProducts(callback){
+    getProducts(callback) {
         let products = [];
         let campaign_id = document.querySelector(".exp-template .exp-input[name=\"campaign_id\"]").value;
-        if(campaign_id.length === 0){
-            expToast("error","Please input campaign ID!");
+        if (campaign_id.length === 0) {
+            expToast("error", "Please input campaign ID!");
             return;
         }
-        document.querySelectorAll(".jsDesignContainer").forEach((el)=>{
-            let elm = el.querySelector(".m-tiles__design a img");
+        document.querySelectorAll(".search-result-gridview-items li").forEach((el) => {
+            let elm = el.querySelector("div.orientation-square img");
+            if (elm === null) {
+                return;
+            }
             let banner = elm.getAttribute("src");
-            if(!isURL(banner)) return;
+            // banner = banner.replace("307.jpg", "5000.jpg");
+            let images = [];
+            if (!isURL(banner)) {
+                return;
+            } else {
+                banner = new URL(banner);
+                banner = banner.host + banner.pathname;
+            }
             let title = elm.getAttribute("alt");
-            let pId = el.querySelector('.m-tiles__preview').getAttribute("href");
+            let pId = el.querySelector(".search-result-productimage").getAttribute('href');
             let tags = [];
-            let tagsStr = el.querySelector('.m-tiles__tag-secondary').textContent;
-            tagsStr = tagsStr.substr(7);
-            tags = tagsStr.split(', ');
-            console.log(tags);
+            let store = "walmart";
             let type = "";
             let product = {
-                type:type,
-                title:title,
-                banner:banner,
-                item_id:pId,
-                tags:tags,
-                store: "teenpublic",
-                market:"teenpublic"
+                type: type,
+                title: title,
+                banner: banner,
+                images: images,
+                item_id: pId,
+                tags: tags,
+                store: store,
+                market: "walmart"
             };
             products.push(product);
         });
-        // chrome.runtime.sendMessage({
-        //     action: 'xhttp',
-        //     method: 'POST',
-        //     url: DataCenter + "/api/campaigns/products",
-        //     headers: {
-        //         token:token
-        //     },
-        //     data:JSON.stringify({
-        //         products:products,
-        //         campaign_id:campaign_id
-        //     })
-        // }, function(responseText) {
-        //     let data = JSON.parse(responseText);
-        //     callback(data);
-        // });
         console.log(products);
+        chrome.runtime.sendMessage({
+            action: 'xhttp',
+            method: 'POST',
+            url: DataCenter + "/api/campaigns/products",
+            headers: {
+                token:token
+            },
+            data:JSON.stringify({
+                products:products,
+                campaign_id:campaign_id
+            })
+        }, function(responseText) {
+            let data = JSON.parse(responseText);
+            callback(data);
+        });
     }
+
     getProduct(callback) {
-        let title = document.querySelector(".m-design__content .m-design__title h1").innerText;
-        let store = "teepublic";
-        let pId = location.href.substr(25);
+        let title = document.querySelector("#product-overview h1.prod-ProductTitle").innerText;
+        let store = "walmart";
+        let pId = location.pathname;
         let images = [];
-        if (document.querySelector(".m-product-preview__thumbs"))
-            document.querySelector(".m-product-preview__thumbs").querySelectorAll('div.jsProductPreviewThumb img').forEach(function (el) {
-                images.push(el.getAttribute("src"));
+        if (document.querySelectorAll(".ViewSelectorItem-image").length > 0)
+            document.querySelectorAll(".ViewSelectorItem-image").forEach(function (el) {
+                let image = el.getAttribute("src");
+                image = image.replace('max_dim=65', 'max_dim=1000');
+                images.push(image);
             });
-        else return;
+        else {
+            expToast("error", "Error crawl images!");
+            return;
+        }
         let banner = images.shift();
         let type = "";
         let campaign_id = document.querySelector(".exp-template .exp-input[name=\"campaign_id\"]").value;
@@ -114,9 +126,8 @@ let TeenPublic = class {
             images: images,
             item_id: pId,
             store: store,
-            market: "teepublic"
+            market: "walmart"
         };
-        console.log(product);
         chrome.runtime.sendMessage({
             action: 'xhttp',
             method: 'POST',
