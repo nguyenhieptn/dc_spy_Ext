@@ -33,7 +33,7 @@
         "sites/ebay.js",
         "sites/shopify.js",
         "sites/woo.js",
-        "sites/klaviyo.js",
+
         "sites/puzzlehd.js",
         "sites/displate.js",
         "sites/impawards.js",
@@ -50,6 +50,7 @@
       "css" : ["css/content-scripts.css"]
     }
   ],
+  "web_accessible_resources" : ["sites/klaviyo.js"],
   "background": {
     "scripts": ["js/background.js"],
     "persistent": true

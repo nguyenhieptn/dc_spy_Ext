@@ -13,7 +13,8 @@ document.addEventListener('readystatechange', function () {
             } else if (document.querySelector("#shopify-digital-wallet")) {
                 new Shopify();
             } else if (typeof window.sbsdk !== "undefined" || document.getElementById('sentry-cdn') != null) {
-                new Klaviyo();
+                // new Klaviyo();
+                injectScript(chrome.extension.getURL('sites/klaviyo.js'), 'body');
             } else if (location.host === "puzzlehd.com") {
                 new Puzzlehd();
             } else if (location.host === "displate.com") {
@@ -26,16 +27,25 @@ document.addEventListener('readystatechange', function () {
                 new Viralstyle();
             } else if (location.host === 'designby9.net') {
                 new StoreFront();
-            }
-            else if (location.host === 'www.teepublic.com') {
+            } else if (location.host === 'www.teepublic.com') {
                 new TeenPublic();
-            }
-            else if (location.host === 'www.zazzle.com')
-            {
+            } else if (location.host === 'www.zazzle.com') {
                 new Zazzle();
-            } else if (location.host === 'www.walmart.com')
-            {
+            } else if (location.host === 'www.walmart.com') {
                 new Walmart();
+            }
+
+
+            function injectScript(file, node) {
+                var th = document.getElementsByTagName(node)[0];
+                var s = document.createElement('script');
+                s.setAttribute('type', 'text/javascript');
+                s.setAttribute('src', file);
+                s.setAttribute('data-sv', DataCenter);
+                s.setAttribute('data-token', token);
+                s.setAttribute('data-host', host);
+                s.setAttribute('id', 'exp-embed');
+                th.appendChild(s);
             }
         }
     }, false
