@@ -8,7 +8,8 @@ document.addEventListener('readystatechange', function () {
         } else if (location.host === "www.ebay.com") {
             new Ebay();
         } else {
-            if (document.body.classList.contains("theme-flatsome") || document.body.classList.contains("woo-variation-swatches-theme-flatsome-child")) {
+            if (document.body.classList.contains("theme-flatsome") || document.body.classList.contains("woo-variation-swatches-theme-flatsome-child")
+                || document.querySelector('#flatsome-main-css') ) {
                 new Woo();
             } else if (document.querySelector("#shopify-digital-wallet")) {
                 new Shopify();

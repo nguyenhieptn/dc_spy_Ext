@@ -246,6 +246,7 @@ let Woo = class {
                 }
             }
         );
+        console.log(products);
         chrome.runtime.sendMessage({
             action: 'xhttp',
             method: 'POST',
