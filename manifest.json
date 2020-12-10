@@ -1,6 +1,6 @@
 {
   "name": "Data Center Spy",
-  "version": "2.0.5.8",
+  "version": "2.0.5.9",
   "description": "A tool help users get item from some markets then push to Data Center",
   "permissions": [
     "activeTab","cookies","storage",
@@ -45,6 +45,7 @@
         "sites/zazzle.js",
         "sites/zazzle.js",
         "sites/walmart.js",
+        "sites/wooShopTimizer.js",
         "js/content_scripts.js"
       ],
       "css" : ["css/content-scripts.css"]

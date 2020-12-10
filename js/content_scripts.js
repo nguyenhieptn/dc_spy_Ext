@@ -35,6 +35,10 @@ document.addEventListener('readystatechange', function () {
             } else if (location.host === 'www.walmart.com') {
                 new Walmart();
             }
+            else if(document.body.classList.contains("theme-shoptimizer"))
+            {
+                new WooShopTimizer();
+            }
 
 
             function injectScript(file, node) {
