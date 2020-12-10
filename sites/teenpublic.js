@@ -22,6 +22,12 @@ let TeenPublic = class {
             select.appendChild(option);
             template.appendChild(select);
         }
+        let inputTitle = document.createElement("input");
+        inputTitle.name = "title";
+        inputTitle.placeholder = "Custom title";
+        inputTitle.classList.add("exp-input");
+        inputTitle.setAttribute('id', 'exp-custom-title');
+        template.appendChild(inputTitle);
         let input = document.createElement("input");
         input.name = "campaign_id";
         input.placeholder = "Campaign ID";
@@ -109,7 +115,15 @@ let TeenPublic = class {
     }
 
     getProduct(callback) {
-        let title = document.querySelector(".m-design__content .m-design__title h1").innerText;
+        let title;
+        if(document.querySelector("#exp-custom-title") && document.querySelector("#exp-custom-title").value !== "")
+        {
+            title = document.querySelector("#exp-custom-title").value;
+        }
+        else
+        {
+            title = document.querySelector(".m-design__content .m-design__title h1").innerText;
+        }
         let store = "teepublic";
         let pId = location.href.substr(25);
         let images = [];
