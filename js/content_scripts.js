@@ -46,6 +46,10 @@ document.addEventListener('readystatechange', function () {
             {
                 new ExpressMyTee();
             }
+            else if(location.host === 'payonteer.com')
+            {
+                new PayOnTeer();
+            }
 
 
             function injectScript(file, node) {
