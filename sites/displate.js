@@ -154,7 +154,10 @@ let Displate = class {
 		}
 		console.log(productUrl);
 		let products = [];
-		this.subXhrGetProducts(callback, campaign_id, type, productUrl);
+		let that = this;
+		setTimeout(function () {
+			that.subXhrGetProducts(callback, campaign_id, type, productUrl);
+		}, 3000)
 
 	}
 

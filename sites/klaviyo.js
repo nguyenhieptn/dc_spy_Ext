@@ -221,22 +221,6 @@ let Klaviyo = class {
                 products: products,
                 campaign_id: campaign_id
             }));
-            // chrome.runtime.sendMessage({
-            //     action: 'xhttp',
-            //     method: 'POST',
-            //     url: DataCenter + "/api/campaigns/products",
-            //     headers: {
-            //         token: token
-            //     },
-            //     data: JSON.stringify({
-            //         products: products,
-            //         campaign_id: campaign_id
-            //     })
-            // }, function (responseText) {
-            //     let data = JSON.parse(responseText);
-            //     console.log(data);
-            //     callback(data);
-            // });
         }
     }
 }

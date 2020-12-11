@@ -1,9 +1,11 @@
 {
   "name": "Data Center Spy",
-  "version": "2.0.5.9",
+  "version": "2.0.6.0",
   "description": "A tool help users get item from some markets then push to Data Center",
   "permissions": [
-    "activeTab","cookies","storage",
+    "activeTab",
+    "cookies",
+    "storage",
     "https://*/*",
     "http://*/*"
   ],
@@ -33,25 +35,25 @@
         "sites/ebay.js",
         "sites/shopify.js",
         "sites/woo.js",
-
         "sites/puzzlehd.js",
         "sites/displate.js",
         "sites/impawards.js",
         "sites/dzeetee.js",
         "sites/viralstyle.js",
-        "sites/store_front.js",
         "sites/grand_matee.js",
         "sites/teenpublic.js",
         "sites/zazzle.js",
         "sites/zazzle.js",
         "sites/walmart.js",
         "sites/wooShopTimizer.js",
+        "sites/shirtWoot.js",
+        "sites/expressMyTee.js",
         "js/content_scripts.js"
       ],
       "css" : ["css/content-scripts.css"]
     }
   ],
-  "web_accessible_resources" : ["sites/klaviyo.js"],
+  "web_accessible_resources" : ["sites/klaviyo.js", "sites/store_front.js"],
   "background": {
     "scripts": ["js/background.js"],
     "persistent": true

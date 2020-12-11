@@ -14,7 +14,6 @@ document.addEventListener('readystatechange', function () {
             } else if (document.querySelector("#shopify-digital-wallet")) {
                 new Shopify();
             } else if (typeof window.sbsdk !== "undefined" || document.getElementById('sentry-cdn') != null) {
-                // new Klaviyo();
                 injectScript(chrome.extension.getURL('sites/klaviyo.js'), 'body');
             } else if (location.host === "puzzlehd.com") {
                 new Puzzlehd();
@@ -26,8 +25,8 @@ document.addEventListener('readystatechange', function () {
                 new Dzeetee();
             } else if (location.host === 'viralstyle.com') {
                 new Viralstyle();
-            } else if (location.host === 'designby9.net') {
-                new StoreFront();
+            } else if (document.querySelector('.storefront-page') || window.location.pathname === "/_/search" || document.querySelector('body[ng-controller="BuyCtrl"]')) {
+                injectScript(chrome.extension.getURL('sites/store_front.js'), 'body');
             } else if (location.host === 'www.teepublic.com') {
                 new TeenPublic();
             } else if (location.host === 'www.zazzle.com') {
@@ -38,6 +37,14 @@ document.addEventListener('readystatechange', function () {
             else if(document.body.classList.contains("theme-shoptimizer"))
             {
                 new WooShopTimizer();
+            }
+            else if(location.host === 'shirt.woot.com')
+            {
+                new ShirtWoot();
+            }
+            else if(location.host === 'expressmytee.com')
+            {
+                new ExpressMyTee();
             }
 
 

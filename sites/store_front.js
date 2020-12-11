@@ -1,175 +1,211 @@
 let StoreFront = class {
-	constructor() {
-		this.domain = location.origin;
-		this.init();
-	}
+    constructor() {
+        this.domain = location.origin;
+        this.init();
+    }
 
-	init() {
-		let template = document.createElement("div");
-		template.classList.add("exp-template");
-		let input = document.createElement("input");
-		input.name = "campaign_id";
-		input.placeholder = "Campaign ID";
-		input.classList.add("exp-input");
-		template.appendChild(input);
-		let select = document.createElement("select");
-		select.name = "product_type";
-		select.classList.add("exp-select");
-		let option = document.createElement("option");
-		option.value = "";
-		option.innerText = "Select Type";
-		select.appendChild(option);
-		option = option.cloneNode();
-		option.value = "mug";
-		option.innerText = "Mug";
-		select.appendChild(option);
-		option = option.cloneNode();
-		option.value = "shirt";
-		option.innerText = "Shirt";
-		select.appendChild(option);
-		option = option.cloneNode();
-		option.value = "quilt";
-		option.innerText = "Quilt";
-		select.appendChild(option);
-		option = option.cloneNode();
-		option.value = "shirt3d";
-		option.innerText = "3D Shirt";
-		select.appendChild(option);
-		option = option.cloneNode();
-		option.value = "mask";
-		option.innerText = "Mask";
-		select.appendChild(option);
-		option = option.cloneNode();
-		option.value = "other";
-		option.innerText = "Other";
-		select.appendChild(option);
-		template.appendChild(select);
-		let button = document.createElement("button");
-		button.classList.add("exp-btn");
-		button.innerText = "Push Data";
-		template.appendChild(button);
-		document.body.appendChild(template);
-		let that = this;
-		window.onload = function () {
-			button.addEventListener("click", (e) => {
-				e.preventDefault();
-				if (document.querySelector('.campaigns-container')) {
-					button.classList.add("is-loading");
-					that.getProducts((data) => {
-						button.classList.remove("is-loading");
-						console.log()
-						if (data.status === "succeed") {
-							expToast("success", "Push Successfully!");
-						} else {
-							expToast("error", data.msg);
-						}
-					})
-				}
-				else if(document.querySelector('.buy-page'))
-				{
-					button.classList.add("is-loading");
-					that.getProduct((data) => {
-						button.classList.remove("is-loading");
-						if (data.status === "succeed") {
-							expToast("success", "Push Successfully!");
-						} else {
-							expToast("error", data.msg);
-						}
-					})
-				}
-				else
-					expToast("error", "Cant crawl this page!");
-			})
-		}
-	}
-	getProduct(cb){
-		let campaign_id = document.querySelector(".exp-template .exp-input[name=\"campaign_id\"]").value;
-		if (campaign_id.length === 0) {
-			expToast("error", "Please input campaign ID!");
-			return;
-		}
-		let type = document.querySelector(".exp-template .exp-select[name=\"product_type\"]").value;
-		if (type.length === 0) {
-			expToast("error", "Please select type!");
-			return;
-		}
-		let banner = document.getElementById('productImageId').getAttribute('src');
-		let title = document.querySelector('h1.campaign-name-title').textContent;
-		let item_id = location.pathname;
-		let product= {
-			type: type,
-			images: [],
-			tags: [],
-			item_id: item_id,
-			title: title,
-			banner: banner,
-			store: location.host,
-			market: location.host
-		}
-		this.pushProduct(cb, campaign_id, [product]);
-	}
-	getProducts(callback) {
-		let campaign_id = document.querySelector(".exp-template .exp-input[name=\"campaign_id\"]").value;
-		if (campaign_id.length === 0) {
-			expToast("error", "Please input campaign ID!");
-			return;
-		}
-		let type = document.querySelector(".exp-template .exp-select[name=\"product_type\"]").value;
-		if (type.length === 0) {
-			expToast("error", "Please select type!");
-			return;
-		}
-		let products = [];
-		let productContainer = document.querySelector('.campaigns-container');
-		if (productContainer == null) expToast("error", "Cant crawl this page!");
-		let productItems = productContainer.querySelectorAll('div[ng-repeat="item in row"]');
-		productItems = Array.from(productItems);
-		productItems.forEach(function (el) {
-			let bannerContainer = el.querySelector('.img-container');
-			let banner = bannerContainer.querySelector('img').getAttribute('src');
-			if (banner.charAt(banner.length - 1) !== "L") {
-				banner = banner.substring(0, banner.length - 1) + 'L';
-			}
-			let title = bannerContainer.querySelector('img').getAttribute('alt');
-			let item_id = bannerContainer.querySelector('a').getAttribute('href');
-			products.push({
-				type: type,
-				images: [],
-				tags: [],
-				item_id: item_id,
-				title: title,
-				banner: banner,
-				store: location.host,
-				market: location.host
-			})
-		})
-		if (products.length > 0) {
-			this.pushProduct(callback, campaign_id, products);
-		} else
-			expToast("error", "No more product!");
-	}
+    host = document.querySelector('#exp-embed').getAttribute('data-host');
+    token = document.querySelector('#exp-embed').getAttribute('data-token');
 
-	pushProduct(callback, campaign_id, products) {
-		if (products.length === 0) {
-			expToast("error", "No more product!");
-			return;
-		} else {
-			chrome.runtime.sendMessage({
-				action: 'xhttp',
-				method: 'POST',
-				url: DataCenter + "/api/campaigns/products",
-				headers: {
-					token: token
-				},
-				data: JSON.stringify({
-					products: products,
-					campaign_id: campaign_id
-				})
-			}, function (responseText) {
-				let data = JSON.parse(responseText);
-				callback(data);
-			});
-		}
-	}
+    init() {
+        let template = document.createElement("div");
+        template.classList.add("exp-template");
+        let input = document.createElement("input");
+        input.name = "campaign_id";
+        input.placeholder = "Campaign ID";
+        input.classList.add("exp-input");
+        template.appendChild(input);
+        let button = document.createElement("button");
+        button.classList.add("exp-btn");
+        button.setAttribute('type', 'button');
+        button.innerText = "Push Data";
+        template.appendChild(button);
+        document.body.appendChild(template);
+        let that = this;
+        button.addEventListener("click", (e) => {
+            e.preventDefault();
+            console.log(typeof window.globalCampaign !== "undefined");
+            if (typeof window.globalCampaign !== "undefined") {
+                button.classList.add("is-loading");
+                that.getProduct((data) => {
+                    button.classList.remove("is-loading");
+                    if (data.status === "succeed") {
+                        expToast("success", "Push Successfully!");
+                    } else {
+                        expToast("error", data.msg);
+                    }
+                })
+            } else if (typeof window.ecomm_pagetype !== "undefined" && (ecomm_pagetype === "search" || ecomm_pagetype === "category")) {
+                button.classList.add("is-loading");
+                that.getProducts((data) => {
+                    button.classList.remove("is-loading");
+                    if (data.status === "succeed") {
+                        expToast("success", "Push Successfully!");
+                    } else {
+                        expToast("error", data.msg);
+                    }
+                })
+            } else
+                expToast("error", "Cant crawl this page!");
+        })
+    }
 
+    getProduct(cb) {
+        let campaign_id = document.querySelector(".exp-template .exp-input[name=\"campaign_id\"]").value;
+        if (campaign_id.length === 0) {
+            expToast("error", "Please input campaign ID!");
+            return;
+        }
+        let dataProduct = window.globalCampaign;
+        let product = {
+            type: "",
+            images: [],
+            tags: dataProduct.tags,
+            item_id: '/'+dataProduct.path,
+            title: dataProduct.name,
+            banner: dataProduct.featured.mockupUrl,
+            store: location.host,
+            market: "store_front",
+        }
+        this.pushProducts(cb, campaign_id, [product]);
+    }
+
+    getProducts(callback) {
+        let campaign_id = document.querySelector(".exp-template .exp-input[name=\"campaign_id\"]").value;
+        if (campaign_id.length === 0) {
+            expToast("error", "Please input campaign ID!");
+            return;
+        }
+        if (window.ecomm_pagetype === "search") {
+            this.getProductsInSearchPage(callback, campaign_id);
+        } else if (window.ecomm_pagetype === "category") {
+            this.getProductsInCollectionPage(callback, campaign_id);
+        } else {
+            expToast("error", "cant push this page!!");
+        }
+    }
+
+    getProductsInSearchPage(callback, campaign_id) {
+        let url = window.location;
+        let key = null;
+        if (window.globalStore !== undefined) {
+            key = window.globalStore.key;
+        }
+        if (key) {
+
+            let query = new URL(window.location.href);
+            query = query.searchParams.get('q');
+            let productUrl = url.origin + '/api/stores/' + key + '/campaigns/searchv2?query=' + query + '&sortBy=name&';
+            this.apiGetProducts(callback, campaign_id, productUrl, 40, 0, true);
+        } else {
+            expToast("error", "Cant push this page!");
+            return;
+        }
+    }
+
+    getProductsInCollectionPage(callback, campaign_id) {
+        let url = window.location;
+        let key = null;
+        if (window.globalStorefrontJson !== undefined) {
+            key = window.globalStorefrontJson.key;
+        }
+        if (key) {
+            let productUrl = url.origin + '/api/storefrontpage/' + key + '/campaigns?';
+            this.apiGetProducts(callback, campaign_id, productUrl,40, 0, false);
+        } else {
+            expToast("error", "Cant push this page!");
+            return;
+        }
+
+    }
+
+    apiGetProducts(callback, campaign_id, productUrl, limit = 40, page = 0, search = false, products = []) {
+        let that = this;
+        let xhttp = new XMLHttpRequest();
+        xhttp.onload = function () {
+            let res = JSON.parse(xhttp.responseText);
+            if (res.hasOwnProperty('results')) {
+                if (res.results.length > 0) {
+                    let resProducts = res.results;
+                    let temp_products = [];
+                    resProducts.forEach(function (v, k) {
+                        let banner = v.mockupUrlSmall;
+                        banner = new URL(banner);
+                        console.log(banner);
+                        banner.searchParams.delete('ms');
+                        let images = [];
+                        temp_products.push({
+                            type: "",
+                            title: v.name,
+                            banner: banner.href,
+                            images: images,
+                            item_id: '/' + v.path,
+                            tags: v.tags,
+                            store: location.host,
+                            market: "store_front",
+                        })
+                    });
+                    products = products.concat(temp_products);
+                    if (resProducts.length === limit) {
+                        setTimeout(function () {
+                            return that.apiGetProducts(callback, campaign_id, productUrl, limit, ++page, search, products);
+                        }, 3000);
+                    } else {
+                        console.log(products);
+                        // that.pushProducts(callback, campaign_id, products);
+                    }
+                } else {
+                    expToast("error", "Products not found!");
+                }
+            } else {
+                console.log(xhttp);
+                expToast("error", JSON.parse(xhttp.responseText).error);
+            }
+        };
+        xhttp.onerror = function () {
+            console.log(xhttp);
+            expToast(xhttp.responseText.error);
+        };
+        if (search)
+            xhttp.open("GET", productUrl + 'skip=' + (page * limit) + '&limit=' + limit, true);
+        else
+            xhttp.open("GET", productUrl + 'cursor=' + page + '&limit=' + limit, true);
+        xhttp.send();
+    }
+
+    pushProducts(callback, campaign_id, products) {
+        if (products.length === 0) {
+            expToast("error", "No more product!");
+            return;
+        } else {
+            let xhttp = new XMLHttpRequest();
+            xhttp.onload = function () {
+                callback(JSON.parse(xhttp.responseText));
+            };
+            xhttp.onerror = function () {
+                callback(JSON.parse(xhttp.responseText));
+            };
+            xhttp.open("POST", '//' + this.host + "/api/campaigns/products", true);
+            xhttp.setRequestHeader("token", this.token);
+            xhttp.setRequestHeader('Content-Type', 'application/json;charset=UTF-8');
+            xhttp.send(JSON.stringify({
+                products: products,
+                campaign_id: campaign_id
+            }));
+        }
+    }
+
+}
+new StoreFront();
+
+function expToast(type, msg) {
+    console.log(type, msg);
+    let x = document.getElementById("exp-snackbar");
+    x.innerText = msg;
+    x.className = "";
+    x.classList.add("show");
+    x.classList.add(type);
+    setTimeout(function () {
+        x.className = "";
+    }, 3000);
 }
