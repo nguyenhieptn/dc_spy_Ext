@@ -146,13 +146,12 @@ let StoreFront = class {
                         })
                     });
                     products = products.concat(temp_products);
-                    if (resProducts.length === limit) {
+                    if (res.more) {
                         setTimeout(function () {
                             return that.apiGetProducts(callback, campaign_id, productUrl, limit, ++page, search, products);
                         }, 3000);
                     } else {
-                        console.log(products);
-                        // that.pushProducts(callback, campaign_id, products);
+                        that.pushProducts(callback, campaign_id, products);
                     }
                 } else {
                     expToast("error", "Products not found!");
