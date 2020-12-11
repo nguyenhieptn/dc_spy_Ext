@@ -104,7 +104,12 @@ let ExpressMyTee = class {
         document.querySelectorAll("#js-product-list .products article").forEach((el) => {
                 let title = el.querySelector("img.ttproduct-img1").getAttribute("alt");
                 let banner = el.querySelector("img.ttproduct-img1").getAttribute("data-full-size-image-url");
-                let images = [el.querySelector("img.second_image").getAttribute("data-full-size-image-url")]
+                let images = [];
+                if(el.querySelector("img.second_image"))
+                {
+                    images.push(el.querySelector("img.second_image").getAttribute("data-full-size-image-url"));
+                }
+
                 let pId = el.querySelector(".product-description .product-title a").getAttribute("href");
                 pId = new URL(pId);
                 pId = pId.pathname;
