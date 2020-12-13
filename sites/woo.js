@@ -14,38 +14,6 @@ let Woo = class {
             input.placeholder = "Campaign ID";
             input.classList.add("exp-input");
             template.appendChild(input);
-            let select = document.createElement("select");
-            select.name = "product_type";
-            select.classList.add("exp-select");
-            let option = document.createElement("option");
-            option.value = "";
-            option.innerText = "Select Type";
-            select.appendChild(option);
-            option = option.cloneNode();
-            option.value = "mug";
-            option.innerText = "Mug";
-            select.appendChild(option);
-            option = option.cloneNode();
-            option.value = "shirt";
-            option.innerText = "Shirt";
-            select.appendChild(option);
-            option = option.cloneNode();
-            option.value = "quilt";
-            option.innerText = "Quilt";
-            select.appendChild(option);
-            option = option.cloneNode();
-            option.value = "shirt3d";
-            option.innerText = "3D Shirt";
-            select.appendChild(option);
-            option = option.cloneNode();
-            option.value = "mask";
-            option.innerText = "Mask";
-            select.appendChild(option);
-            option = option.cloneNode();
-            option.value = "other";
-            option.innerText = "Other";
-            select.appendChild(option);
-            template.appendChild(select);
             let button = document.createElement("button");
             button.classList.add("exp-btn");
             button.innerText = "Push Data";
@@ -64,7 +32,7 @@ let Woo = class {
                             expToast("error", data.msg);
                         }
                     })
-                } else if (document.querySelector("body.archive .products")) {
+                } else if (location.pathname.indexOf('products') || location.pathname.indexOf('collection')) {
                     this.getProducts((data) => {
                         button.classList.remove("is-loading");
                         if (data.status === "succeed") {
@@ -82,11 +50,6 @@ let Woo = class {
         let campaign_id = document.querySelector(".exp-template .exp-input[name=\"campaign_id\"]").value;
         if (campaign_id.length === 0) {
             expToast("error", "Please input campaign ID!");
-            return;
-        }
-        let type = document.querySelector(".exp-template .exp-select[name=\"product_type\"]").value;
-        if (type.length === 0) {
-            expToast("error", "Please select type!");
             return;
         }
         let title = document.querySelector(".single-product .product-title").innerText;
@@ -116,12 +79,6 @@ let Woo = class {
             return;
         }
         let pId = null;
-        // document.body.classList.forEach((item)=>{
-        //   if(item.indexOf("postid-") === 0){
-        //     pId = item.substring(7);
-        //     return;
-        //   }
-        // });
         pId = window.location.href;
         if (!pId) return;
         let elm = document.querySelector("[data-content_category]");
@@ -193,7 +150,7 @@ let Woo = class {
             return;
         }
         let products = [];
-        document.querySelectorAll("body.archive .products .product").forEach((el) => {
+        document.querySelectorAll("#content ").forEach((el) => {
                 let title = el.querySelector(".product-title a").innerText;
                 if(el.querySelector("img.attachment-woocommerce_thumbnail") !== null)
                 {

@@ -50,6 +50,10 @@ document.addEventListener('readystatechange', function () {
             {
                 new PayOnTeer();
             }
+            else if(location.host === 'eroltos.com')
+            {
+                new Eroltos();
+            }
 
 
             function injectScript(file, node) {
