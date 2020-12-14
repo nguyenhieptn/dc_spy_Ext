@@ -1,4 +1,4 @@
-let Eroltos = class {
+let WooPangja = class {
     constructor() {
         this.domain = location.origin;
         this.href = location.href;
@@ -22,8 +22,7 @@ let Eroltos = class {
             button.addEventListener("click", (e) => {
                 e.preventDefault();
                 button.classList.add("is-loading");
-                if (document.querySelector("#description_panel")) {
-                    console.log('dvh');
+                if (document.querySelector("body.single-product")) {
                     this.getProduct((data) => {
                         button.classList.remove("is-loading");
                         if (data.status === "succeed") {
@@ -32,7 +31,7 @@ let Eroltos = class {
                             expToast("error", data.msg);
                         }
                     })
-                } else if (location.pathname.indexOf('products') || location.pathname.indexOf('collection')) {
+                } else if (document.querySelector("body.archive .products")) {
                     this.getProducts((data) => {
                         button.classList.remove("is-loading");
                         if (data.status === "succeed") {
@@ -52,9 +51,17 @@ let Eroltos = class {
             expToast("error", "Please input campaign ID!");
             return;
         }
-        let title = document.querySelector('meta[name="title"]').getAttribute('content');
-        let banner = null;
-        banner = document.querySelector('.product-display div div:last-child div').style.backgroundImage.slice(4, -1).replace(/"/g, "");
+        let title = document.querySelector("body.single-product h1.product_title").innerText;
+        let banner;
+        let images = [];
+        document.querySelectorAll("body.single-product .single-product-image-inner #product-thumbnails1 div.slick-list div.thumbnail-image").forEach(function (el) {
+            let imgs = el.querySelector('a img').getAttribute('srcset');
+            imgs = imgs.split(', ');
+            imgs = imgs[imgs.length - 1];
+            imgs = imgs.split(" ")[0];
+            images.push(imgs);
+        })
+        banner = images.shift();
         if (!isURL(banner)) {
             expToast("error", "Cant get image!");
             return;
@@ -63,9 +70,11 @@ let Eroltos = class {
         pId = window.location.pathname;
         if (!pId) return;
         let tags = [];
-
-        let images = [];
-        console.log(images, banner);
+        if (document.querySelector('span.tagged_as') !== null) {
+            document.querySelectorAll('span.tagged_as a').forEach((e) => {
+                tags.push(e.textContent);
+            });
+        }
         let product = {
             type: "",
             title: title,
@@ -74,7 +83,7 @@ let Eroltos = class {
             tags: tags,
             images: images,
             store: location.host,
-            market: "eroltos"
+            market: "wooPangja"
         };
         console.log(product);
         chrome.runtime.sendMessage({
@@ -96,34 +105,41 @@ let Eroltos = class {
 
     getProducts(callback) {
         let campaign_id = document.querySelector(".exp-template .exp-input[name=\"campaign_id\"]").value;
-        console.log(campaign_id);
         if (campaign_id === "" || campaign_id === 0) {
             expToast("error", "Please input campaign ID!");
             return;
         }
         let products = [];
-        document.querySelectorAll("#content .container .w-full .relative .product-group-product").forEach((el) => {
-                let title = el.querySelector("a img ").getAttribute('alt');
-                if (el.querySelector("a img") !== null) {
-                    let banner = el.querySelector("a img").getAttribute("src");
-                    if (isURL(banner) && banner != null) {
-                        let ext = banner.substr(banner.lastIndexOf("."));
-                        let url = new URL(banner);
-                        banner = url.href;
-                        console.log(el);
-                        let pId = el.getAttribute("href");
-                        let tags = [];
-                        let product = {
-                            type: "",
-                            title: title,
-                            banner: banner,
-                            item_id: pId,
-                            tags: tags,
-                            store: location.host,
-                            market: "eroltos"
-                        };
-                        products.push(product);
-                    }
+        document.querySelectorAll("body.archive .products .product").forEach((el) => {
+                let title = el.querySelector("h2.woocommerce-loop-product__title").innerText;
+                let banner;
+                if(el.querySelector(".product-thumb-primary img"))
+                {
+                    banner = el.querySelector(".product-thumb-primary img").getAttribute("srcset");
+                }
+                else if(el.querySelector(".product-thumb-one img"))
+                {
+                    banner = el.querySelector(".product-thumb-one img").getAttribute("srcset");
+                }
+                banner = banner.split(', ');
+                banner = banner[banner.length - 1].split(" ")[0];
+                if (isURL(banner) && banner != null) {
+                    let pId = el.querySelector(".product-info a").getAttribute("href");
+                    pId = new URL(pId);
+                    pId = pId.pathname;
+                    let tags = [];
+                    let images = [];
+                    let product = {
+                        type: "",
+                        title: title,
+                        banner: banner,
+                        item_id: pId,
+                        tags: tags,
+                        images: [],
+                        store: location.host,
+                        market: "wooPangja",
+                    };
+                    products.push(product);
                 }
             }
         );

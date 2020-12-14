@@ -1,4 +1,4 @@
-let Eroltos = class {
+let ShirtStore = class {
     constructor() {
         this.domain = location.origin;
         this.href = location.href;
@@ -22,8 +22,7 @@ let Eroltos = class {
             button.addEventListener("click", (e) => {
                 e.preventDefault();
                 button.classList.add("is-loading");
-                if (document.querySelector("#description_panel")) {
-                    console.log('dvh');
+                if (document.querySelector("body.product-page")) {
                     this.getProduct((data) => {
                         button.classList.remove("is-loading");
                         if (data.status === "succeed") {
@@ -32,7 +31,7 @@ let Eroltos = class {
                             expToast("error", data.msg);
                         }
                     })
-                } else if (location.pathname.indexOf('products') || location.pathname.indexOf('collection')) {
+                } else if (document.querySelector("body.category-page")) {
                     this.getProducts((data) => {
                         button.classList.remove("is-loading");
                         if (data.status === "succeed") {
@@ -52,20 +51,14 @@ let Eroltos = class {
             expToast("error", "Please input campaign ID!");
             return;
         }
-        let title = document.querySelector('meta[name="title"]').getAttribute('content');
-        let banner = null;
-        banner = document.querySelector('.product-display div div:last-child div').style.backgroundImage.slice(4, -1).replace(/"/g, "");
-        if (!isURL(banner)) {
-            expToast("error", "Cant get image!");
-            return;
-        }
+        let title = document.querySelector("body.product-page h1.product-page-header").innerText;
+        let banner = document.querySelector("body.product-page .product-images img#FrontImage").getAttribute('src');
+        let images = [];
+        banner = location.host+banner;
         let pId = null;
         pId = window.location.pathname;
         if (!pId) return;
         let tags = [];
-
-        let images = [];
-        console.log(images, banner);
         let product = {
             type: "",
             title: title,
@@ -74,7 +67,7 @@ let Eroltos = class {
             tags: tags,
             images: images,
             store: location.host,
-            market: "eroltos"
+            market: "shirtStore"
         };
         console.log(product);
         chrome.runtime.sendMessage({
@@ -96,34 +89,33 @@ let Eroltos = class {
 
     getProducts(callback) {
         let campaign_id = document.querySelector(".exp-template .exp-input[name=\"campaign_id\"]").value;
-        console.log(campaign_id);
         if (campaign_id === "" || campaign_id === 0) {
             expToast("error", "Please input campaign ID!");
             return;
         }
         let products = [];
-        document.querySelectorAll("#content .container .w-full .relative .product-group-product").forEach((el) => {
-                let title = el.querySelector("a img ").getAttribute('alt');
-                if (el.querySelector("a img") !== null) {
-                    let banner = el.querySelector("a img").getAttribute("src");
-                    if (isURL(banner) && banner != null) {
-                        let ext = banner.substr(banner.lastIndexOf("."));
-                        let url = new URL(banner);
-                        banner = url.href;
-                        console.log(el);
-                        let pId = el.getAttribute("href");
-                        let tags = [];
-                        let product = {
-                            type: "",
-                            title: title,
-                            banner: banner,
-                            item_id: pId,
-                            tags: tags,
-                            store: location.host,
-                            market: "eroltos"
-                        };
-                        products.push(product);
-                    }
+        document.querySelectorAll("body.category-page .product-wrappers article.product-wrapper").forEach((el) => {
+            console.log( el.querySelector(".product-info .product-name"));
+                let title = el.querySelector(".product-info .product-name h3").innerText;
+                let banner = el.querySelector(".product-image a img").getAttribute('src');
+                banner = banner.replace('medium', 'large');
+                banner = location.origin + banner;
+                if (isURL(banner) && banner != null) {
+                    let pId = el.querySelector(".product-info .product-name h3 a").getAttribute("href");
+                    let tags = [];
+                    let images = [];
+                    let product = {
+                        type: "",
+                        title: title,
+                        banner: banner,
+                        item_id: pId,
+                        tags: tags,
+                        images: images,
+                        store: location.host,
+                        market: "shirtStore",
+                    };
+                    console.log(product);
+                    products.push(product);
                 }
             }
         );

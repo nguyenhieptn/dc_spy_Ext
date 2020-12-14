@@ -38,6 +38,10 @@ document.addEventListener('readystatechange', function () {
             {
                 new WooShopTimizer();
             }
+            else if(document.body.classList.contains("theme-pangja"))
+            {
+                new WooPangja();
+            }
             else if(location.host === 'shirt.woot.com')
             {
                 new ShirtWoot();
@@ -53,6 +57,9 @@ document.addEventListener('readystatechange', function () {
             else if(location.host === 'eroltos.com')
             {
                 new Eroltos();
+            }else if(location.host === 'www.shirtstore.se')
+            {
+                new ShirtStore();
             }
 
 
