@@ -61,6 +61,10 @@ document.addEventListener('readystatechange', function () {
             {
                 new ShirtStore();
             }
+            else if(location.host === 'www.snorgtees.com' && document.querySelector('body.catalog-product-view'))
+            {
+                new Snorgtees();
+            }
 
 
             function injectScript(file, node) {
