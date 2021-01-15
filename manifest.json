@@ -53,6 +53,7 @@
         "sites/wooPangja.js",
         "sites/snorgtees.js",
         "sites/shirtStore.js",
+        "sites/wooBbTheme.js",
         "js/content_scripts.js"
       ],
       "css" : ["css/content-scripts.css"]

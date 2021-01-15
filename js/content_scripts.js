@@ -64,6 +64,9 @@ document.addEventListener('readystatechange', function () {
             else if(location.host === 'www.snorgtees.com' && document.querySelector('body.catalog-product-view'))
             {
                 new Snorgtees();
+            }else if(document.body.classList.contains("theme-bb-theme"))
+            {
+                new WooBbTheme();
             }
 
 
