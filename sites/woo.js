@@ -110,7 +110,7 @@ let Woo = class {
         }
         console.log(images, banner);
         let product = {
-            type: type,
+            type: "",
             title: title,
             banner: banner,
             item_id: pId,
@@ -144,13 +144,8 @@ let Woo = class {
             expToast("error", "Please input campaign ID!");
             return;
         }
-        let type = document.querySelector(".exp-template .exp-select[name=\"product_type\"]").value;
-        if (type.length === 0) {
-            expToast("error", "Please select type!");
-            return;
-        }
         let products = [];
-        document.querySelectorAll("#content ").forEach((el) => {
+        document.querySelectorAll("body.archive .products .product").forEach((el) => {
                 let title = el.querySelector(".product-title a").innerText;
                 if(el.querySelector("img.attachment-woocommerce_thumbnail") !== null)
                 {
@@ -190,7 +185,7 @@ let Woo = class {
                             tags = JSON.parse(elm.getAttribute("data-content_category"));
                         }
                         let product = {
-                            type: type,
+                            type: "",
                             title: title,
                             banner: banner,
                             item_id: pId,
