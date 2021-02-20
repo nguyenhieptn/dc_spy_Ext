@@ -9,7 +9,7 @@ document.addEventListener('readystatechange', function () {
             new Ebay();
         } else {
             if (document.body.classList.contains("theme-flatsome") || document.body.classList.contains("woo-variation-swatches-theme-flatsome-child")
-                || document.querySelector('#flatsome-main-css') ) {
+                || document.querySelector('#flatsome-main-css')) {
                 new Woo();
             } else if (document.querySelector("#shopify-digital-wallet")) {
                 new Shopify();
@@ -33,40 +33,34 @@ document.addEventListener('readystatechange', function () {
                 new Zazzle();
             } else if (location.host === 'www.walmart.com') {
                 new Walmart();
-            }
-            else if(document.body.classList.contains("theme-shoptimizer"))
-            {
+            } else if (document.body.classList.contains("theme-shoptimizer")) {
                 new WooShopTimizer();
-            }
-            else if(document.body.classList.contains("theme-pangja"))
-            {
+            } else if (document.body.classList.contains("theme-pangja")) {
                 new WooPangja();
-            }
-            else if(location.host === 'shirt.woot.com')
-            {
+            } else if (location.host === 'shirt.woot.com') {
                 new ShirtWoot();
-            }
-            else if(location.host === 'expressmytee.com')
-            {
+            } else if (location.host === 'expressmytee.com') {
                 new ExpressMyTee();
-            }
-            else if(location.host === 'payonteer.com')
-            {
+            } else if (location.host === 'payonteer.com') {
                 new PayOnTeer();
-            }
-            else if(location.host === 'eroltos.com')
-            {
+            } else if (location.host === 'eroltos.com') {
                 new Eroltos();
-            }else if(location.host === 'www.shirtstore.se')
-            {
+            } else if (location.host === 'www.shirtstore.se') {
                 new ShirtStore();
-            }
-            else if(location.host === 'www.snorgtees.com' && document.querySelector('body.catalog-product-view'))
-            {
+            } else if (location.host === 'www.snorgtees.com' && document.querySelector('body.catalog-product-view')) {
                 new Snorgtees();
-            }else if(document.body.classList.contains("theme-bb-theme"))
-            {
+            } else if (document.body.classList.contains("theme-bb-theme")) {
                 new WooBbTheme();
+            } else if (location.host === 'www.carousell.sg') {
+                new Carousell();
+            }
+            else if(location.host === 'poshmark.com')
+            {
+                new Poshmard();
+            }
+            else if(location.host === 'www.anime1688.com')
+            {
+                new Anime1688();
             }
 
 
