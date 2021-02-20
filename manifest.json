@@ -1,6 +1,6 @@
 {
   "name": "Data Center Spy",
-  "version": "2.0.7.1",
+  "version": "2.0.7.2",
   "description": "A tool help users get item from some markets then push to Data Center",
   "permissions": [
     "activeTab",

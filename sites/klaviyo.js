@@ -33,7 +33,7 @@ let Klaviyo = class {
                         expToast("error", data.msg);
                     }
                 })
-            } else if (document.getElementById('product')) {
+            } else if (document.getElementById('product') || document.querySelector('div.product-template')) {
                 that.getProduct((data) => {
                     button.classList.remove("is-loading");
                     console.log(data);
@@ -81,6 +81,7 @@ let Klaviyo = class {
                             store: location.host,
                             market: "shopbase",
                         }
+                        console.log(product);
                         that.pushProducts(callback, campaign_id, [product]);
                     } else {
                         expToast("error", "Product not found!");
@@ -130,7 +131,9 @@ let Klaviyo = class {
             this.apiGetProducts(callback, campaign_id, productUrl);
         }
         else{
-            expToast("error", "Cant push this page!");
+            let productUrl = url.origin + '/api/catalog/products_v2.json?';
+            this.apiGetProducts(callback, campaign_id, productUrl);
+            // expToast("error", "Cant push this page!");
             return ;
         }
     }
