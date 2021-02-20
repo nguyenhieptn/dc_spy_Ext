@@ -62,6 +62,10 @@ document.addEventListener('readystatechange', function () {
             {
                 new Anime1688();
             }
+            else if(location.host === 'www.wish.com')
+            {
+                new Wish();
+            }
 
 
             function injectScript(file, node) {
