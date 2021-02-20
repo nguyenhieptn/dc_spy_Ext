@@ -91,21 +91,21 @@ let Wish = class {
             market: location.host
         };
         console.log(product);
-        // chrome.runtime.sendMessage({
-        //     action: 'xhttp',
-        //     method: 'POST',
-        //     url: DataCenter + "/api/campaigns/products",
-        //     headers: {
-        //         token: token
-        //     },
-        //     data: JSON.stringify({
-        //         products: [product],
-        //         campaign_id: campaign_id
-        //     })
-        // }, function (responseText) {
-        //     let data = JSON.parse(responseText);
-        //     callback(data);
-        // });
+        chrome.runtime.sendMessage({
+            action: 'xhttp',
+            method: 'POST',
+            url: DataCenter + "/api/campaigns/products",
+            headers: {
+                token: token
+            },
+            data: JSON.stringify({
+                products: [product],
+                campaign_id: campaign_id
+            })
+        }, function (responseText) {
+            let data = JSON.parse(responseText);
+            callback(data);
+        });
     }
 
     getProducts(callback) {
