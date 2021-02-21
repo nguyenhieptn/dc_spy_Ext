@@ -53,18 +53,16 @@ document.addEventListener('readystatechange', function () {
                 new WooBbTheme();
             } else if (location.host === 'www.carousell.sg') {
                 new Carousell();
-            }
-            else if(location.host === 'poshmark.com')
-            {
+            } else if (location.host === 'poshmark.com') {
                 new Poshmard();
-            }
-            else if(location.host === 'www.anime1688.com')
-            {
+            } else if (location.host === 'www.anime1688.com') {
                 new Anime1688();
-            }
-            else if(location.host === 'www.wish.com')
-            {
+            } else if (location.host === 'www.wish.com') {
                 new Wish();
+            } else if (location.host === 'www.shopdisney.com') {
+                new ShopDisney();
+            } else if (location.host === 'www.hottopic.com') {
+                new HotTopic();
             }
 
 
