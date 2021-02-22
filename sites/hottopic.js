@@ -113,7 +113,8 @@ let HotTopic = class {
                     if (images.length > 0) {
                         let banner = images.shift();
                         if (isURL(banner) && banner != null) {
-                            let pId = location.pathname;
+                            let pId =  new URL(el.querySelector(".product-image a.thumb-link").getAttribute('href'));
+                            pId = pId.pathname;
                             let tags = [];
                             let product = {
                                 type: "",
