@@ -1,6 +1,6 @@
 {
   "name": "Data Center Spy",
-  "version": "2.0.7.3",
+  "version": "2.0.7.5",
   "description": "A tool help users get item from some markets then push to Data Center",
   "permissions": [
     "activeTab",
@@ -60,6 +60,8 @@
         "sites/wish.js",
         "sites/hottopic.js",
         "sites/shopdisney.js",
+        "sites/society6.js",
+        "sites/tisortfabrikasi.js",
         "js/content_scripts.js"
       ],
       "css" : ["css/content-scripts.css"]

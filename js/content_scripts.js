@@ -63,6 +63,10 @@ document.addEventListener('readystatechange', function () {
                 new ShopDisney();
             } else if (location.host === 'www.hottopic.com') {
                 new HotTopic();
+            } else if (location.host === 'society6.com') {
+                new Society6();
+            } else if (location.host === 'www.tisortfabrikasi.com') {
+                new Tisortfabrikasi();
             }
 
 
