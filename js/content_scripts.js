@@ -67,6 +67,8 @@ document.addEventListener('readystatechange', function () {
                 new Society6();
             } else if (location.host === 'www.tisortfabrikasi.com') {
                 new Tisortfabrikasi();
+            } else if (document.querySelector('body.theme-storefront')) {
+                new WooStoreFront();
             }
 
 
