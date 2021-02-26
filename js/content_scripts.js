@@ -69,6 +69,8 @@ document.addEventListener('readystatechange', function () {
                 new Tisortfabrikasi();
             } else if (document.querySelector('body.theme-storefront')) {
                 new WooStoreFront();
+            }else if (location.host === "www.gearbubble.com" || ['www.familysistershops.com'].indexOf(location.host) !== -1) {
+                new GearBubble();
             }
 
 

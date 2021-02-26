@@ -157,6 +157,10 @@ let Klaviyo = class {
         let that = this;
         let xhttp = new XMLHttpRequest();
         xhttp.onload = function () {
+            if(xhttp.status === 400)
+            {
+                that.pushProducts(callback, campaign_id, products);
+            }
             let res = JSON.parse(xhttp.responseText);
             if (res.hasOwnProperty('products')) {
                 if (res.products.length > 0) {
@@ -198,7 +202,6 @@ let Klaviyo = class {
             }
         };
         xhttp.onerror = function () {
-            console.log(xhttp);
             expToast(xhttp.responseText.error);
         };
         xhttp.open("GET", productUrl+ 'limit=' + limit + '&page=' + page, true);
