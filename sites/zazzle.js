@@ -32,7 +32,7 @@ let Zazzle = class {
                     }
                 })
             }else
-            if (document.querySelector('div.CmsPdpProductSpace_root')) {
+            if (document.querySelector('div.CmsPdpProductSpace_root') || document.querySelector('section.sectionType--pdpProductSpace')) {
                 that.getProduct((data) => {
                     button.classList.remove("is-loading");
                     if (data.status === "succeed") {
@@ -42,7 +42,7 @@ let Zazzle = class {
                     }
                 });
             } else {
-                expToast("success", "Cant push this page!");
+                expToast("error", "Cant push this page!");
             }
         });
     }
@@ -136,6 +136,7 @@ let Zazzle = class {
             store: store,
             market: "zazzle"
         };
+        console.log(product);
         chrome.runtime.sendMessage({
             action: 'xhttp',
             method: 'POST',

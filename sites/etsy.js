@@ -125,9 +125,18 @@ let Etsy = class {
         });
         let banner = images.shift();
         let item_id = document.querySelector("[data-buy-box-listing-title]").getAttribute("data-listing-id");
-        let data = JSON.parse(document.querySelector("[type=\"application/ld+json\"]").innerText);
-        let title = data.name;
-        let store = data.brand;
+        let title;
+        let store;
+        if(document.querySelector("[type=\"application/ld+json\"]"))
+        {
+            let data = JSON.parse(document.querySelector("[type=\"application/ld+json\"]").innerText);
+            title = data.name;
+            store = data.brand;
+        }
+        else{
+            store = document.querySelector('#listing-page-cart a.wt-text-link-no-underline span').innerText;
+            title = document.querySelector('#listing-page-cart div[data-component="listing-page-title-component"] h1').innerText;
+        }
         let product = {
             type:"",
             title:title,
@@ -138,6 +147,7 @@ let Etsy = class {
             images:images,
             market:"etsy"
         };
+        console.log(product);
         chrome.runtime.sendMessage({
             action: 'xhttp',
             method: 'POST',
