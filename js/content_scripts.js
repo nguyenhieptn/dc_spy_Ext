@@ -8,7 +8,10 @@ document.addEventListener('readystatechange', function () {
         } else if (location.host === "www.ebay.com") {
             new Ebay();
         } else {
-            if (document.body.classList.contains("theme-flatsome") || document.body.classList.contains("woo-variation-swatches-theme-flatsome-child")                                                                                                                                                                                    || document.querySelector('#flatsome-main-css')) {
+            if (
+                document.body.classList.contains("theme-flatsome")
+                || document.body.classList.contains("woo-variation-swatches-theme-flatsome-child")
+                || document.body.classList.contains("theme-oxygen-is-not-a-theme") || document.querySelector('#flatsome-main-css')) {
                 new Woo();
             } else if (document.querySelector("#shopify-digital-wallet")) {
                 new Shopify();
@@ -68,11 +71,11 @@ document.addEventListener('readystatechange', function () {
                 new Tisortfabrikasi();
             } else if (document.querySelector('body.theme-storefront')) {
                 new WooStoreFront();
-            }else if (location.host === "www.gearbubble.com" || ['www.familysistershops.com'].indexOf(location.host) !== -1) {
+            } else if (location.host === "www.gearbubble.com" || ['www.familysistershops.com'].indexOf(location.host) !== -1) {
                 new GearBubble();
-            } else if (location.host === "www.theshirtlist.com" ) {
+            } else if (location.host === "www.theshirtlist.com") {
                 new TheShirtList();
-            } else if (location.host === "www.forfansbyfans.com" ) {
+            } else if (location.host === "www.forfansbyfans.com") {
                 new ForFanByFans();
             }
 

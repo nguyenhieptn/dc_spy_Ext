@@ -45,8 +45,9 @@ let Woo = class {
                             expToast("error", data.msg);
                         }
                     })
-                } else
-                    expToast("error", 'Cant crawl this page!');
+                }
+                else
+                    expToast("error",'Cant crawl this page!');
             });
         }
     }
@@ -170,23 +171,46 @@ let Woo = class {
                     }
                 }
             );
-        } else {
+        } else
+        {
             document.querySelectorAll("body.archive .products .product").forEach((el) => {
-                let title;
-                    if (el.querySelector(".product-title a"))
-                        title = el.querySelector(".product-title a").innerText;
-                    else if(el.querySelector(".woocommerce-loop-product__title"))
-                    {
-                        title = el.querySelector(".woocommerce-loop-product__title").innerText;
-                    }
+                    let title = el.querySelector(".product-title a").innerText;
                     if (el.querySelector("img.attachment-woocommerce_thumbnail") !== null || el.querySelector(".box-image a img")) {
                         let banner;
-                        if (el.querySelector("img.attachment-woocommerce_thumbnail")) {
+                        if(el.querySelector("img.attachment-woocommerce_thumbnail"))
+                        {
                             banner = el.querySelector("img.attachment-woocommerce_thumbnail").getAttribute("src");
-                        } else {
+                        }
+                        else {
                             banner = el.querySelector(".box-image a img").getAttribute("src");
                         }
                         if (isURL(banner) && banner != null) {
+                            // let ext = banner.substr(banner.lastIndexOf("."));
+                            // let url = new URL(banner);
+                            // if (url.origin !== location.origin) {
+                            //     banner = url.origin + url.pathname;
+                            //     if (banner.indexOf('wp-content') === -1) {
+                            //         banner = banner.substring(0, banner.lastIndexOf("-")) + ext;
+                            //     } else {
+                            //         let elImage = el.querySelector("img.attachment-woocommerce_thumbnail");
+                            //         if (elImage.hasAttributes(['width', 'height'])) {
+                            //             let width = el.querySelector("img.attachment-woocommerce_thumbnail").getAttribute('width');
+                            //             let height = el.querySelector("img.attachment-woocommerce_thumbnail").getAttribute('height');
+                            //             banner = url.origin + url.pathname.replace('-' + width + 'x' + height, '');
+                            //         }
+                            //     }
+                            // } else {
+                            //     if (banner.indexOf('wp-content') === -1) {
+                            //         banner = banner.substring(0, banner.lastIndexOf("-")) + ext;
+                            //     } else {
+                            //         let elImage = el.querySelector("img.attachment-woocommerce_thumbnail");
+                            //         if (elImage.hasAttributes(['width', 'height'])) {
+                            //             let width = el.querySelector("img.attachment-woocommerce_thumbnail").getAttribute('width');
+                            //             let height = el.querySelector("img.attachment-woocommerce_thumbnail").getAttribute('height');
+                            //             banner = url.origin + url.pathname.replace('-' + width + 'x' + height, '');
+                            //         }
+                            //     }
+                            // }
                             banner = new URL(banner);
                             banner = banner.origin + banner.pathname;
                             let pId = el.querySelector(".product-title a").getAttribute("href");
@@ -208,14 +232,16 @@ let Woo = class {
                             };
                             products.push(product);
                         }
-                    } else if (el.querySelector(".box-image .image-none img")) {
+                    }
+                    else if(el.querySelector(".box-image .image-none img"))
+                    {
                         let banner = el.querySelector(".box-image .image-none img").getAttribute("src");
                         if (isURL(banner) && banner != null) {
                             let pId = new URL(el.querySelector(".product-title a").getAttribute("href"));
                             pId = pId.pathname;
                             let elm = el.querySelector("[data-content_category]");
                             let tags = [];
-                            if (elm !== null) {
+                            if (elm) {
                                 tags = JSON.parse(elm.getAttribute("data-content_category"));
                             }
                             let product = {
