@@ -112,6 +112,14 @@ let Walmart = class {
                 image = image.replace('max_dim=65', 'max_dim=1000');
                 images.push(image);
             });
+        else if(document.querySelectorAll(".prod-ProductImage .product-core img").length > 0){
+            document.querySelectorAll(".prod-ProductImage .product-core img").forEach(function (el) {
+                let image = el.getAttribute("src");
+                let url = new URL(el.src);
+                image = url.origin+url.pathname;
+                images.push(image);
+            });
+        }
         else {
             expToast("error", "Error crawl images!");
             return;
