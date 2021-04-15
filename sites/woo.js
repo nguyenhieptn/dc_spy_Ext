@@ -57,7 +57,11 @@ let Woo = class {
             expToast("error", "Please input campaign ID!");
             return;
         }
-        let title = document.querySelector(".single-product .product-title").innerText;
+        let title;
+        if(document.querySelector(".single-product .product-title"))
+            title = document.querySelector(".single-product .product-title").innerText;
+        else if(document.querySelector('.product_title'))
+            title = document.querySelector('.product_title').innerText;
         let banner = null;
         let _images = [];
         if (document.querySelector("img[data-large_image]") === null) {
@@ -77,12 +81,16 @@ let Woo = class {
         if (!banner) {
             banner = document.querySelector(".slick-slider .slick-current img").getAttribute("data-large-file")
         }
+        if(!banner)
+        {
+            banner = document.querySelector(".woocommerce-product-gallery__image img").getAttribute('href');
+        }
         if (!isURL(banner)) {
             expToast("error", "Cant get image!");
             return;
         }
         let pId = null;
-        pId = window.location.href;
+        pId = window.location.pathname;
         if (!pId) return;
         let elm = document.querySelector("[data-content_category]");
         let tags = [];
@@ -186,10 +194,19 @@ let Woo = class {
                         } else {
                             banner = el.querySelector(".box-image a img").getAttribute("src");
                         }
-                        if (isURL(banner) && banner != null) {
+                        if (banner != null) {
                             banner = new URL(banner);
                             banner = banner.origin + banner.pathname;
-                            let pId = el.querySelector(".product-title a").getAttribute("href");
+                            banner = banner.replace('-500x500', "");
+                            banner = banner.replace('-768x768', "");
+                            console.log(banner);
+                            let pId;
+                            if(el.querySelector(".product-title a"))
+                                pId = el.querySelector(".product-title a").getAttribute("href");
+                            else if(el.querySelector("a.woocommerce-LoopProduct-link"))
+                            {
+                                pId = el.querySelector("a.woocommerce-LoopProduct-link").getAttribute('href');
+                            }
                             pId = new URL(pId);
                             pId = pId.pathname;
                             let elm = el.querySelector("[data-content_category]");

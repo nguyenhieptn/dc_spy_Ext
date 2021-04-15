@@ -71,6 +71,12 @@ let WooStoreFront = class {
         pId = window.location.pathname;
         if (!pId) return;
         let tags = [];
+        if(document.querySelector('span.tagged_as'))
+        {
+            document.querySelectorAll('span.tagged_as a').forEach(function (e) {
+                tags.push(e.textContent);
+            })
+        }
         let product = {
             type: "",
             title: title,
@@ -79,7 +85,7 @@ let WooStoreFront = class {
             tags: tags,
             images: images,
             store: location.host,
-            market: "wooStoreFront"
+            market: "Woo"
         };
         console.log(product);
         chrome.runtime.sendMessage({
@@ -128,7 +134,7 @@ let WooStoreFront = class {
                             item_id: pId,
                             tags: tags,
                             store: location.host,
-                            market: "wooStoreFront"
+                            market: "Woo"
                         };
                         products.push(product);
                     }

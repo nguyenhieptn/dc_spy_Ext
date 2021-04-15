@@ -69,7 +69,7 @@ document.addEventListener('readystatechange', function () {
                 new Society6();
             } else if (location.host === 'www.tisortfabrikasi.com') {
                 new Tisortfabrikasi();
-            } else if (document.querySelector('body.theme-storefront')) {
+            } else if (document.querySelector('body.theme-storefront') || ((document.querySelector('body.archive') || document.querySelector('body.single-product')) &&  document.querySelector('body.woocommerce'))) {
                 new WooStoreFront();
             } else if (location.host === "www.gearbubble.com" || ['www.familysistershops.com'].indexOf(location.host) !== -1) {
                 new GearBubble();
@@ -77,6 +77,8 @@ document.addEventListener('readystatechange', function () {
                 new TheShirtList();
             } else if (location.host === "www.forfansbyfans.com") {
                 new ForFanByFans();
+            } else if (location.host === "www.merchbar.com") {
+                new MerchBar();
             }
 
 

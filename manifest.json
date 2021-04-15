@@ -1,6 +1,6 @@
 {
   "name": "Data Center Spy",
-  "version": "2.0.8.6",
+  "version": "2.0.8.8",
   "description": "A tool help users get item from some markets then push to Data Center",
   "permissions": [
     "activeTab",
@@ -66,6 +66,7 @@
         "sites/gearbubble.js",
         "sites/theshirtlist.js",
         "sites/forfansbyfans.js",
+        "sites/merchbar.js",
         "js/content_scripts.js"
       ],
       "css" : ["css/content-scripts.css"]
