@@ -1,13 +1,10 @@
 {
   "name": "Data Center Spy",
-<<<<<<< HEAD
   "version": "2.0.8.9",
   "description": "A tool help users get item from some markets then push to Data Center",
-=======
-  "version": "2.0.8.8",
-  "description": "This extension help users get item from some markets then push to Data Center",
->>>>>>> 9a833ca4d949b07d6854277216579e63dfbdfaf4
   "permissions": [
+    "activeTab",
+    "cookies",
     "storage",
     "https://*/*",
     "http://*/*"
