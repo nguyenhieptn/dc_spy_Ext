@@ -1,4 +1,4 @@
-let DataCenter = "https://datacenter.tokamedia.com";
+let DataCenter = "https://banhoang.tokamedia.com";
 let body = document.querySelector("body");
 let form = document.querySelector("form");
 let tokenInp = document.querySelector("#token");
