@@ -79,6 +79,8 @@ document.addEventListener('readystatechange', function () {
                 new ForFanByFans();
             } else if (location.host === "www.merchbar.com") {
                 new MerchBar();
+            } else if (location.host === "www.nerdkungfu.com") {
+                new NerdKungfu();
             }
 
 

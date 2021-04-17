@@ -67,6 +67,7 @@
         "sites/theshirtlist.js",
         "sites/forfansbyfans.js",
         "sites/merchbar.js",
+        "sites/nerdkungfu.js",
         "js/content_scripts.js"
       ],
       "css" : ["css/content-scripts.css"]
