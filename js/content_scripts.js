@@ -83,6 +83,8 @@ document.addEventListener('readystatechange', function () {
                 new NerdKungfu();
             } else if (location.host === "www.europosters.eu") {
                 new EuroPosters();
+            } else if (location.host === "moosfy.com") {
+                new Moosfy();
             }
 
 
