@@ -1,4 +1,4 @@
-let NerdKungfu = class {
+let EuroPosters = class {
     constructor() {
         this.domain = location.origin;
         this.href = location.href;
@@ -22,7 +22,7 @@ let NerdKungfu = class {
             button.addEventListener("click", (e) => {
                 e.preventDefault();
                 button.classList.add("is-loading");
-                if (document.querySelector("div.productView")) {
+                if (document.querySelector("div.portrait")) {
                     console.log('dvh');
                     this.getProduct((data) => {
                         button.classList.remove("is-loading");
@@ -32,7 +32,7 @@ let NerdKungfu = class {
                             expToast("error", data.msg);
                         }
                     })
-                } else if (document.querySelector('#product-listing-container')) {
+                } else if (document.querySelector('.glass-catalog-page > .jscroll-inner > .product-shadow-hover')) {
                     this.getProducts((data) => {
                         button.classList.remove("is-loading");
                         if (data.status === "succeed") {
@@ -53,27 +53,28 @@ let NerdKungfu = class {
             expToast("error", "Please input campaign ID!");
             return;
         }
-        let title = document.querySelector(".productView-title").innerText;
+        let container = document.querySelector('.portrait');
+        let title = container.querySelector('h1').innerText;
         let banner = null;
         let _images = [];
-        if (document.querySelector("ul.productView-thumbnails li.productView-thumbnail") !== null) {
-            document.querySelectorAll("ul.productView-thumbnails li.productView-thumbnail").forEach((e) => {
-                let imageUrl = e.querySelector('a img').getAttribute('srcset');
-                console.log(imageUrl);
-                imageUrl = imageUrl.split(", ");
-                imageUrl = imageUrl[imageUrl.length - 1];
-                imageUrl = imageUrl.substring(0, imageUrl.indexOf(' '));
-                console.log(imageUrl);
+        if (container.querySelector("#images-cover") !== null) {
+            container.querySelectorAll("#images-cover span > picture > img").forEach((e) => {
+                let imageUrl = e.getAttribute('src');
                 if (isURL(imageUrl)) {
-                    imageUrl = new URL(imageUrl);
-                    imageUrl = imageUrl.origin + imageUrl.pathname;
                     _images.push(imageUrl);
                 }
             })
+            container.querySelectorAll("#images-cover div.wall-merch > img").forEach((e) => {
+                let imageUrl = e.getAttribute('src');
+                if (isURL(imageUrl)) {
+                    _images.push(imageUrl);
+                }
+            })
+
         }
         console.log(_images);
         let pId = null;
-        pId = location.origin+location.pathname;
+        pId = location.origin + location.pathname;
         if (!pId) return;
         let tags = [];
         let images = [];
@@ -93,7 +94,7 @@ let NerdKungfu = class {
             tags: tags,
             images: images,
             store: location.host,
-            market: "NerdKungfu"
+            market: "Europosters"
         };
         console.log(product);
         chrome.runtime.sendMessage({
@@ -121,34 +122,28 @@ let NerdKungfu = class {
             return;
         }
         let products = [];
-        if (document.querySelector('#product-listing-container ul.productGrid')) {
-            document.querySelectorAll('#product-listing-container ul.productGrid li.product').forEach((el) => {
-                    let title = el.querySelector("h4.card-title a").innerText;
-                    if (el.querySelector(".card-img-container img")) {
-                        let banner = el.querySelector('#product-listing-container ul.productGrid li.product .card-img-container img').getAttribute('srcset')
-                        banner = banner.split(", ");
-                        banner = banner[banner.length - 1];
-                        banner = banner.substring(0, banner.indexOf(' '));
-                        banner = new URL(banner);
-                        banner = banner.origin + banner.pathname;
-                        if (isURL(banner) && banner != null) {
-                            let pId = el.querySelector("figure.card-figure a").getAttribute("href");
-                            let tags = [];
-                            let product = {
-                                type: "",
-                                title: title,
-                                banner: banner,
-                                item_id: pId,
-                                tags: tags,
-                                store: location.host,
-                                market: "NerdKungfu"
-                            };
-                            products.push(product);
-                        }
+        document.querySelectorAll('.glass-catalog-page > .jscroll-inner > .product-shadow-hover').forEach((el) => {
+                let title = el.querySelector(".product-name a").innerText;
+                if (el.querySelector("picture img")) {
+                    let banner = el.querySelector("picture img").getAttribute('src');
+                    banner = banner.replace('/350/', '/750/');
+                    if (isURL(banner) && banner != null) {
+                        let pId = el.querySelector("a.picture-cover").getAttribute("href");
+                        let tags = [];
+                        let product = {
+                            type: "",
+                            title: title,
+                            banner: banner,
+                            item_id: pId,
+                            tags: tags,
+                            store: location.host,
+                            market: "Europosters"
+                        };
+                        products.push(product);
                     }
                 }
-            );
-        }
+            }
+        );
         console.log(products);
         chrome.runtime.sendMessage({
             action: 'xhttp',

@@ -81,6 +81,8 @@ document.addEventListener('readystatechange', function () {
                 new MerchBar();
             } else if (location.host === "www.nerdkungfu.com") {
                 new NerdKungfu();
+            } else if (location.host === "www.europosters.eu") {
+                new EuroPosters();
             }
 
 
