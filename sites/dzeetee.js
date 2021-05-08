@@ -12,38 +12,6 @@ let Dzeetee = class {
 		input.placeholder = "Campaign ID";
 		input.classList.add("exp-input");
 		template.appendChild(input);
-		let select = document.createElement("select");
-		select.name = "product_type";
-		select.classList.add("exp-select");
-		let option = document.createElement("option");
-		option.value = "";
-		option.innerText = "Select Type";
-		select.appendChild(option);
-		option = option.cloneNode();
-		option.value = "mug";
-		option.innerText = "Mug";
-		select.appendChild(option);
-		option = option.cloneNode();
-		option.value = "shirt";
-		option.innerText = "Shirt";
-		select.appendChild(option);
-		option = option.cloneNode();
-		option.value = "quilt";
-		option.innerText = "Quilt";
-		select.appendChild(option);
-		option = option.cloneNode();
-		option.value = "shirt3d";
-		option.innerText = "3D Shirt";
-		select.appendChild(option);
-		option = option.cloneNode();
-		option.value = "mask";
-		option.innerText = "Mask";
-		select.appendChild(option);
-		option = option.cloneNode();
-		option.value = "other";
-		option.innerText = "Other";
-		select.appendChild(option);
-		template.appendChild(select);
 		let button = document.createElement("button");
 		button.classList.add("exp-btn");
 		button.innerText = "Push Data";
@@ -54,7 +22,7 @@ let Dzeetee = class {
 			button.addEventListener("click", (e) => {
 				e.preventDefault();
 				button.classList.add("is-loading");
-				if (document.getElementsByClassName('TagPage').length > 0 || document.getElementsByClassName('SearchPage').length > 0) {
+				if (document.getElementsByClassName('TagPage').length > 0 || document.getElementsByClassName('SearchPage').length > 0 || document.querySelector('.RetailProductList') !== null) {
 					that.getProducts((data) => {
 						button.classList.remove("is-loading");
 						if (data.status === "succeed") {
@@ -83,11 +51,6 @@ let Dzeetee = class {
 			expToast("error", "Please input campaign ID!");
 			return;
 		}
-		let type = document.querySelector(".exp-template .exp-select[name=\"product_type\"]").value;
-		if (type.length === 0) {
-			expToast("error", "Please select type!");
-			return;
-		}
 		let listProducts = document.getElementsByClassName('RetailProductList')[0];
 		if (listProducts === undefined || listProducts === null) {
 			expToast("error", "Can't push product in this page!");
@@ -110,7 +73,7 @@ let Dzeetee = class {
 				banner = banner.replace('medium.jpg', 'regular.jpg');
 			}
 			products.push({
-				type: type,
+				type: "",
 				title: title,
 				banner: banner,
 				images: [],
@@ -129,11 +92,6 @@ let Dzeetee = class {
 			expToast("error", "Please input campaign ID!");
 			return;
 		}
-		let type = document.querySelector(".exp-template .exp-select[name=\"product_type\"]").value;
-		if (type.length === 0) {
-			expToast("error", "Please select type!");
-			return;
-		}
 		let productContent = document.querySelector('.ProductDetails');
 		let productContainer = document.querySelector('.ProductImageShowcase');
 		if (productContainer === undefined || productContent === undefined) {
@@ -141,16 +99,30 @@ let Dzeetee = class {
 			return;
 		}
 		let product_id = location.pathname;
-		let banner = productContainer.querySelector('img').getAttribute('src');
+		let banner;
 		let title = productContainer.querySelector('img').getAttribute('alt');
 		let images = [];
+		document.querySelectorAll('#contentThumb .ProductTile').forEach(function (el) {
+			let img = el.querySelector('img').getAttribute('src');
+			if(img.indexOf('/thumb') !== -1)
+			{
+				img = img.replace('/thumb', '/regular' );
+			}
+			images.push(img);
+		});
+		if(images.length > 0)
+		{
+			banner = images.shift();
+		}
+		else
+			banner = productContainer.querySelector('img').getAttribute('src');
 		let variationColor = productContent.getElementsByClassName('color-tiles-container')[0];
 		let tags = [];
 		productContent.querySelectorAll('a[href^="/tags/"]').forEach(function (el) {
 			tags.push(el.textContent);
 		});
 		let product = {
-			type: type,
+			type: null,
 			title: title,
 			banner: banner,
 			images: images,
@@ -199,6 +171,7 @@ let Dzeetee = class {
 	}
 
 	pushProduct(callback, campaign_id, products) {
+		console.log(products);
 		if (products.length == 0) {
 			expToast("error", "No more product!");
 			return;
