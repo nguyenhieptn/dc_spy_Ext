@@ -7,7 +7,7 @@ let Etsy = class {
     init(){
         let template = document.createElement("div");
         template.classList.add("exp-template");
-        let input = document.createElement("input");
+       let input = document.createElement("input");
         input.name = "campaign_id";
         input.placeholder = "Campaign ID";
         input.classList.add("exp-input");
@@ -109,7 +109,6 @@ let Etsy = class {
         });
     }
     getProduct(callback){
-        console.log('dvh');
         let keyword = document.querySelector("input[name=\"search_query\"]").value;
         let campaign_id = document.querySelector(".exp-template .exp-input[name=\"campaign_id\"]").value;
         if(campaign_id.length === 0){
@@ -125,6 +124,19 @@ let Etsy = class {
         });
         let banner = images.shift();
         let item_id = document.querySelector("[data-buy-box-listing-title]").getAttribute("data-listing-id");
+        if(item_id === null) {
+            if (document.querySelector(".favorite-item-action"))
+            {
+                item_id = document.querySelector(".favorite-item-action").getAttribute("data-listing-id");
+            }
+            else
+            {
+                expToast("error","Cant crawl this page contact dev!");
+                return;
+            }
+
+        }
+        console.log(item_id)
         let title;
         let store;
         if(document.querySelector("[type=\"application/ld+json\"]"))
