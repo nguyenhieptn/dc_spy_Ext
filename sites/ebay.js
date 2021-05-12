@@ -44,7 +44,7 @@ let Ebay = class {
     }
 
     getProducts(callback) {
-        let keyword;
+        let keyword = null
         if (document.querySelector("input[name=\"_odkw\"]")) {
             keyword = document.querySelector("input[name=\"_odkw\"]").value;
         }
@@ -70,7 +70,8 @@ let Ebay = class {
                 pId = url.substr(url.lastIndexOf("/") + 1);
             }
             let tags = [];
-            tags.push(keyword);
+            if (keyword)
+                tags.push(keyword);
             let store = "";
             let type = "";
             let product = {
@@ -79,7 +80,7 @@ let Ebay = class {
                 banner: banner,
                 item_id: pId,
                 tags: tags,
-                store: store,
+                store: 'ebay',
                 market: "ebay"
             };
             products.push(product);
