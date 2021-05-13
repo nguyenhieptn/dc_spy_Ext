@@ -85,6 +85,8 @@ document.addEventListener('readystatechange', function () {
                 new EuroPosters();
             } else if (location.host === "moosfy.com") {
                 new Moosfy();
+            } else if (location.host === "eigengift.com") {
+                new Eigengift();
             }
 
 
