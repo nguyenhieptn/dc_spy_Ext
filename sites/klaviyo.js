@@ -117,26 +117,23 @@ let Klaviyo = class {
         }
     }
 
-    getProductsInCollectionPage(callback, campaign_id)
-    {
+    getProductsInCollectionPage(callback, campaign_id) {
         let url = window.location;
         let collection_id = null;
-        if(window.__INITIAL_STATE__.collection.collection.id !== undefined)
-        {
+        if (window.__INITIAL_STATE__.collection.collection.id !== undefined) {
             collection_id = window.__INITIAL_STATE__.collection.collection.id;
         }
-        if(collection_id)
-        {
+        if (collection_id) {
             let productUrl = url.origin + '/api/catalog/products_v2.json' + '?collection_ids=' + collection_id + '&';
             this.apiGetProducts(callback, campaign_id, productUrl);
-        }
-        else{
+        } else {
             let productUrl = url.origin + '/api/catalog/products_v2.json?';
             this.apiGetProducts(callback, campaign_id, productUrl);
             // expToast("error", "Cant push this page!");
-            return ;
+            return;
         }
     }
+
     getProductsInSearchPage(callback, campaign_id) {
         let url = window.location;
         let search, productUrl;
@@ -147,18 +144,16 @@ let Klaviyo = class {
             productUrl = url.origin + '/api/catalog/products_v2.json?';
         } else {
             expToast("error", "Cant push this page!");
-            return ;
+            return;
         }
         this.apiGetProducts(callback, campaign_id, productUrl);
     }
 
-    apiGetProducts(callback, campaign_id, productUrl, limit = 50, page = 1, products = [])
-    {
+    apiGetProducts(callback, campaign_id, productUrl, limit = 50, page = 1, products = []) {
         let that = this;
         let xhttp = new XMLHttpRequest();
         xhttp.onload = function () {
-            if(xhttp.status === 400)
-            {
+            if (xhttp.status === 400) {
                 that.pushProducts(callback, campaign_id, products);
             }
             let res = JSON.parse(xhttp.responseText);
@@ -194,7 +189,10 @@ let Klaviyo = class {
                     } else
                         that.pushProducts(callback, campaign_id, products);
                 } else {
-                    expToast("error", "Products not found!");
+                    if (products.length > 0) {
+                        that.pushProducts(callback, campaign_id, products);
+                    } else
+                        expToast("error", "Products not found!");
                 }
             } else {
                 console.log(xhttp);
@@ -204,7 +202,7 @@ let Klaviyo = class {
         xhttp.onerror = function () {
             expToast(xhttp.responseText.error);
         };
-        xhttp.open("GET", productUrl+ 'limit=' + limit + '&page=' + page, true);
+        xhttp.open("GET", productUrl + 'limit=' + limit + '&page=' + page, true);
         xhttp.send();
     }
 
