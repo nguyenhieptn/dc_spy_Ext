@@ -6,6 +6,7 @@ let Woo = class {
     }
 
     init() {
+        console.log('woo.js');
         if (document.querySelector('.exp-template') === null) {
             let template = document.createElement("div");
             template.classList.add("exp-template");
@@ -58,9 +59,9 @@ let Woo = class {
             return;
         }
         let title;
-        if(document.querySelector(".single-product .product-title"))
+        if (document.querySelector(".single-product .product-title"))
             title = document.querySelector(".single-product .product-title").innerText;
-        else if(document.querySelector('.product_title'))
+        else if (document.querySelector('.product_title'))
             title = document.querySelector('.product_title').innerText;
         let banner = null;
         let _images = [];
@@ -78,11 +79,19 @@ let Woo = class {
         } else {
             banner = document.querySelector("img[data-large_image]").getAttribute("data-large_image");
         }
+        console.log(banner);
         if (!banner) {
-            banner = document.querySelector(".slick-slider .slick-current img").getAttribute("data-large-file")
+            banner = document.querySelector(".slick-slider .slick-current img");
+            console.log(banner);
+            if (banner.hasAttribute('data-large_image') && banner.getAttribute('data-large_image') !== "") {
+                banner = banner.getAttribute('data-large_image');
+            } else if (banner.hasAttribute('data-large-file') && banner.getAttribute('data-large-file') !== "") {
+                banner = banner.getAttribute("data-large-file")
+            } else {
+                banner = banner.getAttribute('src');
+            }
         }
-        if(!banner)
-        {
+        if (!banner) {
             banner = document.querySelector(".woocommerce-product-gallery__image img").getAttribute('href');
         }
         if (!isURL(banner)) {
@@ -180,11 +189,10 @@ let Woo = class {
             );
         } else {
             document.querySelectorAll("body.archive .products .product").forEach((el) => {
-                let title;
+                    let title;
                     if (el.querySelector(".product-title a"))
                         title = el.querySelector(".product-title a").innerText;
-                    else if(el.querySelector(".woocommerce-loop-product__title"))
-                    {
+                    else if (el.querySelector(".woocommerce-loop-product__title")) {
                         title = el.querySelector(".woocommerce-loop-product__title").innerText;
                     }
                     if (el.querySelector("img.attachment-woocommerce_thumbnail") !== null || el.querySelector(".box-image a img")) {
@@ -201,10 +209,9 @@ let Woo = class {
                             banner = banner.replace('-768x768', "");
                             console.log(banner);
                             let pId;
-                            if(el.querySelector(".product-title a"))
+                            if (el.querySelector(".product-title a"))
                                 pId = el.querySelector(".product-title a").getAttribute("href");
-                            else if(el.querySelector("a.woocommerce-LoopProduct-link"))
-                            {
+                            else if (el.querySelector("a.woocommerce-LoopProduct-link")) {
                                 pId = el.querySelector("a.woocommerce-LoopProduct-link").getAttribute('href');
                             }
                             pId = new URL(pId);

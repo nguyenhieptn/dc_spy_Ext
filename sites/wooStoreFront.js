@@ -6,6 +6,7 @@ let WooStoreFront = class {
     }
 
     init() {
+        console.log('wooStoreFront.js');
         if (document.querySelector('.exp-template') === null) {
             let template = document.createElement("div");
             template.classList.add("exp-template");
@@ -63,6 +64,17 @@ let WooStoreFront = class {
                 images.push(_img);
         })
         banner = images.shift();
+        if (!banner) {
+            banner = document.querySelector(".slick-slider .slick-current img");
+            console.log(banner);
+            if (banner.hasAttribute('data-large_image') && banner.getAttribute('data-large_image') !== "") {
+                banner = banner.getAttribute('data-large_image');
+            } else if (banner.hasAttribute('data-large-file') && banner.getAttribute('data-large-file') !== "") {
+                banner = banner.getAttribute("data-large-file")
+            } else {
+                banner = banner.getAttribute('src');
+            }
+        }
         if (!isURL(banner)) {
             expToast("error", "Cant get image!");
             return;
