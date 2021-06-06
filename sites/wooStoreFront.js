@@ -66,15 +66,24 @@ let WooStoreFront = class {
         banner = images.shift();
         if (!banner) {
             banner = document.querySelector(".slick-slider .slick-current img");
-            console.log(banner);
-            if (banner.hasAttribute('data-large_image') && banner.getAttribute('data-large_image') !== "") {
+            if (banner && banner.hasAttribute('data-large_image') && banner.getAttribute('data-large_image') !== "") {
                 banner = banner.getAttribute('data-large_image');
-            } else if (banner.hasAttribute('data-large-file') && banner.getAttribute('data-large-file') !== "") {
+            } else if (banner && banner.hasAttribute('data-large-file') && banner.getAttribute('data-large-file') !== "") {
                 banner = banner.getAttribute("data-large-file")
-            } else {
+            } else if(banner) {
                 banner = banner.getAttribute('src');
             }
         }
+
+        if (!banner && document.querySelector('.woocommerce-product-gallery__image')) {
+            let bannerDiv = document.querySelector('.woocommerce-product-gallery__image');
+            if (document.querySelector('.woocommerce-product-gallery__image > img.zoomImg')) {
+                banner = document.querySelector('.woocommerce-product-gallery__image > img.zoomImg').getAttribute('src');
+            } else if (document.querySelector('.woocommerce-product-gallery__image > img.wp-post-image')) {
+                banner = document.querySelector('.woocommerce-product-gallery__image > img.wp-post-image').getAttribute('data-large_image');
+            }
+        }
+
         if (!isURL(banner)) {
             expToast("error", "Cant get image!");
             return;
