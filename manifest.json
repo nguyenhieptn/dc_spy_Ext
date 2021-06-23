@@ -1,6 +1,6 @@
 {
   "name": "Data Center Spy",
-  "version": "2.0.9.8",
+  "version": "2.0.9.9",
   "description": "A tool help users get item from some markets then push to Data Center",
   "permissions": [
     "activeTab",
@@ -71,6 +71,7 @@
         "sites/europosters.js",
         "sites/moosfy.js",
         "sites/eigengift.js",
+        "sites/ktecknonltd.js",
         "js/content_scripts.js"
       ],
       "css" : ["css/content-scripts.css"]

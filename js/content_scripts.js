@@ -87,6 +87,8 @@ document.addEventListener('readystatechange', function () {
                 new Moosfy();
             } else if (location.host === "eigengift.com") {
                 new Eigengift();
+            } else if (location.host === "www.ktecknonltd.com") {
+                new Ktecknonltd();
             }
 
 
