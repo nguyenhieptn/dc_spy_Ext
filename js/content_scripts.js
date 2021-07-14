@@ -89,6 +89,10 @@ document.addEventListener('readystatechange', function () {
                 new Eigengift();
             } else if (location.host === "www.ktecknonltd.com") {
                 new Ktecknonltd();
+            } else if (location.host === "www.wyierblog.com") {
+                new Wyierblog();
+            } else if (location.host === "www.zavvi.com") {
+                new Zavvi();
             }
 
 

@@ -125,7 +125,7 @@ let NerdKungfu = class {
             document.querySelectorAll('#product-listing-container ul.productGrid li.product').forEach((el) => {
                     let title = el.querySelector("h4.card-title a").innerText;
                     if (el.querySelector(".card-img-container img")) {
-                        let banner = el.querySelector('#product-listing-container ul.productGrid li.product .card-img-container img').getAttribute('srcset')
+                        let banner = el.querySelector('.card-img-container img').getAttribute('srcset')
                         banner = banner.split(", ");
                         banner = banner[banner.length - 1];
                         banner = banner.substring(0, banner.indexOf(' '));
