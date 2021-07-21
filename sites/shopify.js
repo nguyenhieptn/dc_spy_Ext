@@ -168,11 +168,13 @@ let Shopify = class {
 
         ajaxLoadProduct(callback, campaign_id, nUrl, page = 1, limit = 50, products = []) {
             let that = this;
+            console.log(nUrl + "?page=" + page + "&limit=" + limit);
             chrome.runtime.sendMessage({
                 action: 'xhttp',
                 method: 'GET',
                 url: nUrl + "?page=" + page + "&limit=" + limit,
             }, function (responseText) {
+                console.log(responseText);
                 let data = JSON.parse(responseText);
                 let _products = data.products;
                 _products.forEach((_product) => {

@@ -93,6 +93,8 @@ document.addEventListener('readystatechange', function () {
                 new Wyierblog();
             } else if (location.host === "www.zavvi.com") {
                 new Zavvi();
+            } else if (location.host === "shirtbea.com" || location.host === "shirtoont.com") {
+                new Codeigniter();
             }
 
 
