@@ -13,7 +13,10 @@ document.addEventListener('readystatechange', function () {
                 || document.body.classList.contains("woo-variation-swatches-theme-flatsome-child")
                 || document.body.classList.contains("theme-oxygen-is-not-a-theme") || document.querySelector('#flatsome-main-css')) {
                 new Woo();
-            } else if (document.querySelector("#shopify-digital-wallet")) {
+            } else if (document.querySelector("body.wvs-theme-resources")) {
+                new WooThemeCanvas();
+            }
+            else if (document.querySelector("#shopify-digital-wallet")) {
                 new Shopify();
             } else if (typeof window.sbsdk !== "undefined" || document.getElementById('sentry-cdn') != null) {
                 injectScript(chrome.extension.getURL('sites/klaviyo.js'), 'body');
@@ -95,6 +98,11 @@ document.addEventListener('readystatechange', function () {
                 new Zavvi();
             } else if (location.host === "shirtbea.com" || location.host === "shirtoont.com") {
                 new Codeigniter();
+            } else if (location.host === "www.teeshirtpalace.com") {
+                new Teeshirtpalace();
+            }
+            else if (location.host === "www.mhempearth.com") {
+                new mhempearth();
             }
 
 
