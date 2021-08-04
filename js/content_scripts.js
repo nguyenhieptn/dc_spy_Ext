@@ -104,6 +104,16 @@ document.addEventListener('readystatechange', function () {
             else if (location.host === "www.mhempearth.com") {
                 new mhempearth();
             }
+            else if (location.host === "www.spreadshirt.com") {
+                new Spreadshirt();
+            }else if (location.host === "fineartamerica.com") {
+                new Fineartamerica();
+            }else if (location.host === "www.lorajewel.com") {
+                new Lorajewel();
+            }else if (location.host === "www.ubuy.com.pl") {
+                new Ubuy();
+            }
+
 
 
             function injectScript(file, node) {
