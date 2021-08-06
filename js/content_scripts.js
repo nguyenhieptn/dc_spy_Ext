@@ -112,6 +112,8 @@ document.addEventListener('readystatechange', function () {
                 new Lorajewel();
             }else if (location.host === "www.ubuy.com.pl") {
                 new Ubuy();
+            }else if (location.host === "www.rdynolabs.com") {
+                new Rdynolabs();
             }
 
 
