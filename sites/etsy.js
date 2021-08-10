@@ -1,47 +1,24 @@
-let Etsy = class {
+let Etsy = class extends Initial{
     constructor() {
+        super();
         this.domain = location.origin;
         this.href = location.href;
+        this.build();
         this.init();
     }
     init(){
-        let template = document.createElement("div");
-        template.classList.add("exp-template");
-       let input = document.createElement("input");
-        input.name = "campaign_id";
-        input.placeholder = "Campaign ID";
-        input.classList.add("exp-input");
-        template.appendChild(input);
-        let button = document.createElement("button");
-        button.classList.add("exp-btn");
-        button.innerText = "Push Data";
-        template.appendChild(button);
-        document.body.appendChild(template);
+        let button = document.querySelector('button.exp-btn-push')
         button.addEventListener("click", (e)=> {
             e.preventDefault();
             button.classList.add("is-loading");
             if(window.location.pathname.indexOf("listing") !== -1){
-                this.getProduct((data)=>{
-                    button.classList.remove("is-loading");
-                    if (data.status === "succeed") {
-                        expToast("success", "Push Successfully!");
-                    } else {
-                        expToast("error", data.msg);
-                    }
-                })
+                this.getProduct()
             }else{
-                this.getProducts((data)=>{
-                    button.classList.remove("is-loading");
-                    if (data.status === "succeed") {
-                        expToast("success", "Push Successfully!");
-                    } else {
-                        expToast("error", data.msg);
-                    }
-                })
+                this.getProducts()
             }
         });
     }
-    getProducts(callback){
+    getProducts(){
         let keyword = "";
         document.querySelectorAll("input[name=\"search_query\"]").forEach(function(elm){
             let vl = elm.value;
@@ -55,11 +32,6 @@ let Etsy = class {
             tags = keyword;
         }
         let products = [];
-        let campaign_id = document.querySelector(".exp-template .exp-input[name=\"campaign_id\"]").value;
-        if(campaign_id.length === 0){
-            expToast("error","Please input campaign ID!");
-            return;
-        }
         let store = "";
         if(document.querySelector(".shop-name-and-title-container h1")){
             store = document.querySelector(".shop-name-and-title-container h1").innerText;
@@ -92,29 +64,10 @@ let Etsy = class {
             products.push(product);
         });
         console.log(products);
-        chrome.runtime.sendMessage({
-            action: 'xhttp',
-            method: 'POST',
-            url: DataCenter + "/api/campaigns/products",
-            headers: {
-                token:token
-            },
-            data:JSON.stringify({
-                products:products,
-                campaign_id:campaign_id
-            })
-        }, function(responseText) {
-            let data = JSON.parse(responseText);
-            callback(data);
-        });
+        this.push(products);
     }
-    getProduct(callback){
+    getProduct(){
         let keyword = document.querySelector("input[name=\"search_query\"]").value;
-        let campaign_id = document.querySelector(".exp-template .exp-input[name=\"campaign_id\"]").value;
-        if(campaign_id.length === 0){
-            expToast("error","Please input campaign ID!");
-            return;
-        }
         let images = [];
         document.querySelectorAll("[class*=\"listing-page-image\"] [data-image-id] img[data-src-zoom-image]").forEach(function(el){
             let url = el.getAttribute("src");
@@ -134,7 +87,6 @@ let Etsy = class {
                 expToast("error","Cant crawl this page contact dev!");
                 return;
             }
-
         }
         console.log(item_id)
         let title;
@@ -160,20 +112,6 @@ let Etsy = class {
             market:"etsy"
         };
         console.log(product);
-        chrome.runtime.sendMessage({
-            action: 'xhttp',
-            method: 'POST',
-            url: DataCenter + "/api/campaigns/product",
-            headers: {
-                token:token
-            },
-            data:JSON.stringify({
-                product:product,
-                campaign_id:campaign_id
-            })
-        }, function(responseText) {
-            let data = JSON.parse(responseText);
-            callback(data);
-        });
+        this.push([product]);
     }
 };

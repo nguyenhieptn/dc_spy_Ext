@@ -1,54 +1,13 @@
-let GrandMatee = class {
+let GrandMatee = class extends Initial{
     constructor() {
+        super();
         this.domain = location.origin;
+        this.build();
         this.init();
     }
 
     init() {
-        let template = document.createElement("div");
-        template.classList.add("exp-template");
-        let input = document.createElement("input");
-        input.name = "campaign_id";
-        input.placeholder = "Campaign ID";
-        input.classList.add("exp-input");
-        template.appendChild(input);
-        let select = document.createElement("select");
-        select.name = "product_type";
-        select.classList.add("exp-select");
-        let option = document.createElement("option");
-        option.value = "";
-        option.innerText = "Select Type";
-        select.appendChild(option);
-        option = option.cloneNode();
-        option.value = "mug";
-        option.innerText = "Mug";
-        select.appendChild(option);
-        option = option.cloneNode();
-        option.value = "shirt";
-        option.innerText = "Shirt";
-        select.appendChild(option);
-        option = option.cloneNode();
-        option.value = "quilt";
-        option.innerText = "Quilt";
-        select.appendChild(option);
-        option = option.cloneNode();
-        option.value = "shirt3d";
-        option.innerText = "3D Shirt";
-        select.appendChild(option);
-        option = option.cloneNode();
-        option.value = "mask";
-        option.innerText = "Mask";
-        select.appendChild(option);
-        option = option.cloneNode();
-        option.value = "other";
-        option.innerText = "Other";
-        select.appendChild(option);
-        template.appendChild(select);
-        let button = document.createElement("button");
-        button.classList.add("exp-btn");
-        button.innerText = "Push Data";
-        template.appendChild(button);
-        document.body.appendChild(template);
+        let button = document.querySelector('button.exp-btn-push');
         let that = this;
         window.onload = function () {
             button.addEventListener("click", (e) => {
@@ -56,23 +15,9 @@ let GrandMatee = class {
                 button.classList.add("is-loading");
                 if(document.getElementsByClassName('TagPage').length > 0 || document.getElementsByClassName('SearchPage').length > 0)
                 {
-                    that.getProducts((data) => {
-                        button.classList.remove("is-loading");
-                        if (data.status === "succeed") {
-                            expToast("success", "Push Successfully!");
-                        } else {
-                            expToast("error", data.msg);
-                        }
-                    });
+                    that.getProducts( );
                 } else if (document.getElementsByClassName('CampaignPage').length > 0) {
-                    that.getProduct((data) => {
-                        button.classList.remove("is-loading");
-                        if (data.status === "succeed") {
-                            expToast("success", "Push Successfully!");
-                        } else {
-                            expToast("error", data.msg);
-                        }
-                    })
+                    that.getProduct()
                 } else {
                     expToast("error", "Cant push product this page!");
                 }
@@ -80,17 +25,7 @@ let GrandMatee = class {
         }
     }
 
-    getProduct(callback) {
-        let campaign_id = document.querySelector(".exp-template .exp-input[name=\"campaign_id\"]").value;
-        if (campaign_id.length === 0) {
-            expToast("error", "Please input campaign ID!");
-            return;
-        }
-        let type = document.querySelector(".exp-template .exp-select[name=\"product_type\"]").value;
-        if (type.length === 0) {
-            expToast("error", "Please select type!");
-            return;
-        }
+    getProduct() {
         let productContainer = document.getElementsByClassName('rightsidesmallbordered')[0].closest('.container').querySelector('.row');
         let locationBaseName = location.href.replace(/^.*\/|\.[^.]*$/g, '');
         let origin = location.href.slice(location.href.indexOf(locationBaseName), location.href.length);
@@ -133,28 +68,10 @@ let GrandMatee = class {
             store: location.host,
             market: 'impawards',
         };
-        // let altDesign = productContainer.querySelector('.col-sm-6:first-child div[id="altdesigns"]')
-        // if (altDesign != null) {
-        // 	let designs = altDesign.querySelectorAll('a');
-        // 	designs = Array.from(designs);
-        // 	this._getProduct(callback, campaign_id, product, designs, origin);
-        // } else
-        this.pushProduct(callback, campaign_id, [product]);
+        this.pushProduct([product]);
     }
 
-    getProducts(callback) {
-        expToast("error", "Cant push product this page!");
-        return;
-        let campaign_id = document.querySelector(".exp-template .exp-input[name=\"campaign_id\"]").value;
-        if (campaign_id.length === 0) {
-            expToast("error", "Please input campaign ID!");
-            return;
-        }
-        let type = document.querySelector(".exp-template .exp-select[name=\"product_type\"]").value;
-        if (type.length === 0) {
-            expToast("error", "Please select type!");
-            return;
-        }
+    getProducts() {
         let retailProductList = document.querySelector('.RetailProductList');
         if(retailProductList === null)
         {
@@ -168,71 +85,13 @@ let GrandMatee = class {
         }
     }
 
-    pushProduct(callback, campaign_id, products) {
-        if (products.length == 0) {
+    pushProduct(products) {
+        if (products.length === 0) {
             expToast("error", "No more product!");
             return;
         } else {
-            chrome.runtime.sendMessage({
-                action: 'xhttp',
-                method: 'POST',
-                url: DataCenter + "/api/campaigns/products",
-                headers: {
-                    token: token
-                },
-                data: JSON.stringify({
-                    products: products,
-                    campaign_id: campaign_id
-                })
-            }, function (responseText) {
-                let data = JSON.parse(responseText);
-                callback(data);
-            });
+            this.push(products);
         }
     }
 
-    subXhrGetProducts(callback, campaign_id, type, productUrl) {
-        let that = this;
-        let products = [];
-        chrome.runtime.sendMessage({
-                method: 'GET',
-                action: 'xhttp',
-                url: productUrl,
-            }, function (responseText) {
-                let res_data = JSON.parse(responseText);
-                let data = res_data.data;
-                if (data.length > 0) {
-                    let temp_products = [];
-                    data.forEach(function (v, k) {
-                        let imageUrl = new URL(v.imageUrl);
-                        let pathName = imageUrl.pathname.split('/');
-                        pathName[1] = '857x1200';
-                        pathName = pathName.join('/');
-                        let banner = imageUrl.origin + pathName;
-                        let images = [];
-                        let tags = [];
-                        // if (typeof v.images != "undefined")
-                        //     if (v.images.length > 1)
-                        //         v.images.forEach(function (value, key) {
-                        //             images.push(value.src)
-                        //         });
-                        temp_products.push({
-                            type: type,
-                            title: v.title,
-                            banner: banner,
-                            images: images,
-                            item_id: v.itemCollectionId,
-                            tags: tags,
-                            store: location.host,
-                            market: 'displate'
-                        })
-                    });
-                    products = products.concat(temp_products);
-                    // console.log(products);
-                    that.pushProduct(callback, campaign_id, products);
-                }
-            }
-        )
-        ;
-    }
 }

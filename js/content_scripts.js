@@ -114,6 +114,8 @@ document.addEventListener('readystatechange', function () {
                 new Ubuy();
             }else if (location.host === "www.rdynolabs.com") {
                 new Rdynolabs();
+            }else if (location.host === "www.mumzworld.com") {
+                new Mumzworld();
             }
 
 

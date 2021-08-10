@@ -1,60 +1,34 @@
-let Eigengift = class {
+let Eigengift = class extends Initial{
     constructor() {
+        super();
         this.domain = location.origin;
         this.href = location.href;
+        this.build();
         this.init();
     }
 
     init() {
-        if (document.querySelector('.exp-template') === null) {
-            let template = document.createElement("div");
-            template.classList.add("exp-template");
-            let input = document.createElement("input");
-            input.name = "campaign_id";
-            input.placeholder = "Campaign ID";
-            input.classList.add("exp-input");
-            template.appendChild(input);
-            let button = document.createElement("button");
-            button.classList.add("exp-btn");
-            button.innerText = "Push Data";
-            template.appendChild(button);
-            document.body.appendChild(template);
+            let button = document.querySelector('button.exp-btn-push');
             button.addEventListener("click", (e) => {
                 e.preventDefault();
                 button.classList.add("is-loading");
                 if (document.querySelector('.product-detail') && document.querySelector('.product-detail-contents')) {
-                    this.getProduct((data) => {
-                        button.classList.remove("is-loading");
-                        if (data.status === "succeed") {
-                            expToast("success", "Push Successfully!");
-                        } else {
-                            expToast("error", data.msg);
-                        }
-                    })
+                    this.getProduct()
                 }else if(document.querySelector('#page_category'))
                 {
-                    this.getProducts((data) => {
-                        button.classList.remove("is-loading");
-                        if (data.status === "succeed") {
-                            expToast("success", "Push Successfully!");
-                        } else {
-                            expToast("error", data.msg);
-                        }
-                    })
-
+                    this.getProducts()
                 }
                 else
                     expToast("error", 'Cant crawl this page!');
             });
         }
-    }
 
-    getProduct(callback) {
+    getProduct() {
         let campaign_id = document.querySelector(".exp-template .exp-input[name=\"campaign_id\"]").value;
         if (campaign_id.length === 0) {
             expToast("error", "Please input campaign ID!");
             return;
-        }
+        } 
         let container = document.querySelector('.product-detail-contents');
         let title = container.querySelector('h1.product_detail_name').innerText;
         let banner;

@@ -1,93 +1,28 @@
-let Amazon = class {
+let Amazon = class extends Initial{
     constructor() {
+        super();
         this.domain = location.origin;
+        this.build();
         this.init();
     }
 
     init() {
-        let template = document.createElement("div");
-        template.classList.add("exp-template");
-        let input = document.createElement("input");
-        input.name = "campaign_id";
-        input.placeholder = "Campaign ID";
-        input.classList.add("exp-input");
-        template.appendChild(input);
-        let select = document.createElement("select");
-        select.name = "product_type";
-        select.classList.add("exp-select");
-        let option = document.createElement("option");
-        option.value = "";
-        option.innerText = "Select Type";
-        select.appendChild(option);
-        option = option.cloneNode();
-        option.value = "mug";
-        option.innerText = "Mug";
-        select.appendChild(option);
-        option = option.cloneNode();
-        option.value = "shirt";
-        option.innerText = "Shirt";
-        select.appendChild(option);
-        option = option.cloneNode();
-        option.value = "quilt";
-        option.innerText = "Quilt";
-        select.appendChild(option);
-        option = option.cloneNode();
-        option.value = "shirt3d";
-        option.innerText = "3D Shirt";
-        select.appendChild(option);
-        option = option.cloneNode();
-        option.value = "mask";
-        option.innerText = "Mask";
-        select.appendChild(option);
-        option = option.cloneNode();
-        option.value = "other";
-        option.innerText = "Other";
-        select.appendChild(option);
-        template.appendChild(select);
-        let button = document.createElement("button");
-        button.classList.add("exp-btn");
-        button.innerText = "Push Data";
-        template.appendChild(button);
-        document.body.appendChild(template);
         let that = this;
+        let button = document.querySelector('button.exp-btn-push');
         button.addEventListener("click", (e) => {
             e.preventDefault();
             button.classList.add("is-loading");
             if (location.href.indexOf("https://www.amazon.com/") !== -1 && location.href.indexOf("/dp/") !== -1) {
-                that.getProduct((data) => {
-                    button.classList.remove("is-loading");
-                    if (data.status === "succeed") {
-                        expToast("success", "Push Successfully!");
-                    } else {
-                        expToast("error", data.msg);
-                    }
-                })
+                that.getProduct()
             } else if (location.href.indexOf("https://www.amazon.com/s") !== -1) {
-                that.getProducts((data) => {
-                    button.classList.remove("is-loading");
-                    if (data.status === "succeed") {
-                        expToast("success", "Push Successfully!");
-                    } else {
-                        expToast("error", data.msg);
-                    }
-                });
+                that.getProducts();
             }
         });
     }
 
-    getProducts(callback) {
+    getProducts() {
         let keyword = document.querySelector("input[name=\"field-keywords\"]").value;
         let products = [];
-        let campaign_id = document.querySelector(".exp-template .exp-input[name=\"campaign_id\"]").value;
-        if (campaign_id.length === 0) {
-            expToast("error", "Please input campaign ID!");
-            return;
-        }
-        let type = document.querySelector(".exp-template .exp-select[name=\"product_type\"]").value;
-        if (type.length === 0) {
-            expToast("error", "Please select type!");
-            return;
-        }
         document.querySelectorAll("[data-component-type=\"s-search-results\"] > .s-search-results [data-asin]").forEach((el) => {
             let elm = el.querySelector("img[class*=\"image\"]");
             if(elm == null) return;
@@ -112,34 +47,11 @@ let Amazon = class {
             };
             products.push(product);
         });
-        chrome.runtime.sendMessage({
-            action: 'xhttp',
-            method: 'POST',
-            url: DataCenter + "/api/campaigns/products",
-            headers: {
-                token: token
-            },
-            data: JSON.stringify({
-                products: products,
-                campaign_id: campaign_id
-            })
-        }, function (responseText) {
-            let data = JSON.parse(responseText);
-            callback(data);
-        });
+        console.log(products);
+        this.push(products);
     }
 
-    getProduct(callback) {
-        let campaign_id = document.querySelector(".exp-template .exp-input[name=\"campaign_id\"]").value;
-        if (campaign_id.length === 0) {
-            expToast("error", "Please input campaign ID!");
-            return;
-        }
-        let type = document.querySelector(".exp-template .exp-select[name=\"product_type\"]").value;
-        if (type.length === 0) {
-            expToast("error", "Please select type!");
-            return;
-        }
+    getProduct() {
         let title = document.querySelector("#productTitle").innerText.trim();
         let elm = document.querySelector("#bylineInfo");
         let store = (elm) ? elm.innerText : "";
@@ -179,20 +91,7 @@ let Amazon = class {
             store: store,
             market: "amazon"
         };
-        chrome.runtime.sendMessage({
-            action: 'xhttp',
-            method: 'POST',
-            url: DataCenter + "/api/campaigns/product",
-            headers: {
-                token: token
-            },
-            data: JSON.stringify({
-                product: product,
-                campaign_id: campaign_id
-            })
-        }, function (responseText) {
-            let data = JSON.parse(responseText);
-            callback(data);
-        });
+        console.log(product);
+        this.push([product]);
     }
 };

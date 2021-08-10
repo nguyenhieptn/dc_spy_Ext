@@ -1,59 +1,31 @@
-let Ebay = class {
+let Ebay = class extends Initial{
 	constructor() {
+		super();
 		this.domain = location.origin;
+		this.build();
 		this.init();
 	}
 
 	init() {
-		let template = document.createElement("div");
-		template.classList.add("exp-template");
-		let input = document.createElement("input");
-		input.name = "campaign_id";
-		input.placeholder = "Campaign ID";
-		input.classList.add("exp-input");
-		template.appendChild(input);
-		let button = document.createElement("button");
-		button.classList.add("exp-btn");
-		button.innerText = "Push Data";
-		template.appendChild(button);
-		document.body.appendChild(template);
+		let button = document.querySelector('button.exp-btn-push')
 		let that = this;
 		button.addEventListener("click", (e) => {
 			e.preventDefault();
 			button.classList.add("is-loading");
 			if (location.href.indexOf("https://www.ebay.com/itm/") !== -1) {
-				that.getProduct((data) => {
-					button.classList.remove("is-loading");
-					if (data.status === "succeed") {
-						expToast("success", "Push Successfully!");
-					} else {
-						expToast("error", data.msg);
-					}
-				})
+				that.getProduct()
 			} else if (location.href.indexOf("https://www.ebay.com/sch") !== -1 || location.href.indexOf("https://www.ebay.com/str") !== -1) {
-				that.getProducts((data) => {
-					button.classList.remove("is-loading");
-					if (data.status === "succeed") {
-						expToast("success", "Push Successfully!");
-					} else {
-						expToast("error", data.msg);
-					}
-				});
+				that.getProducts();
 			}
 		});
 	}
 
-	getProducts(callback) {
+	getProducts() {
 		let keyword = null
 		if (document.querySelector("input[name=\"_odkw\"]")) {
 			keyword = document.querySelector("input[name=\"_odkw\"]").value;
 		}
 		let products = [];
-		let campaign_id = document.querySelector(".exp-template .exp-input[name=\"campaign_id\"]").value;
-		if (campaign_id.length === 0) {
-			expToast("error", "Please input campaign ID!");
-			return;
-		}
 		document.querySelectorAll("[class*=\"item__wrapper\"]").forEach((el) => {
 			let title = el.querySelector("h3[class*=\"item__title\"]").innerText;
 			let elm = el.querySelector("img[class*=\"item__image-img\"]");
@@ -123,31 +95,12 @@ let Ebay = class {
 			}
 		}
 
-		if (products.length == 0) expToast("error", "Cant crawl this page!");
+		if (products.length === 0) expToast("error", "Cant crawl this page!");
 		console.log(products);
-		chrome.runtime.sendMessage({
-			action: 'xhttp',
-			method: 'POST',
-			url: DataCenter + "/api/campaigns/products",
-			headers: {
-				token: token
-			},
-			data: JSON.stringify({
-				products: products,
-				campaign_id: campaign_id
-			})
-		}, function (responseText) {
-			let data = JSON.parse(responseText);
-			callback(data);
-		});
+		this.push(products);
 	}
 
-	getProduct(callback) {
-		let campaign_id = document.querySelector(".exp-template .exp-input[name=\"campaign_id\"]").value;
-		if (campaign_id.length === 0) {
-			expToast("error", "Please input campaign ID!");
-			return;
-		}
+	getProduct() {
 		let title = document.getElementById("vi-lkhdr-itmTitl").textContent;
 		let store = document.querySelector("a[href^=\"https://www.ebay.com/usr/\"] span").textContent;
 		let pathname = location.pathname;
@@ -180,20 +133,6 @@ let Ebay = class {
 			market: "ebay"
 		};
 		console.log(product);
-		chrome.runtime.sendMessage({
-			action: 'xhttp',
-			method: 'POST',
-			url: DataCenter + "/api/campaigns/product",
-			headers: {
-				token: token
-			},
-			data: JSON.stringify({
-				product: product,
-				campaign_id: campaign_id
-			})
-		}, function (responseText) {
-			let data = JSON.parse(responseText);
-			callback(data);
-		});
+		this.push([product]);
 	}
 };

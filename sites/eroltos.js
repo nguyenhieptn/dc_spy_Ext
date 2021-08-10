@@ -1,57 +1,29 @@
-let Eroltos = class {
+let Eroltos = class extends Initial{
     constructor() {
+        super();
         this.domain = location.origin;
         this.href = location.href;
+        this.build();
         this.init();
     }
 
     init() {
         if (document.querySelector('.exp-template') === null) {
-            let template = document.createElement("div");
-            template.classList.add("exp-template");
-            let input = document.createElement("input");
-            input.name = "campaign_id";
-            input.placeholder = "Campaign ID";
-            input.classList.add("exp-input");
-            template.appendChild(input);
-            let button = document.createElement("button");
-            button.classList.add("exp-btn");
-            button.innerText = "Push Data";
-            template.appendChild(button);
-            document.body.appendChild(template);
+            let button = document.querySelector('button.exp-btn-push');
             button.addEventListener("click", (e) => {
                 e.preventDefault();
                 button.classList.add("is-loading");
                 if (document.querySelector("#description_panel")) {
                     console.log('dvh');
-                    this.getProduct((data) => {
-                        button.classList.remove("is-loading");
-                        if (data.status === "succeed") {
-                            expToast("success", "Push Successfully!");
-                        } else {
-                            expToast("error", data.msg);
-                        }
-                    })
+                    this.getProduct()
                 } else if (location.pathname.indexOf('products') || location.pathname.indexOf('collection')) {
-                    this.getProducts((data) => {
-                        button.classList.remove("is-loading");
-                        if (data.status === "succeed") {
-                            expToast("success", "Push Successfully!");
-                        } else {
-                            expToast("error", data.msg);
-                        }
-                    })
+                    this.getProducts()
                 }
             });
         }
     }
 
     getProduct(callback) {
-        let campaign_id = document.querySelector(".exp-template .exp-input[name=\"campaign_id\"]").value;
-        if (campaign_id.length === 0) {
-            expToast("error", "Please input campaign ID!");
-            return;
-        }
         let title = document.querySelector('meta[name="title"]').getAttribute('content');
         let banner = null;
         banner = document.querySelector('.product-display div div:last-child div').style.backgroundImage.slice(4, -1).replace(/"/g, "");
@@ -77,30 +49,10 @@ let Eroltos = class {
             market: "eroltos"
         };
         console.log(product);
-        chrome.runtime.sendMessage({
-            action: 'xhttp',
-            method: 'POST',
-            url: DataCenter + "/api/campaigns/products",
-            headers: {
-                token: token
-            },
-            data: JSON.stringify({
-                products: [product],
-                campaign_id: campaign_id
-            })
-        }, function (responseText) {
-            let data = JSON.parse(responseText);
-            callback(data);
-        });
+        this.push([product]);
     }
 
     getProducts(callback) {
-        let campaign_id = document.querySelector(".exp-template .exp-input[name=\"campaign_id\"]").value;
-        console.log(campaign_id);
-        if (campaign_id === "" || campaign_id === 0) {
-            expToast("error", "Please input campaign ID!");
-            return;
-        }
         let products = [];
         document.querySelectorAll("#content .container .w-full .relative .product-group-product").forEach((el) => {
                 let title = el.querySelector("a img ").getAttribute('alt');
@@ -128,20 +80,6 @@ let Eroltos = class {
             }
         );
         console.log(products);
-        chrome.runtime.sendMessage({
-            action: 'xhttp',
-            method: 'POST',
-            url: DataCenter + "/api/campaigns/products",
-            headers: {
-                token: token
-            },
-            data: JSON.stringify({
-                products: products,
-                campaign_id: campaign_id
-            })
-        }, function (responseText) {
-            let data = JSON.parse(responseText);
-            callback(data);
-        });
+        this.push(products);
     }
 };
