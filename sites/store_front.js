@@ -1,6 +1,8 @@
-let StoreFront = class {
+let StoreFront = class extends Initial{
     constructor() {
+        super();
         this.domain = location.origin;
+        this.build();
         this.init();
     }
 
@@ -8,54 +10,23 @@ let StoreFront = class {
     token = document.querySelector('#exp-embed').getAttribute('data-token');
 
     init() {
-        let template = document.createElement("div");
-        template.classList.add("exp-template");
-        let input = document.createElement("input");
-        input.name = "campaign_id";
-        input.placeholder = "Campaign ID";
-        input.classList.add("exp-input");
-        template.appendChild(input);
-        let button = document.createElement("button");
-        button.classList.add("exp-btn");
-        button.setAttribute('type', 'button');
-        button.innerText = "Push Data";
-        template.appendChild(button);
-        document.body.appendChild(template);
+        let button = document.querySelector('button.exp-btn-push')
         let that = this;
         button.addEventListener("click", (e) => {
             e.preventDefault();
             console.log(typeof window.globalCampaign !== "undefined");
             if (typeof window.globalCampaign !== "undefined") {
                 button.classList.add("is-loading");
-                that.getProduct((data) => {
-                    button.classList.remove("is-loading");
-                    if (data.status === "succeed") {
-                        expToast("success", "Push Successfully!");
-                    } else {
-                        expToast("error", data.msg);
-                    }
-                })
+                that.getProduct()
             } else if (typeof window.ecomm_pagetype !== "undefined" && (ecomm_pagetype === "search" || ecomm_pagetype === "category")) {
                 button.classList.add("is-loading");
-                that.getProducts((data) => {
-                    button.classList.remove("is-loading");
-                    if (data.status === "succeed") {
-                        expToast("success", "Push Successfully!");
-                    } else {
-                        expToast("error", data.msg);
-                    }
-                })
+                that.getProducts();
             } else
                 expToast("error", "Cant crawl this page!");
         })
     }
 
-    getProduct(cb) {
-        let campaign_id = document.querySelector(".exp-template .exp-input[name=\"campaign_id\"]").value;
-        if (campaign_id.length === 0) {
-            expToast("error", "Please input campaign ID!");
-            return;
-        }
+    getProduct() {
         let dataProduct = window.globalCampaign;
         let product = {
             type: "",
@@ -67,25 +38,20 @@ let StoreFront = class {
             store: location.host,
             market: "store_front",
         }
-        this.pushProducts(cb, campaign_id, [product]);
+        this.pushProducts( [product]);
     }
 
-    getProducts(callback) {
-        let campaign_id = document.querySelector(".exp-template .exp-input[name=\"campaign_id\"]").value;
-        if (campaign_id.length === 0) {
-            expToast("error", "Please input campaign ID!");
-            return;
-        }
+    getProducts() {
         if (window.ecomm_pagetype === "search") {
-            this.getProductsInSearchPage(callback, campaign_id);
+            this.getProductsInSearchPage();
         } else if (window.ecomm_pagetype === "category") {
-            this.getProductsInCollectionPage(callback, campaign_id);
+            this.getProductsInCollectionPage();
         } else {
             expToast("error", "cant push this page!!");
         }
     }
 
-    getProductsInSearchPage(callback, campaign_id) {
+    getProductsInSearchPage() {
         let url = window.location;
         let key = null;
         if (window.globalStore !== undefined) {
@@ -96,14 +62,14 @@ let StoreFront = class {
             let query = new URL(window.location.href);
             query = query.searchParams.get('q');
             let productUrl = url.origin + '/api/stores/' + key + '/campaigns/searchv2?query=' + query + '&sortBy=name&';
-            this.apiGetProducts(callback, campaign_id, productUrl, 40, 0, true);
+            this.apiGetProducts( productUrl, 40, 0, true);
         } else {
             expToast("error", "Cant push this page!");
             return;
         }
     }
 
-    getProductsInCollectionPage(callback, campaign_id) {
+    getProductsInCollectionPage() {
         let url = window.location;
         let key = null;
         if (window.globalStorefrontJson !== undefined) {
@@ -111,7 +77,7 @@ let StoreFront = class {
         }
         if (key) {
             let productUrl = url.origin + '/api/storefrontpage/' + key + '/campaigns?';
-            this.apiGetProducts(callback, campaign_id, productUrl,40, 0, false);
+            this.apiGetProducts( productUrl,40, 0, false);
         } else {
             expToast("error", "Cant push this page!");
             return;
@@ -119,7 +85,7 @@ let StoreFront = class {
 
     }
 
-    apiGetProducts(callback, campaign_id, productUrl, limit = 40, page = 0, search = false, products = []) {
+    apiGetProducts(productUrl, limit = 40, page = 0, search = false, products = []) {
         let that = this;
         let xhttp = new XMLHttpRequest();
         xhttp.onload = function () {
@@ -148,10 +114,10 @@ let StoreFront = class {
                     products = products.concat(temp_products);
                     if (res.more) {
                         setTimeout(function () {
-                            return that.apiGetProducts(callback, campaign_id, productUrl, limit, ++page, search, products);
+                            return that.apiGetProducts(productUrl, limit, ++page, search, products);
                         }, 3000);
                     } else {
-                        that.pushProducts(callback, campaign_id, products);
+                        that.pushProducts(products);
                     }
                 } else {
                     expToast("error", "Products not found!");
@@ -172,25 +138,26 @@ let StoreFront = class {
         xhttp.send();
     }
 
-    pushProducts(callback, campaign_id, products) {
+    pushProducts(products) {
         if (products.length === 0) {
             expToast("error", "No more product!");
             return;
         } else {
-            let xhttp = new XMLHttpRequest();
-            xhttp.onload = function () {
-                callback(JSON.parse(xhttp.responseText));
-            };
-            xhttp.onerror = function () {
-                callback(JSON.parse(xhttp.responseText));
-            };
-            xhttp.open("POST", '//' + this.host + "/api/campaigns/products", true);
-            xhttp.setRequestHeader("token", this.token);
-            xhttp.setRequestHeader('Content-Type', 'application/json;charset=UTF-8');
-            xhttp.send(JSON.stringify({
-                products: products,
-                campaign_id: campaign_id
-            }));
+            // let xhttp = new XMLHttpRequest();
+            // xhttp.onload = function () {
+            //     callback(JSON.parse(xhttp.responseText));
+            // };
+            // xhttp.onerror = function () {
+            //     callback(JSON.parse(xhttp.responseText));
+            // };
+            // xhttp.open("POST", '//' + this.host + "/api/campaigns/products", true);
+            // xhttp.setRequestHeader("token", this.token);
+            // xhttp.setRequestHeader('Content-Type', 'application/json;charset=UTF-8');
+            // xhttp.send(JSON.stringify({
+            //     products: products,
+            //     campaign_id: campaign_id
+            // }));
+            this.push(products);
         }
     }
 

@@ -1,79 +1,30 @@
-let TeenPublic = class {
+let TeenPublic = class extends Initial{
     constructor() {
+        super();
         this.domain = location.origin;
+        this.build();
         this.init();
     }
 
     init() {
-        let template = document.createElement("div");
-        template.classList.add("exp-template");
-        if (document.querySelector('.jsProductImgGlideCtrls')) {
-            let select = document.createElement("select");
-            select.classList.add('exp-input');
-            select.setAttribute('id', 'exp-banner-type');
-            select.style.width = '100%';
-            let optionArt = document.createElement("option");
-            optionArt.value = 'art';
-            optionArt.textContent = 'Art';
-            select.appendChild(optionArt);
-            let option = document.createElement("option");
-            option.value = 'front';
-            option.textContent = 'Front';
-            select.appendChild(option);
-            template.appendChild(select);
-        }
-        let inputTitle = document.createElement("input");
-        inputTitle.name = "title";
-        inputTitle.placeholder = "Custom title";
-        inputTitle.classList.add("exp-input");
-        inputTitle.setAttribute('id', 'exp-custom-title');
-        template.appendChild(inputTitle);
-        let input = document.createElement("input");
-        input.name = "campaign_id";
-        input.placeholder = "Campaign ID";
-        input.classList.add("exp-input");
-        template.appendChild(input);
-        let button = document.createElement("button");
-        button.classList.add("exp-btn");
-        button.innerText = "Push Data";
-        template.appendChild(button);
-        document.body.appendChild(template);
+        let button = document.querySelector('button.exp-btn-push')
         let that = this;
         button.addEventListener("click", (e) => {
             e.preventDefault();
             button.classList.add("is-loading");
             if (document.querySelector('section.m-search__designs')) {
                 console.log("product");
-                that.getProducts((data) => {
-                    button.classList.remove("is-loading");
-                    if (data.status === "succeed") {
-                        expToast("success", "Push Successfully!");
-                    } else {
-                        expToast("error", data.msg);
-                    }
-                })
+                that.getProducts()
             } else if (document.querySelector('.m-design__content')) {
-                that.getProduct((data) => {
-                    button.classList.remove("is-loading");
-                    if (data.status === "succeed") {
-                        expToast("success", "Push Successfully!");
-                    } else {
-                        expToast("error", data.msg);
-                    }
-                });
+                that.getProduct();
             } else {
                 expToast("error", "Cant push this page!");
             }
         });
     }
 
-    getProducts(callback) {
+    getProducts() {
         let products = [];
-        let campaign_id = document.querySelector(".exp-template .exp-input[name=\"campaign_id\"]").value;
-        if (campaign_id.length === 0) {
-            expToast("error", "Please input campaign ID!");
-            return;
-        }
         document.querySelectorAll(".jsDesignContainer").forEach((el) => {
             let elm = el.querySelector(".m-tiles__design a img");
             let banner = elm.getAttribute("src");
@@ -96,25 +47,10 @@ let TeenPublic = class {
             };
             products.push(product);
         });
-        // chrome.runtime.sendMessage({
-        //     action: 'xhttp',
-        //     method: 'POST',
-        //     url: DataCenter + "/api/campaigns/products",
-        //     headers: {
-        //         token:token
-        //     },
-        //     data:JSON.stringify({
-        //         products:products,
-        //         campaign_id:campaign_id
-        //     })
-        // }, function(responseText) {
-        //     let data = JSON.parse(responseText);
-        //     callback(data);
-        // });
         console.log(products);
     }
 
-    getProduct(callback) {
+    getProduct() {
         let title;
         if(document.querySelector("#exp-custom-title") && document.querySelector("#exp-custom-title").value !== "")
         {
@@ -139,7 +75,6 @@ let TeenPublic = class {
         else
             banner = images.shift();
         let type = "";
-        let campaign_id = document.querySelector(".exp-template .exp-input[name=\"campaign_id\"]").value;
         let product = {
             type: type,
             title: title,
@@ -150,20 +85,6 @@ let TeenPublic = class {
             market: "teepublic"
         };
         console.log(product);
-        chrome.runtime.sendMessage({
-            action: 'xhttp',
-            method: 'POST',
-            url: DataCenter + "/api/campaigns/products",
-            headers: {
-                token: token
-            },
-            data: JSON.stringify({
-                products: [product],
-                campaign_id: campaign_id
-            })
-        }, function (responseText) {
-            let data = JSON.parse(responseText);
-            callback(data);
-        });
+        this.push([product])
     }
 };

@@ -1,63 +1,35 @@
-let Woo = class {
+let Woo = class extends Initial{
     constructor() {
+        super();
         this.domain = location.origin;
         this.href = location.href;
+        this.build();
         this.init();
     }
 
     init() {
         console.log('woo.js');
         if (document.querySelector('.exp-template') === null) {
-            let template = document.createElement("div");
-            template.classList.add("exp-template");
-            let input = document.createElement("input");
-            input.name = "campaign_id";
-            input.placeholder = "Campaign ID";
-            input.classList.add("exp-input");
-            template.appendChild(input);
-            let button = document.createElement("button");
-            button.classList.add("exp-btn");
-            button.innerText = "Push Data";
-            template.appendChild(button);
-            document.body.appendChild(template);
+            let button = document.querySelector('button.exp-btn-push');
             button.addEventListener("click", (e) => {
                 e.preventDefault();
                 button.classList.add("is-loading");
                 if (document.querySelector("body.single .product")) {
                     console.log('dvh');
-                    this.getProduct((data) => {
-                        button.classList.remove("is-loading");
-                        if (data.status === "succeed") {
-                            expToast("success", "Push Successfully!");
-                        } else {
-                            expToast("error", data.msg);
-                        }
-                    })
+                    this.getProduct()
                 } else if (location.pathname.indexOf('products') !== -1 ||
                     location.pathname.indexOf('collection') !== -1 ||
                     location.pathname.indexOf('product-tag') !== -1 ||
                     document.querySelector('body.archive')
                 ) {
-                    this.getProducts((data) => {
-                        button.classList.remove("is-loading");
-                        if (data.status === "succeed") {
-                            expToast("success", "Push Successfully!");
-                        } else {
-                            expToast("error", data.msg);
-                        }
-                    })
+                    this.getProducts()
                 } else
                     expToast("error", 'Cant crawl this page!');
             });
         }
     }
 
-    getProduct(callback) {
-        let campaign_id = document.querySelector(".exp-template .exp-input[name=\"campaign_id\"]").value;
-        if (campaign_id.length === 0) {
-            expToast("error", "Please input campaign ID!");
-            return;
-        }
+    getProduct() {
         let title;
         if (document.querySelector(".single-product .product-title"))
             title = document.querySelector(".single-product .product-title").innerText;
@@ -66,7 +38,7 @@ let Woo = class {
         let banner = null;
         let _images = [];
         if (document.querySelector("img[data-large_image]") === null) {
-            if (location.origin == "https://wozoro.com") {
+            if (location.origin === "https://wozoro.com") {
                 banner = document.querySelector(".single-product-main-image img").getAttribute("src");
                 if (document.querySelectorAll(".slick-slider .slick-list .slick-slide:not(.slick-active)")) {
                     document.querySelectorAll(".slick-slider .slick-list .slick-slide:not(.slick-active)").forEach((e) => {
@@ -127,7 +99,6 @@ let Woo = class {
                 images.push(el.querySelector('img').getAttribute('data-large-file'));
             })
         }
-        console.log(images, banner);
         let product = {
             type: "",
             title: title,
@@ -139,30 +110,10 @@ let Woo = class {
             market: "woo"
         };
         console.log(product);
-        chrome.runtime.sendMessage({
-            action: 'xhttp',
-            method: 'POST',
-            url: DataCenter + "/api/campaigns/products",
-            headers: {
-                token: token
-            },
-            data: JSON.stringify({
-                products: [product],
-                campaign_id: campaign_id
-            })
-        }, function (responseText) {
-            let data = JSON.parse(responseText);
-            callback(data);
-        });
+        this.push([product]);
     }
 
-    getProducts(callback) {
-        let campaign_id = document.querySelector(".exp-template .exp-input[name=\"campaign_id\"]").value;
-        console.log(campaign_id);
-        if (campaign_id === "" || campaign_id === 0) {
-            expToast("error", "Please input campaign ID!");
-            return;
-        }
+    getProducts() {
         let products = [];
         if (location.pathname.indexOf("/search-results/") === 0 && document.querySelector('ul.snize-search-results-content')) {
             console.log('dvh');
@@ -258,20 +209,6 @@ let Woo = class {
             );
         }
         console.log(products);
-        chrome.runtime.sendMessage({
-            action: 'xhttp',
-            method: 'POST',
-            url: DataCenter + "/api/campaigns/products",
-            headers: {
-                token: token
-            },
-            data: JSON.stringify({
-                products: products,
-                campaign_id: campaign_id
-            })
-        }, function (responseText) {
-            let data = JSON.parse(responseText);
-            callback(data);
-        });
+        this.push(products);
     }
 };

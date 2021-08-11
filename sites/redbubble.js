@@ -65,7 +65,6 @@ let Redbubble = class extends Initial{
             images.push(el.getAttribute("src"));
         });
         let banner = images.shift();
-        let campaign_id = document.querySelector(".exp-template .exp-input[name=\"campaign_id\"]").value;
         let product = {
             type: "",
             title: title,

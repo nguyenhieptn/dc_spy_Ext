@@ -1,58 +1,30 @@
-let TheShirtList = class {
+let TheShirtList = class extends Initial{
     constructor() {
+        super();
         this.domain = location.origin;
         this.href = location.href;
+        this.build();
         this.init();
     }
 
     init() {
         if (document.querySelector('.exp-template') === null) {
-            let template = document.createElement("div");
-            template.classList.add("exp-template");
-            let input = document.createElement("input");
-            input.name = "campaign_id";
-            input.placeholder = "Campaign ID";
-            input.classList.add("exp-input");
-            template.appendChild(input);
-            let button = document.createElement("button");
-            button.classList.add("exp-btn");
-            button.innerText = "Push Data";
-            template.appendChild(button);
-            document.body.appendChild(template);
+            let button = document.querySelector('button.exp-btn-push')
             button.addEventListener("click", (e) => {
                 e.preventDefault();
                 button.classList.add("is-loading");
                 if (document.querySelector("body.single")) {
                     console.log('dvh');
-                    this.getProduct((data) => {
-                        button.classList.remove("is-loading");
-                        if (data.status === "succeed") {
-                            expToast("success", "Push Successfully!");
-                        } else {
-                            expToast("error", data.msg);
-                        }
-                    })
+                    this.getProduct()
                 } else if (document.querySelector('div.elementor-location-archive')) {
-                    this.getProducts((data) => {
-                        button.classList.remove("is-loading");
-                        if (data.status === "succeed") {
-                            expToast("success", "Push Successfully!");
-                        } else {
-                            expToast("error", data.msg);
-                        }
-                    })
+                    this.getProducts()
                 } else
                     expToast("error", 'Cant crawl this page!');
             });
         }
     }
 
-    getProduct(callback) {
-        let campaign_id = document.querySelector(".exp-template .exp-input[name=\"campaign_id\"]").value;
-        if (campaign_id.length === 0) {
-            expToast("error", "Please input campaign ID!");
-            return;
-        }
+    getProduct() {
         let title = document.querySelector("h1.uael-heading a span").innerText;
         let images = [];
         document.querySelectorAll(".elementor-widget-theme-post-content img.size-full").forEach(function (v, k){
@@ -100,32 +72,11 @@ let TheShirtList = class {
             market: "woo"
         };
         console.log(product);
-        chrome.runtime.sendMessage({
-            action: 'xhttp',
-            method: 'POST',
-            url: DataCenter + "/api/campaigns/products",
-            headers: {
-                token: token
-            },
-            data: JSON.stringify({
-                products: [product],
-                campaign_id: campaign_id
-            })
-        }, function (responseText) {
-            let data = JSON.parse(responseText);
-            callback(data);
-        });
+        this.push([product]);
     }
 
-    getProducts(callback) {
-        let campaign_id = document.querySelector(".exp-template .exp-input[name=\"campaign_id\"]").value;
-        console.log(campaign_id);
-        if (campaign_id === "" || campaign_id === 0) {
-            expToast("error", "Please input campaign ID!");
-            return;
-        }
+    getProducts() {
         let products = [];
-        console.log('dvh');
         document.querySelectorAll("div.elementor-widget-container .elementor-posts article").forEach((el) => {
                 let title = el.querySelector(".elementor-post__title").innerText;
                 if (el.querySelector(".elementor-post__thumbnail img")) {
@@ -148,20 +99,6 @@ let TheShirtList = class {
             }
         );
         console.log(products);
-        chrome.runtime.sendMessage({
-            action: 'xhttp',
-            method: 'POST',
-            url: DataCenter + "/api/campaigns/products",
-            headers: {
-                token: token
-            },
-            data: JSON.stringify({
-                products: products,
-                campaign_id: campaign_id
-            })
-        }, function (responseText) {
-            let data = JSON.parse(responseText);
-            callback(data);
-        });
+        this.push(products);
     }
 };
