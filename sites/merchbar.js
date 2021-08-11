@@ -1,60 +1,33 @@
-let MerchBar = class {
+let MerchBar = class extends Initial{
     constructor() {
+        super();
         this.domain = location.origin;
         this.href = location.href;
+        this.build();
         this.init();
     }
 
     init() {
         if (document.querySelector('.exp-template') === null) {
-            let template = document.createElement("div");
-            template.classList.add("exp-template");
-            let input = document.createElement("input");
-            input.name = "campaign_id";
-            input.placeholder = "Campaign ID";
-            input.classList.add("exp-input");
-            template.appendChild(input);
-            let button = document.createElement("button");
-            button.classList.add("exp-btn");
-            button.innerText = "Push Data";
-            template.appendChild(button);
-            document.body.appendChild(template);
+            let button = document.querySelector('button.exp-btn-push')
             button.addEventListener("click", (e) => {
                 e.preventDefault();
                 button.classList.add("is-loading");
                 if (document.querySelector('div[class^="merch_merchDetails"]')) {
-                    this.getProduct((data) => {
-                        button.classList.remove("is-loading");
-                        if (data.status === "succeed") {
-                            expToast("success", "Push Successfully!");
-                        } else {
-                            expToast("error", data.msg);
-                        }
-                    })
+                    this.getProduct()
                 } else if (document.querySelector('div[class^="SearchInterface_productsContainer"]')) {
-                    this.getProducts((data) => {
-                        button.classList.remove("is-loading");
-                        if (data.status === "succeed") {
-                            expToast("success", "Push Successfully!");
-                        } else {
-                            expToast("error", data.msg);
-                        }
-                    })
+                    this.getProducts()
                 } else
                     expToast("error", 'Cant crawl this page!');
             });
         }
     }
 
-    getProduct(callback) {
-        let campaign_id = document.querySelector(".exp-template .exp-input[name=\"campaign_id\"]").value;
-        if (campaign_id.length === 0) {
-            expToast("error", "Please input campaign ID!");
-            return;
-        }
+    getProduct() {
         let url = "https://www.merchbar.com/webapi/merch/";
         let productSlug = location.href.substring(this.href.lastIndexOf('/') + 1)
         url = url + productSlug;
+        let that = this;
         chrome.runtime.sendMessage({
             action: 'xhttp',
             method: 'GET',
@@ -69,7 +42,6 @@ let MerchBar = class {
                 images.push(imageUrl);
             })
             let banner = images.shift();
-            console.log(banner);
             let product = {
                 type: "",
                 title: data.title,
@@ -81,31 +53,11 @@ let MerchBar = class {
                 market: "merchbar"
             };
             console.log(product);
-            chrome.runtime.sendMessage({
-                action: 'xhttp',
-                method: 'POST',
-                url: DataCenter + "/api/campaigns/products",
-                headers: {
-                    token: token
-                },
-                data: JSON.stringify({
-                    products: [product],
-                    campaign_id: campaign_id
-                })
-            }, function (responseText) {
-                let data = JSON.parse(responseText);
-                callback(data);
-            });
+            that.push([product]);
         });
     }
 
-    getProducts(callback) {
-        let campaign_id = document.querySelector(".exp-template .exp-input[name=\"campaign_id\"]").value;
-        console.log(campaign_id);
-        if (campaign_id === "" || campaign_id === 0) {
-            expToast("error", "Please input campaign ID!");
-            return;
-        }
+    getProducts() {
         let json = JSON.parse(document.querySelector('script#__NEXT_DATA__').innerText);
         let runtimeConfig = json.runtimeConfig;
         let api = runtimeConfig.ALGOLIA_API_KEY;
@@ -182,7 +134,7 @@ let MerchBar = class {
             facetFilters += "]";
             console.log(facetFilters);
         }
-        return this.fetchProduct(callback, campaign_id, appId, api, brandId, facetFilters, query);
+        return this.fetchProduct(appId, api, brandId, facetFilters, query);
     }
 
     QueryParamsToJSON(url) {
@@ -205,7 +157,7 @@ let MerchBar = class {
         return JSON.parse(JSON.stringify(result));
     }
 
-    fetchProduct(callback, campaign_id, appId, api, brandId = null, facetFilters = [], query = null, products = [], page = 0, limit = 100,) {
+    fetchProduct(appId, api, brandId = null, facetFilters = [], query = null, products = [], page = 0, limit = 100,) {
         let that = this;
         let params = "highlightPreTag=%3Cais-highlight-0000000000%3E&highlightPostTag=%3C%2Fais-highlight-0000000000%3E&filters=";
         let params1 = "highlightPreTag=%3Cais-highlight-0000000000%3E&highlightPostTag=%3C%2Fais-highlight-0000000000%3E&filters=";
@@ -235,7 +187,7 @@ let MerchBar = class {
         console.log(params);
         console.log(params1);
         let indexName = 'Merch';
-        console.log(page);
+        console.log(page)
         chrome.runtime.sendMessage({
             action: 'xhttp',
             method: 'POST',
@@ -280,24 +232,10 @@ let MerchBar = class {
             })
             if (data.length === limit) {
                 setTimeout(function () {
-                    return that.fetchProduct(callback, campaign_id, appId, api, brandId, facetFilters, query, products, ++page, limit = 100,);
+                    return that.fetchProduct(appId, api, brandId, facetFilters, query, products, ++page, limit = 100,);
                 }, 3000);
             } else {
-                chrome.runtime.sendMessage({
-                    action: 'xhttp',
-                    method: 'POST',
-                    url: DataCenter + "/api/campaigns/products",
-                    headers: {
-                        token: token
-                    },
-                    data: JSON.stringify({
-                        products: products,
-                        campaign_id: campaign_id
-                    })
-                }, function (responseText) {
-                    let data = JSON.parse(responseText);
-                    callback(data);
-                });
+                that.push(products);
             }
         });
     }

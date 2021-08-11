@@ -1,6 +1,6 @@
 {
   "name": "Data Center Spy",
-  "version": "2.1.1.1",
+  "version": "2.1.1.2",
   "description": "A tool help users get item from some markets then push to Data Center",
   "permissions": [
     "activeTab",
@@ -85,6 +85,7 @@
         "sites/ubuy.js",
         "sites/rdynolabs.js",
         "sites/mumzworld.js",
+        "sites/fanatics.js",
         "js/content_scripts.js"
       ],
       "css" : ["css/content-scripts.css"]

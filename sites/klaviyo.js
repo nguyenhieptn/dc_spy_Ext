@@ -1,6 +1,8 @@
-let Klaviyo = class {
+let Klaviyo = class extends Initial{
     constructor() {
+        super();
         this.domain = location.origin;
+        this.build();
         this.init();
     }
 
@@ -8,53 +10,22 @@ let Klaviyo = class {
     token = document.querySelector('#exp-embed').getAttribute('data-token');
 
     init() {
-        let template = document.createElement("div");
-        template.classList.add("exp-template");
-        let input = document.createElement("input");
-        input.name = "campaign_id";
-        input.placeholder = "Campaign ID";
-        input.classList.add("exp-input");
-        template.appendChild(input);
-        let button = document.createElement("button");
-        button.classList.add("exp-btn");
-        button.innerText = "Push Data";
-        template.appendChild(button);
-        document.body.appendChild(template);
+        let button = document.querySelector('button.exp-btn-push')
         let that = this;
         button.addEventListener("click", (e) => {
             e.preventDefault();
             button.classList.add("is-loading");
             if (document.getElementById('search') || (document.getElementById('collection'))) {
-                that.getProducts((data) => {
-                    button.classList.remove("is-loading");
-                    if (data.status === "succeed") {
-                        expToast("success", "Push Successfully!");
-                    } else {
-                        expToast("error", data.msg);
-                    }
-                })
+                that.getProducts()
             } else if (document.getElementById('product') || document.querySelector('div.product-template')) {
-                that.getProduct((data) => {
-                    button.classList.remove("is-loading");
-                    console.log(data);
-                    if (data.status === "succeed") {
-                        expToast("success", "Push Successfully!");
-                    } else {
-                        expToast("error", data.msg);
-                    }
-                })
+                that.getProduct()
             } else {
                 expToast("error", "cant push this page!!");
             }
         })
     }
 
-    getProduct(callback) {
-        let campaign_id = document.querySelector(".exp-template .exp-input[name=\"campaign_id\"]").value;
-        if (campaign_id.length === 0) {
-            expToast("error", "Please input campaign ID!");
-            return;
-        }
+    getProduct() {
         if (window.hasOwnProperty('sb_product')) {
             let productId = window.sb_product.id;
             let productUrl = window.location.origin + '/api/catalog/products_v2.json?ids=' + productId;
@@ -82,7 +53,7 @@ let Klaviyo = class {
                             market: "shopbase",
                         }
                         console.log(product);
-                        that.pushProducts(callback, campaign_id, [product]);
+                        that.pushProducts([product]);
                     } else {
                         expToast("error", "Product not found!");
                     }
@@ -102,22 +73,22 @@ let Klaviyo = class {
         }
     }
 
-    getProducts(callback) {
+    getProducts() {
         let campaign_id = document.querySelector(".exp-template .exp-input[name=\"campaign_id\"]").value;
         if (campaign_id.length === 0) {
             expToast("error", "Please input campaign ID!");
             return;
         }
         if (document.getElementById('search')) {
-            this.getProductsInSearchPage(callback, campaign_id);
+            this.getProductsInSearchPage();
         } else if (document.getElementById('collection')) {
-            this.getProductsInCollectionPage(callback, campaign_id);
+            this.getProductsInCollectionPage();
         } else {
             expToast("error", "cant push this page!!");
         }
     }
 
-    getProductsInCollectionPage(callback, campaign_id) {
+    getProductsInCollectionPage() {
         let url = window.location;
         let collection_id = null;
         if (window.__INITIAL_STATE__.collection.collection.id !== undefined) {
@@ -125,16 +96,16 @@ let Klaviyo = class {
         }
         if (collection_id) {
             let productUrl = url.origin + '/api/catalog/products_v2.json' + '?collection_ids=' + collection_id + '&';
-            this.apiGetProducts(callback, campaign_id, productUrl);
+            this.apiGetProducts( productUrl);
         } else {
             let productUrl = url.origin + '/api/catalog/products_v2.json?';
-            this.apiGetProducts(callback, campaign_id, productUrl);
+            this.apiGetProducts(productUrl);
             // expToast("error", "Cant push this page!");
             return;
         }
     }
 
-    getProductsInSearchPage(callback, campaign_id) {
+    getProductsInSearchPage() {
         let url = window.location;
         let search, productUrl;
         if (typeof url.search != "undefined" && typeof url.search !== undefined && url.search !== "") {
@@ -146,10 +117,10 @@ let Klaviyo = class {
             expToast("error", "Cant push this page!");
             return;
         }
-        this.apiGetProducts(callback, campaign_id, productUrl);
+        this.apiGetProducts(productUrl);
     }
 
-    apiGetProducts(callback, campaign_id, productUrl, limit = 50, page = 1, products = []) {
+    apiGetProducts( productUrl, limit = 50, page = 1, products = []) {
         let that = this;
         let xhttp = new XMLHttpRequest();
         xhttp.onload = function () {
@@ -184,13 +155,13 @@ let Klaviyo = class {
                     products = products.concat(temp_products);
                     if (resProducts.length === limit) {
                         setTimeout(function () {
-                            return that.apiGetProducts(callback, campaign_id, productUrl, limit, ++page, products);
+                            return that.apiGetProducts(productUrl, limit, ++page, products);
                         }, 5000);
                     } else
-                        that.pushProducts(callback, campaign_id, products);
+                        that.pushProducts(products);
                 } else {
                     if (products.length > 0) {
-                        that.pushProducts(callback, campaign_id, products);
+                        that.pushProducts(products);
                     } else
                         expToast("error", "Products not found!");
                 }
@@ -206,7 +177,7 @@ let Klaviyo = class {
         xhttp.send();
     }
 
-    pushProducts(callback, campaign_id, products) {
+    pushProducts(products) {
         if (products.length === 0) {
             expToast("error", "No more product!");
             return;

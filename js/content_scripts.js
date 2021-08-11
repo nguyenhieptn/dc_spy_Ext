@@ -116,8 +116,9 @@ document.addEventListener('readystatechange', function () {
                 new Rdynolabs();
             }else if (location.host === "www.mumzworld.com") {
                 new Mumzworld();
+            }else if (location.host === "www.fanatics.com") {
+                new Fanatics();
             }
-
 
 
             function injectScript(file, node) {
