@@ -118,6 +118,10 @@ document.addEventListener('readystatechange', function () {
                 new Mumzworld();
             }else if (location.host === "www.fanatics.com") {
                 new Fanatics();
+            }else if (location.host === "www.pngitem.com") {
+                new Pngitem();
+            }else if (location.host === "www.carstickers.com") {
+                new Carstickers();
             }
 
 

@@ -61,7 +61,7 @@ let Rdynolabs = class extends Initial{
 		this.push([product]);
 	}
 
-	getProducts(callback) {
+	getProducts() {
 		let products = [];
 		document.querySelectorAll("#Collection .producttile-list .product-item").forEach((el) => {
 				let title = el.querySelector(".product-item-link span").textContent;
