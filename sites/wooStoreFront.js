@@ -1,4 +1,4 @@
-let WooStoreFront = class extends Initial{
+let WooStoreFront = class extends Initial {
     constructor() {
         super();
         this.domain = location.origin;
@@ -9,7 +9,7 @@ let WooStoreFront = class extends Initial{
 
     init() {
         console.log('wooStoreFront.js');
-        if (document.querySelector('.exp-template') === null) {
+        if (document.querySelector('.exp-template') !== null) {
             let button = document.querySelector('button.exp-btn-push');
             button.addEventListener("click", (e) => {
                 e.preventDefault();
@@ -24,7 +24,12 @@ let WooStoreFront = class extends Initial{
     }
 
     getProduct() {
-        let title = document.querySelector("body.single-product .product_title").innerText;
+        let title;
+        if (document.querySelector("body.single-product .product_title")) {
+            title = document.querySelector("body.single-product .product_title").innerText;
+        } else if (document.querySelector("h3.eltdf-single-product-title")) {
+            title = document.querySelector("h3.eltdf-single-product-title").innerText;
+        }
         let banner = null;
         let images = [];
         document.querySelectorAll("body.single-product .images ol.flex-control-thumbs li").forEach((el) => {
@@ -42,7 +47,7 @@ let WooStoreFront = class extends Initial{
                 banner = banner.getAttribute('data-large_image');
             } else if (banner && banner.hasAttribute('data-large-file') && banner.getAttribute('data-large-file') !== "") {
                 banner = banner.getAttribute("data-large-file")
-            } else if(banner) {
+            } else if (banner) {
                 banner = banner.getAttribute('src');
             }
         }
@@ -56,6 +61,12 @@ let WooStoreFront = class extends Initial{
             }
         }
 
+        if (!banner && document.querySelector('.woocommerce-product-gallery__image')) {
+            document.querySelectorAll(".woocommerce-product-gallery__wrapper img:not(.wp-post-image)").forEach(function (el) {
+                images.push(el.getAttribute('data-large_image'));
+            })
+            banner = images.shift();
+        }
         if (!isURL(banner)) {
             expToast("error", "Cant get image!");
             return;
@@ -64,8 +75,7 @@ let WooStoreFront = class extends Initial{
         pId = window.location.pathname;
         if (!pId) return;
         let tags = [];
-        if(document.querySelector('span.tagged_as'))
-        {
+        if (document.querySelector('span.tagged_as')) {
             document.querySelectorAll('span.tagged_as a').forEach(function (e) {
                 tags.push(e.textContent);
             })
@@ -87,7 +97,12 @@ let WooStoreFront = class extends Initial{
     getProducts() {
         let products = [];
         document.querySelectorAll("body.archive .products .product").forEach((el) => {
-                let title = el.querySelector("h2.woocommerce-loop-product__title").innerText;
+                let title;
+                if (el.querySelector("h2.woocommerce-loop-product__title")) {
+                    title = el.querySelector("h2.woocommerce-loop-product__title").innerText;
+                } else {
+                    title = el.querySelector("h6.eltdf-product-list-title").innerText;
+                }
                 if (el.querySelector(".attachment-woocommerce_thumbnail") !== null) {
                     let banner = el.querySelector("img.attachment-woocommerce_thumbnail").getAttribute("src");
                     if (banner.indexOf('-356-442')) {
@@ -95,8 +110,15 @@ let WooStoreFront = class extends Initial{
                     }
                     if (isURL(banner) && banner != null) {
                         let ext = banner.substr(banner.lastIndexOf("."));
-                        banner = banner.substr(0, banner.lastIndexOf("-"));
-                        banner = banner + ext;
+                        if (location.host !== "moodthology.com")
+                        {
+                            banner = banner.substr(0, banner.lastIndexOf("-"));
+                            banner = banner + ext;
+                        }
+                        else
+                        {
+                            banner = banner.replace("-616x616", "");
+                        }
                         let pId = el.querySelector("a.woocommerce-loop-product__link").getAttribute("href");
                         pId = new URL(pId);
                         pId = pId.pathname;

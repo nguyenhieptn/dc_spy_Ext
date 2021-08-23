@@ -9,7 +9,7 @@ let Woo = class extends Initial{
 
     init() {
         console.log('woo.js');
-        if (document.querySelector('.exp-template') === null) {
+        if (document.querySelector('.exp-template') !== null) {
             let button = document.querySelector('button.exp-btn-push');
             button.addEventListener("click", (e) => {
                 e.preventDefault();

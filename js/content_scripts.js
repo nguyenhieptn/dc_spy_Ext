@@ -122,8 +122,23 @@ document.addEventListener('readystatechange', function () {
                 new Pngitem();
             }else if (location.host === "www.carstickers.com") {
                 new Carstickers();
+            }else if (location.host === "getstickerpack.com") {
+                new Getstickerpack();
+            }else if (location.host === "peastores.com") {
+                new Peastores();
+            }else if (location.host === "chaest.com") {
+                new Chaest();
+            }else if (location.host === "www.mikeypet.com") {
+                new Mikeypet();
             }
-
+            else if (location.host === "cosandi.com") {
+                new Cosandi();
+            }
+            else if (location.host === "www.chyroll.com") {
+                new Chyroll();
+            }else if (location.host === "sealiontee.com") {
+                new Sealiontee();
+            }
 
             function injectScript(file, node) {
                 var th = document.getElementsByTagName(node)[0];

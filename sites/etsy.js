@@ -46,6 +46,10 @@ let Etsy = class extends Initial{
             }
             let banner = url.replace(/340x270/g,"fullxfull");
             let title = el.querySelector(".v2-listing-card .listing-link").getAttribute("title");
+            if(title === null)
+            {
+                title = el.querySelector("h3").textContent.trim();
+            }
             if(el.querySelector(".v2-listing-card__shop p")) {
                 el.querySelector(".v2-listing-card__shop p").innerText;
             }

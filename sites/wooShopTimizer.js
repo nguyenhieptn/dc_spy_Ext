@@ -7,7 +7,7 @@ let WooShopTimizer = class extends Initial{
     }
 
     init() {
-        if (document.querySelector('.exp-template') === null) {
+        if (document.querySelector('.exp-template') !== null) {
             let button = document.querySelector('button.exp-btn-push');
             button.addEventListener("click", (e) => {
                 e.preventDefault();

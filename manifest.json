@@ -1,6 +1,6 @@
 {
   "name": "Data Center Spy",
-  "version": "2.1.1.3",
+  "version": "2.1.1.6",
   "description": "A tool help users get item from some markets then push to Data Center",
   "permissions": [
     "activeTab",
@@ -88,6 +88,13 @@
         "sites/fanatics.js",
         "sites/carstickers.js",
         "sites/pngitem.js",
+        "sites/getstickerpack.js",
+        "sites/peastores.js",
+        "sites/chaest.js",
+        "sites/mikeypet.js",
+        "sites/cosandi.js",
+        "sites/chyroll.js",
+        "sites/sealiontee.js",
         "js/content_scripts.js"
       ],
       "css" : ["css/content-scripts.css"]
