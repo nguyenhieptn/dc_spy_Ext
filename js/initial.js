@@ -11,10 +11,10 @@ class Initial {
         let button = document.createElement("button");
         button.classList.add("exp-btn-push");
         button.classList.add("exp-btn");
+        button.setAttribute("type", "button");
         button.innerText = "Push Data";
         template.appendChild(button);
         document.body.appendChild(template);
-
 
         input.addEventListener('keyup', function (e) {
             if (e.key === 'Enter' ){
@@ -34,6 +34,12 @@ class Initial {
             expToast("error", "Please input campaign ID!");
             return;
         }
+
+        let key = CryptoJS.MD5(JSON.stringify({
+            products: products,
+            campaign_id: campaign_id
+        }));
+        key = key.toString();
         chrome.storage.sync.set({previousCampaign: campaign_id}, function() {
             return campaign_id;
         });
@@ -46,7 +52,8 @@ class Initial {
             },
             data: JSON.stringify({
                 products: products,
-                campaign_id: campaign_id
+                campaign_id: campaign_id,
+                key: key
             })
         }, function (responseText) {
             let data = JSON.parse(responseText);
@@ -59,7 +66,4 @@ class Initial {
         });
     }
 
-    toDataURL(url, callback) {
-        Dri
-    }
 }

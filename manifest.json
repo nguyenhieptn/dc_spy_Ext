@@ -95,12 +95,16 @@
         "sites/cosandi.js",
         "sites/chyroll.js",
         "sites/sealiontee.js",
-        "js/content_scripts.js"
+        "js/content_scripts.js",
+        "js/Uploader.js",
+        "js/api.js",
+        "js/crypto/core.js",
+        "js/crypto/md5.js"
       ],
       "css" : ["css/content-scripts.css"]
     }
   ],
-  "web_accessible_resources" : ["sites/klaviyo.js", "sites/store_front.js"],
+  "web_accessible_resources" : ["sites/klaviyo.js", "sites/store_front.js", "js/Uploader.js", "js/api.js"],
   "background": {
     "scripts": ["js/background.js"],
     "persistent": true

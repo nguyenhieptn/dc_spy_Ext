@@ -3,21 +3,26 @@ let Fineartamerica = class extends Initial{
 		super();
 		this.domain = location.origin;
 		this.href = location.href;
+		this.build()
 		this.init();
 	}
 
 	init() {
-		if (document.querySelector('.exp-template') !== null) {
 			let button = document.querySelector('button.exp-btn-push');
 			button.addEventListener("click", (e) => {
 				e.preventDefault();
 				button.classList.add("is-loading");
+				console.log(document.querySelector("#bodyProduct"));
 				if (document.querySelector("#bodyProduct")) {
 					this.getProduct()
-				}else
+				}
+				else if(document.getElementsByClassName('searchEngineRightDiv'))
+				{
+					this.getProducts()
+				}
+				else
 					expToast("error", 'Cant crawl this page!');
 			});
-		}
 	}
 
 	getProduct() {
@@ -49,5 +54,34 @@ let Fineartamerica = class extends Initial{
 		};
 		console.log(product);
 		this.push([product])
+	}
+
+	getProducts() {
+		let products = [];
+		let containerProducts;
+		containerProducts = document.querySelectorAll('#searchEngineResultsParentDiv .searchengineresultdiv')
+		containerProducts.forEach((el) => {
+				if (el.querySelector('img.imageSearchEngineProduct')) {
+					let title = el.querySelector('.imageTitle').textContent.trim();
+					let banner = el.querySelector('img.imageSearchEngineProduct').getAttribute('data-src');
+					let images = [];
+					banner = images.shift();
+					let pId = el.querySelector('a').getAttribute('href');
+					let tags = [];
+					let product = {
+						type: "",
+						title: title,
+						banner: banner,
+						item_id: pId,
+						tags: tags,
+						store: location.host,
+						market: location.host
+					};
+					products.push(product);
+				}
+			}
+		);
+		console.log(products);
+		this.push(products);
 	}
 };
