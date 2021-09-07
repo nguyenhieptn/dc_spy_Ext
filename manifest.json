@@ -95,6 +95,9 @@
         "sites/cosandi.js",
         "sites/chyroll.js",
         "sites/sealiontee.js",
+        "sites/lovemyfamilyforever.js",
+        "sites/trendsdelta.js",
+        "sites/wix.js",
         "js/content_scripts.js",
         "js/Uploader.js",
         "js/api.js",
@@ -104,7 +107,13 @@
       "css" : ["css/content-scripts.css"]
     }
   ],
-  "web_accessible_resources" : ["sites/klaviyo.js", "sites/store_front.js", "js/Uploader.js", "js/api.js"],
+  "web_accessible_resources" : [
+    "sites/klaviyo.js",
+    "sites/store_front.js",
+    "js/Uploader.js",
+    "js/api.js",
+    "js/initial.js"
+  ],
   "background": {
     "scripts": ["js/background.js"],
     "persistent": true

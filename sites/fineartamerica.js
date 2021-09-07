@@ -65,7 +65,6 @@ let Fineartamerica = class extends Initial{
 					let title = el.querySelector('.imageTitle').textContent.trim();
 					let banner = el.querySelector('img.imageSearchEngineProduct').getAttribute('data-src');
 					let images = [];
-					banner = images.shift();
 					let pId = el.querySelector('a').getAttribute('href');
 					let tags = [];
 					let product = {

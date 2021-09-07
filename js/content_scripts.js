@@ -138,11 +138,25 @@ document.addEventListener('readystatechange', function () {
                 new Chyroll();
             }else if (location.host === "sealiontee.com") {
                 new Sealiontee();
+            }else if (document.querySelector('#wix-first-paint')) {
+                new Wix();
+            }
+            else if (location.host === "trendsdelta.com") {
+                new Trendsdelta();
             }
 
             function injectScript(file, node) {
-                var th = document.getElementsByTagName(node)[0];
-                var s = document.createElement('script');
+                let th = document.getElementsByTagName(node)[0];
+                let initial =  document.createElement('script');
+                initial.setAttribute('type', 'text/javascript');
+                initial.setAttribute('src', chrome.extension.getURL('js/initial.js'));
+                initial.setAttribute('data-sv', DataCenter);
+                initial.setAttribute('data-token', token);
+                initial.setAttribute('data-host', host);
+                initial.setAttribute('id', 'exp-embed-initial');
+                th.appendChild(initial);
+
+                let s = document.createElement('script');
                 s.setAttribute('type', 'text/javascript');
                 s.setAttribute('src', file);
                 s.setAttribute('data-sv', DataCenter);

@@ -178,16 +178,22 @@ let Klaviyo = class extends Initial{
     }
 
     pushProducts(products) {
+        let that = this;
+        let campaign_id = document.querySelector(".exp-template .exp-input[name=\"campaign_id\"]").value;
+        if (campaign_id.length === 0) {
+            expToast("error", "Please input campaign ID!");
+            return;
+        }
         if (products.length === 0) {
             expToast("error", "No more product!");
             return;
         } else {
             let xhttp = new XMLHttpRequest();
             xhttp.onload = function () {
-                callback(JSON.parse(xhttp.responseText));
+                that.showMessage(JSON.parse(xhttp.responseText).msg, 'success');
             };
             xhttp.onerror = function () {
-                callback(JSON.parse(xhttp.responseText));
+                that.showMessage(JSON.parse(xhttp.responseText).msg, 'error');
             };
             xhttp.open("POST", '//' + this.host + "/api/campaigns/products", true);
             xhttp.setRequestHeader("token", this.token);
@@ -197,6 +203,11 @@ let Klaviyo = class extends Initial{
                 campaign_id: campaign_id
             }));
         }
+    }
+
+    showMessage(message, type)
+    {
+        expToast(type, message);
     }
 }
 new Klaviyo();

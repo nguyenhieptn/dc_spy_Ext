@@ -17,15 +17,16 @@ class Initial {
         document.body.appendChild(template);
 
         input.addEventListener('keyup', function (e) {
-            if (e.key === 'Enter' ){
+            if (e.key === 'Enter') {
                 button.click();
             }
         })
-        chrome.storage.sync.get(['previousCampaign'], function (data) {
-            console.log(data);
-            if (data !== 'undefined')
-                input.value = data.previousCampaign;
-        });
+        if (chrome.storage !== undefined)
+            chrome.storage.sync.get(['previousCampaign'], function (data) {
+                console.log(data);
+                if (data !== 'undefined')
+                    input.value = data.previousCampaign;
+            });
     }
 
     push(products) {
@@ -40,7 +41,7 @@ class Initial {
             campaign_id: campaign_id
         }));
         key = key.toString();
-        chrome.storage.sync.set({previousCampaign: campaign_id}, function() {
+        chrome.storage.sync.set({previousCampaign: campaign_id}, function () {
             return campaign_id;
         });
         chrome.runtime.sendMessage({
