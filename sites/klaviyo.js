@@ -190,10 +190,10 @@ let Klaviyo = class extends Initial{
         } else {
             let xhttp = new XMLHttpRequest();
             xhttp.onload = function () {
-                that.showMessage(JSON.parse(xhttp.responseText).msg, 'success');
+                that.showMessage(JSON.parse(xhttp.responseText), 'success');
             };
             xhttp.onerror = function () {
-                that.showMessage(JSON.parse(xhttp.responseText).msg, 'error');
+                that.showMessage(JSON.parse(xhttp.responseText), 'error');
             };
             xhttp.open("POST", '//' + this.host + "/api/campaigns/products", true);
             xhttp.setRequestHeader("token", this.token);
@@ -207,13 +207,12 @@ let Klaviyo = class extends Initial{
 
     showMessage(message, type)
     {
-        expToast(type, message);
+        expToast(type, message.msgg);
     }
 }
 new Klaviyo();
 
 function expToast(type, msg) {
-    console.log(type, msg);
     let x = document.getElementById("exp-snackbar");
     x.innerText = msg;
     x.className = "";

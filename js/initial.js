@@ -35,12 +35,12 @@ class Initial {
             expToast("error", "Please input campaign ID!");
             return;
         }
-
         let key = CryptoJS.MD5(JSON.stringify({
             products: products,
             campaign_id: campaign_id
         }));
         key = key.toString();
+        console.log(key);
         chrome.storage.sync.set({previousCampaign: campaign_id}, function () {
             return campaign_id;
         });
@@ -58,6 +58,10 @@ class Initial {
             })
         }, function (responseText) {
             let data = JSON.parse(responseText);
+            if(data === null)
+            {
+                expToast("error", "Please check your config! (missing token)");
+            }
             if (data.status === "succeed") {
                 expToast("success", "Push Successfully!");
             } else {
