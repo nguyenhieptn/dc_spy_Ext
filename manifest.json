@@ -1,6 +1,6 @@
 {
   "name": "Data Center Spy",
-  "version": "2.1.1.8",
+  "version": "2.1.1.9",
   "description": "A tool help users get item from some markets then push to Data Center",
   "permissions": [
     "activeTab",
@@ -98,6 +98,8 @@
         "sites/lovemyfamilyforever.js",
         "sites/trendsdelta.js",
         "sites/wix.js",
+        "sites/styledComponents.js",
+        "sites/gourmeturca.js",
         "js/content_scripts.js",
         "js/Uploader.js",
         "js/api.js",

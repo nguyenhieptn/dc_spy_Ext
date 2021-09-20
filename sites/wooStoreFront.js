@@ -112,8 +112,8 @@ let WooStoreFront = class extends Initial {
                         let ext = banner.substr(banner.lastIndexOf("."));
                         if (location.host !== "moodthology.com")
                         {
-                            banner = banner.substr(0, banner.lastIndexOf("-"));
-                            banner = banner + ext;
+                            banner = new URL(banner);
+                            banner = banner.origin+banner.pathname;
                         }
                         else
                         {

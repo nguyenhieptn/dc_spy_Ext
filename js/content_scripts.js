@@ -144,6 +144,14 @@ document.addEventListener('readystatechange', function () {
             else if (location.host === "trendsdelta.com") {
                 new Trendsdelta();
             }
+            else if(document.querySelector('#scroll-mark'))
+            {
+                new StyledComponents()
+            }
+            else if(location.host === 'www.gourmeturca.com')
+            {
+                new Gourmeturca()
+            }
 
             function injectScript(file, node) {
                 let th = document.getElementsByTagName(node)[0];

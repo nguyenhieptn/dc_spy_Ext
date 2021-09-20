@@ -13,6 +13,6 @@ chrome.storage.local.get(["user"],function(data){
   host = data.user.api_host;
   user = data.user;
   if(host.length === 0) return;
-  if(host.indexOf("https") !== -1) DataCenter = host;
+  if(host.indexOf("https") === 0 || host.indexOf("http") === 0) DataCenter = host;
   else DataCenter = "https://"+host;
 });

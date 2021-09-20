@@ -207,7 +207,7 @@ let Klaviyo = class extends Initial{
 
     showMessage(message, type)
     {
-        expToast(type, message.msgg);
+        expToast(type, message.msg);
     }
 }
 new Klaviyo();

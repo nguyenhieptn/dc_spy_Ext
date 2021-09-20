@@ -27,8 +27,7 @@ let TeenPublic = class extends Initial{
         let products = [];
         document.querySelectorAll(".jsDesignContainer").forEach((el) => {
             let elm = el.querySelector(".m-tiles__design a img");
-            let banner = elm.getAttribute("src");
-            if (!isURL(banner)) return;
+            let banner = elm.getAttribute("data-src");
             let title = elm.getAttribute("alt");
             let pId = el.querySelector('.m-tiles__preview').getAttribute("href");
             let tags = [];
@@ -47,7 +46,8 @@ let TeenPublic = class extends Initial{
             };
             products.push(product);
         });
-        console.log(products);
+    
+          this.push(products);
     }
 
     getProduct() {
