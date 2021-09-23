@@ -1,4 +1,4 @@
-let Ubuy = class extends Initial{
+let Vitelegacy = class extends Initial{
 	constructor() {
 		super();
 		this.domain = location.origin;
@@ -13,9 +13,9 @@ let Ubuy = class extends Initial{
 			button.addEventListener("click", (e) => {
 				e.preventDefault();
 				button.classList.add("is-loading");
-				if (document.querySelector('#product-view-full')) {
+				if (document.querySelector('.product-template') || document.querySelector('.product-page-template')) {
 					this.getProduct()
-				} else if (document.querySelector('.category-page')) {
+				} else if (location.pathname.indexOf('collections') === 1 || location.pathname.indexOf('search') === 1) {
 					this.getProducts();
 				} else
 					expToast("error", 'Cant crawl this page!');
@@ -24,10 +24,10 @@ let Ubuy = class extends Initial{
 	}
 
 	getProduct() {
-		let title = document.querySelector("h1.title").innerText;
+		let title = document.querySelector(".product__name").innerText;
 		let images = [];
-		document.querySelectorAll("div.slick-list .slick-track .thumbnail-image img").forEach(function (v, k) {
-			let imgUrl = v.getAttribute('src');
+		document.querySelectorAll(".media-gallery-carousel__thumbs img, .thumbnail-carousel img").forEach(function (v, k) {
+			let imgUrl = v.getAttribute('data-zoom');
 			images.push(imgUrl);
 		});
 		let banner = images.shift();
@@ -38,7 +38,6 @@ let Ubuy = class extends Initial{
 		let pId = null;
 		pId = location.pathname;
 		if (!pId) return;
-		let elm = document.querySelector("ul.elementor-post-info");
 		let tags = [];
 		let product = {
 			type: "",
@@ -48,7 +47,7 @@ let Ubuy = class extends Initial{
 			tags: tags,
 			images: images,
 			store: location.host,
-			market: "ubuy"
+			market: "vitelegacy"
 		};
 		console.log(product);
 		this.push([product]);
@@ -56,21 +55,26 @@ let Ubuy = class extends Initial{
 
 	getProducts() {
 		let products = [];
-		document.querySelectorAll("#usstore-products .product-list").forEach((el) => {
-				let title = el.querySelector(".product-image a.goos-tag-product").getAttribute('title');
-				if (el.querySelector(".product-image a.goos-tag-product")) {
-					let banner = el.querySelector(".product-image a.goos-tag-product img").getAttribute("data-src");
-					banner = banner.replace('US218', "");
-					let pId = new URL(el.querySelector(".product-image a.goos-tag-product").getAttribute('href'));
+		document.querySelectorAll(".collection-product-wrap").forEach((el) => {
+				let title = el.querySelector(".title").innerText.trim();
+				if (el.querySelector('.collection-image-container img')) {
+					let banner;
+          let images = [];
+          el.querySelectorAll('.collection-image-container img').forEach(function(val, key){
+            images.push(val.getAttribute('data-zoom'))
+          })
+					banner = images.shift();
+					let pId = el.querySelector("a").getAttribute('href');
 					let tags = [];
 					let product = {
 						type: "",
 						title: title,
 						banner: banner,
-						item_id: pId.pathname,
+            images: images,
+						item_id: pId,
 						tags: tags,
 						store: location.host,
-						market: "ubuy"
+						market: "vitelegacy"
 					};
 					products.push(product);
 				}

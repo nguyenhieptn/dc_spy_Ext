@@ -33,6 +33,7 @@ class Initial {
     let that = this;
     return fetch(url).then(response => response.blob())
       .then(async function(blob) {
+        console.log(blob);
         return await that.blobToBase64(blob);
       })
   }
@@ -88,6 +89,8 @@ class Initial {
       _product.push(product);
     }
     products = _product;
+    document.querySelector("button.exp-btn-push").classList.remove("is-loading");
+    expToast("success", "Schedule push to DC. Please dont close this tab !");
     chrome.runtime.sendMessage({
       action: 'xhttp',
       method: 'POST',
@@ -111,7 +114,6 @@ class Initial {
       } else {
         expToast("error", data.msg);
       }
-      document.querySelector("button.exp-btn-push").classList.remove("is-loading");
     });
   }
 }

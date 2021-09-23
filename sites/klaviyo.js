@@ -10,6 +10,7 @@ let Klaviyo = class extends Initial{
     token = document.querySelector('#exp-embed').getAttribute('data-token');
 
     init() {
+
         let button = document.querySelector('button.exp-btn-push')
         let that = this;
         button.addEventListener("click", (e) => {
@@ -177,7 +178,7 @@ let Klaviyo = class extends Initial{
         xhttp.send();
     }
 
-    pushProducts(products) {
+    async pushProducts(products) {
         let that = this;
         let campaign_id = document.querySelector(".exp-template .exp-input[name=\"campaign_id\"]").value;
         if (campaign_id.length === 0) {
@@ -188,14 +189,31 @@ let Klaviyo = class extends Initial{
             expToast("error", "No more product!");
             return;
         } else {
+            let _product = [];
+            for (const product of products) {
+              const _udpated = await this.updateImages(product);
+              _product.push(product);
+            }
+            products = _product;
             let xhttp = new XMLHttpRequest();
             xhttp.onload = function () {
-                that.showMessage(JSON.parse(xhttp.responseText), 'success');
+              let response = JSON.parse(xhttp.responseText);
+              console.log(response);
+              if(response.status === "errored")
+              {
+                that.showMessage(response, 'error');
+              }
+              else
+              {
+                that.showMessage(response, 'success');
+              }
+                document.querySelector('.exp-btn-push').classList.remove('is-loading');
             };
             xhttp.onerror = function () {
                 that.showMessage(JSON.parse(xhttp.responseText), 'error');
+                document.querySelector('.exp-btn-push').classList.remove('is-loading');
             };
-            xhttp.open("POST", '//' + this.host + "/api/campaigns/products", true);
+            xhttp.open("POST", this.host + "/api/campaigns/products", true);
             xhttp.setRequestHeader("token", this.token);
             xhttp.setRequestHeader('Content-Type', 'application/json;charset=UTF-8');
             xhttp.send(JSON.stringify({
@@ -204,6 +222,45 @@ let Klaviyo = class extends Initial{
             }));
         }
     }
+
+    getBlob = async function(url) {
+      let that = this;
+      return fetch(url).then(response => response.blob())
+        .then(async function(blob) {
+          console.log(blob);
+          return await that.blobToBase64(blob);
+        })
+    }
+
+    blobToBase64 = blob => new Promise((resolve, reject) => {
+      const reader = new FileReader;
+      reader.onerror = reject;
+      reader.onload = () => {
+          resolve(reader.result);
+      };
+      reader.readAsDataURL(blob);
+  });
+
+    updateImages = async function(product) {
+      let banner = await this.getBlob(product.banner);
+      product.banner = banner;
+      if(product.images !== undefined && product.images.length > 0)
+      {
+        let _images = [];
+        let count = 0;
+        for(const image of product.images)
+        {
+          let img = await this.getBlob(image);
+          _images.push(img);
+          count++;
+          if (count == 5) {
+            break;
+          }
+        }
+        product.images = _images;
+      }
+    }
+
 
     showMessage(message, type)
     {

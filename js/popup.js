@@ -21,11 +21,15 @@ form.addEventListener("submit", function (e) {
   let token = tokenInp.value;
   let host = hostInp.value;
   if (token && host) {
-    if(DataCenter == 'https://datacenter.test')
+    if(DataCenter === 'https://datacenter.test')
       DataCenter = "https://" + host;
-      else {
-        DataCenter = host;
+    else {
+      DataCenter = host;
+      if(DataCenter.indexOf('https://') === -1)
+      {
+          DataCenter = "https://" + host;
       }
+    }
     chrome.runtime.sendMessage({
       method: 'GET',
       action: 'xhttp',

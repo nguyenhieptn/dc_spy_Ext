@@ -37,7 +37,6 @@ let Amazon = class extends Initial{
             tags.push(keyword);
             let store = "";
             let product = {
-                type: type,
                 title: title,
                 banner: banner,
                 item_id: pId,
@@ -83,7 +82,6 @@ let Amazon = class extends Initial{
         });
         let banner = images.shift();
         let product = {
-            type: type,
             title: title,
             banner: banner,
             images: images,

@@ -110,7 +110,7 @@ document.addEventListener('readystatechange', function () {
                 new Fineartamerica();
             }else if (location.host === "www.lorajewel.com") {
                 new Lorajewel();
-            }else if (location.host === "www.ubuy.com.pl") {
+            }else if (location.host.indexOf('www.ubuy') !== -1) {
                 new Ubuy();
             }else if (location.host === "www.rdynolabs.com") {
                 new Rdynolabs();
@@ -148,10 +148,11 @@ document.addEventListener('readystatechange', function () {
             {
                 new StyledComponents()
             }
-            else if(location.host === 'www.gourmeturca.com')
+            else if(document.querySelector('#vite-legacy-entry'))
             {
-                new Gourmeturca()
+                new Vitelegacy();
             }
+
 
             function injectScript(file, node) {
                 let th = document.getElementsByTagName(node)[0];

@@ -96,18 +96,19 @@ let WooStoreFront = class extends Initial {
 
     getProducts() {
         let products = [];
-        document.querySelectorAll("body.archive .products .product").forEach((el) => {
+        document.querySelectorAll("body.archive .products .product, body.archive ul.products li").forEach((el) => {
                 let title;
                 if (el.querySelector("h2.woocommerce-loop-product__title")) {
                     title = el.querySelector("h2.woocommerce-loop-product__title").innerText;
                 } else {
-                    title = el.querySelector("h6.eltdf-product-list-title").innerText;
+                    title = el.querySelector("img.attachment-woocommerce_thumbnail").getAttribute("alt").innerText;
                 }
                 if (el.querySelector(".attachment-woocommerce_thumbnail") !== null) {
                     let banner = el.querySelector("img.attachment-woocommerce_thumbnail").getAttribute("src");
                     if (banner.indexOf('-356-442')) {
                         banner = banner.replace('-356-442', '');
                     }
+                    console.log(banner);
                     if (isURL(banner) && banner != null) {
                         let ext = banner.substr(banner.lastIndexOf("."));
                         if (location.host !== "moodthology.com")
@@ -119,7 +120,14 @@ let WooStoreFront = class extends Initial {
                         {
                             banner = banner.replace("-616x616", "");
                         }
-                        let pId = el.querySelector("a.woocommerce-loop-product__link").getAttribute("href");
+                        let pId;
+                        if(el.querySelector("a.woocommerce-loop-product__link"))
+                        {
+                            pId = el.querySelector("a.woocommerce-loop-product__link").getAttribute("href");
+                        }
+                        else if(el.querySelector("a.product-image")) {
+                          pId = el.querySelector("a.product-image").getAttribute("href");
+                        }
                         pId = new URL(pId);
                         pId = pId.pathname;
                         let tags = [];
