@@ -152,6 +152,14 @@ document.addEventListener('readystatechange', function () {
             {
                 new Vitelegacy();
             }
+            else if(location.host === "merchgears.com")
+            {
+                new Trendsdelta();
+            }
+            else if(location.host === "www.cafepress.com")
+            {
+                new Cafepress();
+            }
 
 
             function injectScript(file, node) {

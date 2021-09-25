@@ -14,7 +14,7 @@ let Walmart = class extends Initial{
             button.classList.add("is-loading");
             if (window.location.pathname.indexOf('search') !== -1) {
                 that.getProducts()
-            } else if (document.querySelector('#product-overview')) {
+            } else if (document.querySelector('div[data-testid="add-to-cart-section"]')) {
                 that.getProduct();
             } else {
                 expToast("error", "Cant push this page!");
@@ -24,27 +24,21 @@ let Walmart = class extends Initial{
 
     getProducts() {
         let products = [];
-        document.querySelectorAll(".search-result-gridview-items li").forEach((el) => {
-            let elm = el.querySelector("div.orientation-square img");
-            if (elm === null) {
-                return;
-            }
-            let banner = elm.getAttribute("src");
-            // banner = banner.replace("307.jpg", "5000.jpg");
+        document.querySelectorAll(".pa0-xl").forEach((el) => {
+            let elm = el;
+            let banner = elm.querySelector('img[data-testid="productTileImage"]').getAttribute('src');
             let images = [];
             if (!isURL(banner)) {
                 return;
             } else {
                 banner = new URL(banner);
-                banner = banner.host + banner.pathname;
+                banner = banner.origin+banner.pathname;
             }
-            let title = elm.getAttribute("alt");
-            let pId = el.querySelector(".search-result-productimage").getAttribute('href');
+            let title = elm.querySelector('span.lh-title').innerText.trim();
+            let pId = el.querySelector("a").getAttribute('link-identifier');
             let tags = [];
             let store = "walmart";
-            let type = "";
             let product = {
-                type: type,
                 title: title,
                 banner: banner,
                 images: images,
@@ -55,51 +49,29 @@ let Walmart = class extends Initial{
             };
             products.push(product);
         });
-        chrome.runtime.sendMessage({
-            action: 'xhttp',
-            method: 'POST',
-            url: DataCenter + "/api/campaigns/products",
-            headers: {
-                token:token
-            },
-            data:JSON.stringify({
-                products:products,
-                campaign_id:campaign_id
-            })
-        }, function(responseText) {
-            let data = JSON.parse(responseText);
-            callback(data);
-        });
+        console.log(products);
+        this.push(products);
     }
 
     getProduct() {
-        let title = document.querySelector("#product-overview h1.prod-ProductTitle").innerText;
+        let title = document.querySelector('h1[itemprop="name"]').innerText;
         let store = "walmart";
-        let pId = location.pathname;
+        let pId = location.pathname.split('/');
+        pId = pId[pId.length-1];
         let images = [];
-        if (document.querySelectorAll(".ViewSelectorItem-image").length > 0)
-            document.querySelectorAll(".ViewSelectorItem-image").forEach(function (el) {
-                let image = el.getAttribute("src");
-                image = image.replace('max_dim=65', 'max_dim=1000');
+        if (document.querySelectorAll('div[data-testid="vertical-carousel-container"] > .tc').length > 0)
+            document.querySelectorAll('div[data-testid="vertical-carousel-container"] > .tc').forEach(function (el) {
+                let image = new URL(el.querySelector('img').getAttribute("src"));
+                image = image.origin+image.pathname;
                 images.push(image);
             });
-        else if(document.querySelectorAll(".prod-ProductImage .product-core img").length > 0){
-            document.querySelectorAll(".prod-ProductImage .product-core img").forEach(function (el) {
-                let image = el.getAttribute("src");
-                let url = new URL(el.src);
-                image = url.origin+url.pathname;
-                images.push(image);
-            });
-        }
         else {
             expToast("error", "Error crawl images!");
             return;
         }
         let banner = images.shift();
         let type = "";
-        let campaign_id = document.querySelector(".exp-template .exp-input[name=\"campaign_id\"]").value;
         let product = {
-            type: type,
             title: title,
             banner: banner,
             images: images,
@@ -107,6 +79,7 @@ let Walmart = class extends Initial{
             store: store,
             market: "walmart"
         };
+        console.log(product);
         this.push([product])
     }
 };

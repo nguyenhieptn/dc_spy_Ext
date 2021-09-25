@@ -101,6 +101,7 @@
         "sites/styledComponents.js",
         "sites/gourmeturca.js",
         "sites/vitelegacy.js",
+        "sites/cafepress.js",
         "js/content_scripts.js",
         "js/Uploader.js",
         "js/api.js",
