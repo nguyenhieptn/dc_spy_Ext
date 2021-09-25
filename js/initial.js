@@ -67,7 +67,7 @@ class Initial {
     }
   }
 
-  push = async function(products) {
+  push = async function(products, end = true) {
     let campaign_id = document.querySelector(".exp-template .exp-input[name=\"campaign_id\"]").value;
     if (campaign_id.length === 0) {
       expToast("error", "Please input campaign ID!");
@@ -89,8 +89,11 @@ class Initial {
       _product.push(product);
     }
     products = _product;
-    document.querySelector("button.exp-btn-push").classList.remove("is-loading");
-    expToast("success", "Schedule push to DC. Please dont close this tab !");
+    if(end)
+    {
+      document.querySelector("button.exp-btn-push").classList.remove("is-loading");
+      expToast("success", "Schedule push to DC. Please dont close this tab !");
+    }
     chrome.runtime.sendMessage({
       action: 'xhttp',
       method: 'POST',

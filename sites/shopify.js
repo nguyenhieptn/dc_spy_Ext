@@ -116,7 +116,6 @@ let Shopify = class extends Initial{
 
         ajaxLoadProduct(nUrl, page = 1, limit = 50, products = []) {
             let that = this;
-            console.log(nUrl + "?page=" + page + "&limit=" + limit);
             chrome.runtime.sendMessage({
                 action: 'xhttp',
                 method: 'GET',
@@ -150,9 +149,9 @@ let Shopify = class extends Initial{
                     };
                     products.push(product);
                 });
-                if(products.length >= 300 && _products.length === limit)
+                if(products.length >= 50 && _products.length === limit)
                 {
-                    that.pushProduct(products);
+                    that.pushProduct(products, false);
                     setTimeout(function () {
                         return that.ajaxLoadProduct(nUrl, ++page, limit, [])
                     }, 1200);
@@ -162,14 +161,14 @@ let Shopify = class extends Initial{
                         return that.ajaxLoadProduct(nUrl, ++page, limit, products)
                     }, 1200);
                 } else {
-                    that.pushProduct(products)
+                    that.pushProduct(products);
                 }
 
             });
         }
 
-        pushProduct(products) {
-            this.push(products);
+        pushProduct(products, end = true) {
+            this.push(products, end);
         }
     }
 ;
