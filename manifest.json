@@ -103,6 +103,7 @@
         "sites/gourmeturca.js",
         "sites/vitelegacy.js",
         "sites/cafepress.js",
+        "sites/myspreadshop.js",
         "js/content_scripts.js",
         "js/Uploader.js",
         "js/api.js",

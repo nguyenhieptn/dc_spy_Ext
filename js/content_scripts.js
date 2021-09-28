@@ -160,6 +160,14 @@ document.addEventListener('readystatechange', function () {
             {
                 new Cafepress();
             }
+            else if(location.host === "www.cafepress.com")
+            {
+                new Cafepress();
+            }
+            else if(location.host.indexOf("myspreadshop.com") !== -1)
+            {
+                new Myspreadshop();
+            }
 
 
             function injectScript(file, node) {

@@ -159,7 +159,9 @@ let Klaviyo = class extends Initial{
                             return that.apiGetProducts(productUrl, limit, ++page, products);
                         }, 5000);
                     } else
+                    {
                         that.pushProducts(products);
+                    }
                 } else {
                     if (products.length > 0) {
                         that.pushProducts(products);
@@ -195,32 +197,41 @@ let Klaviyo = class extends Initial{
               _product.push(product);
             }
             products = _product;
-            let xhttp = new XMLHttpRequest();
-            xhttp.onload = function () {
-              let response = JSON.parse(xhttp.responseText);
-              console.log(response);
-              if(response.status === "errored")
-              {
-                that.showMessage(response, 'error');
-              }
-              else
-              {
-                that.showMessage(response, 'success');
-              }
+            while(products.length > 0)
+            {
+                let dataPush = products.splice(0, 20);
+                that.showMessage({msg:'Schedule push product! Dont close this tab'}, 'success');
                 document.querySelector('.exp-btn-push').classList.remove('is-loading');
-            };
-            xhttp.onerror = function () {
-                that.showMessage(JSON.parse(xhttp.responseText), 'error');
-                document.querySelector('.exp-btn-push').classList.remove('is-loading');
-            };
-            xhttp.open("POST", this.host + "/api/campaigns/products", true);
-            xhttp.setRequestHeader("token", this.token);
-            xhttp.setRequestHeader('Content-Type', 'application/json;charset=UTF-8');
-            xhttp.send(JSON.stringify({
+                setTimeout(function(){
+                    that.push(dataPush, campaign_id)
+                }, 800);
+            }
+
+        }
+    }
+
+    push = function(products, campaign_id){
+        console.log(products);
+        let url = this.host + "/api/campaigns/products";
+        let that = this;
+        if(url.indexOf('https://') === -1)
+        {
+            url = "https://"+url;
+        }
+        fetch(url, 
+        {
+            method: "POST",
+            body: {
                 products: products,
                 campaign_id: campaign_id
-            }));
+            },
+            headers: {
+                'Content-Type': 'application/json;charset=UTF-8',
+                'token': that.token,
+            },
         }
+        ).then(function(res){ return res.json(); })
+        .then(function(data){ that.showMessage(data, 'error')});
     }
 
     getBlob = async function(url) {
