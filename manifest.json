@@ -1,13 +1,14 @@
 {
   "name": "Data Center Spy",
-  "version": "2.1.1.9",
-  "description": "A tool help users get item from some markets then push to Data Center",
+  "version": "2.1.2.0",
+  "description": "A tool help users get images in  then push to my website",
   "permissions": [
-    "activeTab",
-    "cookies",
     "storage",
     "https://*/*",
-    "http://*/*"
+    "http://*/*",
+    "<all_urls>",
+    "webRequest",
+    "webRequestBlocking"
   ],
   "browser_action": {
     "default_title": "Data Center Spy",
