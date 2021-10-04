@@ -168,6 +168,14 @@ document.addEventListener('readystatechange', function () {
             {
                 new Myspreadshop();
             }
+            else if(location.host.indexOf("flinkmagnet.com") !== -1)
+            {
+                new Flinkmagnet();
+            }
+            else if(location.host.indexOf("emp-online.com") !== -1)
+            {
+                new Emponline();
+            }
 
 
             function injectScript(file, node) {

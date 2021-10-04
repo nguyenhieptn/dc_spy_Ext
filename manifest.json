@@ -1,6 +1,6 @@
 {
   "name": "Data Center Spy",
-  "version": "2.1.2.0",
+  "version": "2.1.2.2",
   "description": "A tool help users get images in  then push to my website",
   "permissions": [
     "storage",
@@ -104,6 +104,8 @@
         "sites/vitelegacy.js",
         "sites/cafepress.js",
         "sites/myspreadshop.js",
+        "sites/flinkmagnet.js",
+        "sites/emponline.js",
         "js/content_scripts.js",
         "js/Uploader.js",
         "js/api.js",
