@@ -30,7 +30,7 @@ let Spreadshirt = class extends Initial{
 		document.querySelectorAll("ul.pdp-thumbnails__list li").forEach(function (v, k) {
 			let imgUrl = v.querySelector('img').getAttribute('src');
 			imgUrl = imgUrl.replace('width=120,height=120', "width=1200,height=1200");
-			images.push("http:"+imgUrl);
+			images.push("https:"+imgUrl);
 		});
 		let banner = images.shift();
 		if (!isURL(banner)) {
@@ -70,7 +70,7 @@ let Spreadshirt = class extends Initial{
 			market: "spreadshirt"
 		};
 		console.log(product);
-		this.push(product);
+		this.push([product]);
 	}
 
 	getProducts() {
