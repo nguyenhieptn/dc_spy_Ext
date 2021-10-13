@@ -103,7 +103,7 @@ let Etsy = class extends Initial{
         }
         else{
             store = document.querySelector('#listing-page-cart a.wt-text-link-no-underline span').innerText;
-            title = document.querySelector('#listing-page-cart div[data-component="listing-page-title-component"] h1').innerText;
+            title = document.querySelector('#listing-page-cart h1').innerText;
         }
         let product = {
             type:"",

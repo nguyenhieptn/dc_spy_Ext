@@ -33,7 +33,6 @@ class Initial {
     let that = this;
     return fetch(url).then(response => response.blob())
       .then(async function(blob) {
-        console.log(blob);
         return await that.blobToBase64(blob);
       })
   }

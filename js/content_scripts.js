@@ -11,7 +11,9 @@ document.addEventListener('readystatechange', function () {
             if (
                 document.body.classList.contains("theme-flatsome")
                 || document.body.classList.contains("woo-variation-swatches-theme-flatsome-child")
-                || document.body.classList.contains("theme-oxygen-is-not-a-theme") || document.querySelector('#flatsome-main-css')) {
+                || document.body.classList.contains("theme-oxygen-is-not-a-theme") || document.querySelector('#flatsome-main-css')
+                || document.body.classList.contains("woocommerce-js")
+            ) {
                 new Woo();
             } else if (document.querySelector("body.wvs-theme-resources")) {
                 new WooThemeCanvas();

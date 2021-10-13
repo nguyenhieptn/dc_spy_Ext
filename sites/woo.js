@@ -20,7 +20,8 @@ let Woo = class extends Initial {
         } else if (location.pathname.indexOf('products') !== -1 ||
           location.pathname.indexOf('collection') !== -1 ||
           location.pathname.indexOf('product-tag') !== -1 ||
-          document.querySelector('body.archive')
+          document.querySelector('body.archive') ||
+            document.querySelector(".woocommerce-shop")
         ) {
           this.getProducts()
         } else
@@ -153,7 +154,7 @@ let Woo = class extends Initial {
         }
       });
     } else {
-      document.querySelectorAll("body.archive .products .product").forEach((el) => {
+      document.querySelectorAll("body .products .product").forEach((el) => {
         let title;
         if (el.querySelector(".product-title a"))
           title = el.querySelector(".product-title a").innerText;
