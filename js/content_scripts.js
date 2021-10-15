@@ -179,7 +179,6 @@ document.addEventListener('readystatechange', function () {
                 new Emponline();
             }
 
-
             function injectScript(file, node) {
                 let th = document.getElementsByTagName(node)[0];
                 let initial =  document.createElement('script');
@@ -190,7 +189,6 @@ document.addEventListener('readystatechange', function () {
                 initial.setAttribute('data-host', host);
                 initial.setAttribute('id', 'exp-embed-initial');
                 th.appendChild(initial);
-
                 let s = document.createElement('script');
                 s.setAttribute('type', 'text/javascript');
                 s.setAttribute('src', file);
