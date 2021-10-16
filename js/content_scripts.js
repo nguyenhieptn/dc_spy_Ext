@@ -152,7 +152,8 @@ document.addEventListener('readystatechange', function () {
             }
             else if(document.querySelector('#vite-legacy-entry'))
             {
-                new Vitelegacy();
+                injectScript(chrome.extension.getURL('sites/vitelegacy.js'), 'body');
+                // new Vitelegacy();
             }
             else if(location.host === "merchgears.com")
             {

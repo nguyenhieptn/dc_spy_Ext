@@ -101,7 +101,6 @@
         "sites/wix.js",
         "sites/styledComponents.js",
         "sites/gourmeturca.js",
-        "sites/vitelegacy.js",
         "sites/cafepress.js",
         "sites/myspreadshop.js",
         "sites/flinkmagnet.js",
@@ -117,6 +116,7 @@
   ],
   "web_accessible_resources" : [
     "sites/klaviyo.js",
+    "sites/vitelegacy.js",
     "sites/store_front.js",
     "js/Uploader.js",
     "js/api.js",
