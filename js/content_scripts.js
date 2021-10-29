@@ -179,6 +179,10 @@ document.addEventListener('readystatechange', function () {
             {
                 new Emponline();
             }
+            else if(location.host.indexOf("trendswanna.com") !== -1)
+            {
+                new Trendswanna();
+            }
 
             function injectScript(file, node) {
                 let th = document.getElementsByTagName(node)[0];

@@ -141,18 +141,13 @@ let Vitelegacy = class extends Initial {
                         })
                     });
                     products = products.concat(temp_products);
-                    console.log(page + ' get ' + temp_products.length);
-                    if (products.length >= limit && resProducts.length === limit) {
-                        that.pushProducts(products, false);
+                    if (resProducts.length === limit) {
                         setTimeout(function () {
-                            return that.apiGetProducts(productUrl, limit, ++page, [])
-                        }, 1000);
-                    } else if (resProducts.length === limit) {
-                        setTimeout(function () {
-                            return that.apiGetProducts(productUrl, limit, ++page, products)
-                        }, 1200);
-                    } else {
-                        that.pushProducts(products, true);
+                            return that.apiGetProducts(productUrl, limit, ++page, products);
+                        }, 5000);
+                    } else
+                    {
+                        that.pushProducts(products);
                     }
 
                 } else {
@@ -185,8 +180,9 @@ let Vitelegacy = class extends Initial {
             }
             products = _product;
             while (products.length > 0) {
-                let dataPush = products.splice(0, 25);
+                let dataPush = products.splice(0, 5);
                 setTimeout(function () {
+                    console.log('push '+dataPush.length);
                     that.push(dataPush, end)
                 }, 500);
             }
