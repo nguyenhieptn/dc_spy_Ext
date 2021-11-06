@@ -29,19 +29,21 @@ let Vitelegacy = class extends Initial {
         let pathNameArr = location.pathname.split('/');
         let productId = pathNameArr[pathNameArr.length - 1];
         let productUrl = window.location.origin + '/api/catalog/next/product/' + productId + '.json';
+        console.log(productUrl);
         let xhttp = new XMLHttpRequest();
         let that = this;
         xhttp.onload = function () {
             let res = JSON.parse(xhttp.responseText);
-            console.log(res);
             if (res.hasOwnProperty('result')) {
                 let _product = res.result;
                 let images = []
-                if (_product.images.length > 1)
+                if (_product.images.length > 0)
                     _product.images.forEach(function (value, key) {
+                        console.log(value);
                         images.push(value.src)
                     });
                 let banner = images.shift();
+                console.log(banner);
                 let product = {
                     type: "",
                     title: _product.title,

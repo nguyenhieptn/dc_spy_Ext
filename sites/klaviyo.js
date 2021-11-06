@@ -138,7 +138,7 @@ let Klaviyo = class extends Initial{
                             return;
                         let banner = v.images[0].src;
                         let images = [];
-                        if (v.images.length > 1)
+                        if (v.images.length > 0)
                             v.images.forEach(function (value, key) {
                                 images.push(value.src)
                             });

@@ -31,8 +31,13 @@ let Fineartamerica = class extends Initial{
 		document.querySelectorAll("#additionalImageContainerDiv .additionalImageImageDiv").forEach(function (v, k) {
 			let imgUrl = v.querySelector('img').getAttribute('data-url-large');
 			images.push(imgUrl);
+			console.log(imgUrl);
 		});
 		let banner = images.shift();
+		if (!isURL(banner)) {
+			banner = document.querySelector('#productPreviewImage').getAttribute('src');
+			images = [];
+		}
 		if (!isURL(banner)) {
 			expToast("error", "Cant get image!");
 			return;
@@ -62,8 +67,17 @@ let Fineartamerica = class extends Initial{
 		containerProducts = document.querySelectorAll('#searchEngineResultsParentDiv .searchengineresultdiv')
 		containerProducts.forEach((el) => {
 				if (el.querySelector('img.imageSearchEngineProduct')) {
-					let title = el.querySelector('.imageTitle').textContent.trim();
+					let title;
+					if(el.querySelector('.imageTitle') !== null)
+					{
+						title = el.querySelector('.imageTitle').textContent.trim();
+					}
+					else
+					{
+						title = el.querySelector('p').textContent.trim();
+					}
 					let banner = el.querySelector('img.imageSearchEngineProduct').getAttribute('data-src');
+					banner = banner.replace('/search/', '/default/');
 					let images = [];
 					let pId = el.querySelector('a').getAttribute('href');
 					let tags = [];

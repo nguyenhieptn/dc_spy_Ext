@@ -85,7 +85,7 @@ let Carstickers = class extends Initial {
         {
             document.querySelectorAll("ul.category-list li.category-list-item").forEach((el) => {
                     if (el.querySelector("a.image") === null) return false;
-                    let title = el.querySelector("a.image").getAttribute('alt');
+                    let title = el.querySelector("a.image img").getAttribute('alt');
                     if (el.querySelector("a.image")) {
                         let banner = el.querySelector("a.image img").getAttribute("src");
                         banner = banner.replace('300x300', '550x550');

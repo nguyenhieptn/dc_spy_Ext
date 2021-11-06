@@ -183,6 +183,14 @@ document.addEventListener('readystatechange', function () {
             {
                 new Trendswanna();
             }
+            else if(location.host.indexOf("bestsuts.com") !== -1)
+            {
+                new Bestsuts();
+            }
+            else if(location.host.indexOf("rightjake.com") !== -1)
+            {
+                new Rightjake();
+            }
 
             function injectScript(file, node) {
                 let th = document.getElementsByTagName(node)[0];
