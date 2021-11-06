@@ -15,7 +15,6 @@ let Woo = class extends Initial {
         e.preventDefault();
         button.classList.add("is-loading");
         if (document.querySelector("body.single .product")) {
-          console.log('dvh');
           this.getProduct()
         } else if (location.pathname.indexOf('products') !== -1 ||
           location.pathname.indexOf('collection') !== -1 ||
@@ -139,6 +138,7 @@ let Woo = class extends Initial {
           let banner = el.querySelector("img.snize-item-image").getAttribute("src");
           if (isURL(banner) && banner != null) {
             let pId = el.querySelector("a.snize-view-link").getAttribute("href");
+            banner = banner.replace('-300x300', "");
             let tags = [];
             let product = {
               type: "",
@@ -177,6 +177,7 @@ let Woo = class extends Initial {
             banner = banner.origin + banner.pathname;
             banner = banner.replace('-500x500', "");
             banner = banner.replace('-768x768', "");
+            banner = banner.replace('-300x300', "");
             console.log(banner);
             let pId;
             if (el.querySelector(".product-title a"))

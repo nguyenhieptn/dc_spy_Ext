@@ -53,7 +53,7 @@ let Rightjake = class extends Initial {
         containerProducts = document.querySelectorAll('.product-list ul li')
         containerProducts.forEach((el) => {
             if (el.querySelector('.img-wrapper img')) {
-                let title = el.querySelector('.img-wrapper img').getAttribute('alt').textContent;
+                let title = el.querySelector('.img-wrapper img').getAttribute('alt');
                 let banner = el.querySelector('.img-wrapper img').getAttribute('data-original');
                 let images = [];
                 let pId = el.querySelector('a').getAttribute('href');

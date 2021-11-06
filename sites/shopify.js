@@ -109,6 +109,7 @@ let Shopify = class extends Initial{
                     store: location.host,
                     market: "shopify"
                 };
+                console.log(product);
                 that.pushProduct([product]);
             });
         }
