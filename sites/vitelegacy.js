@@ -126,21 +126,28 @@ let Vitelegacy = class extends Initial {
                         if (typeof v.images == "undefined" || typeof v.images === undefined)
                             return;
                         let banner = v.images[0].src;
-                        let images = [];
-                        if (v.images.length > 1)
-                            v.images.forEach(function (value, key) {
-                                images.push(value.src)
-                            });
-                        temp_products.push({
-                            type: "",
-                            title: v.title,
-                            banner: banner,
-                            images: images,
-                            item_id: v.handle,
-                            tags: v.tags,
-                            store: location.host,
-                            market: "vitelegacy",
-                        })
+                        console.log(banner);
+                        if(banner.indexOf('.jfif') === -1)
+                        {
+                            let images = [];
+                            if (v.images.length > 1)
+                                v.images.forEach(function (value, key) {
+                                    if(value.src.indexOf('.jfif') === -1)
+                                    {
+                                        images.push(value.src)
+                                    }
+                                });
+                            temp_products.push({
+                                type: "",
+                                title: v.title,
+                                banner: banner,
+                                images: images,
+                                item_id: v.handle,
+                                tags: v.tags,
+                                store: location.host,
+                                market: "vitelegacy",
+                            })
+                        }
                     });
                     products = products.concat(temp_products);
                     if (resProducts.length === limit) {

@@ -191,6 +191,10 @@ document.addEventListener('readystatechange', function () {
             {
                 new Rightjake();
             }
+            else if(location.host.indexOf("printfuns.com") !== -1)
+            {
+                new Printfuns();
+            }
 
             function injectScript(file, node) {
                 let th = document.getElementsByTagName(node)[0];
