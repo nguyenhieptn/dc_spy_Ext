@@ -29,7 +29,8 @@ let GearBubble = class extends Initial{
         if (document.querySelector(".product-thumbnails a"))
         {
             document.querySelectorAll(".product-thumbnails a").forEach((el) => {
-                let _img = el.querySelector('img').getAttribute('src');
+                let _img = el.getAttribute('data-product-image');
+                console.log(_img);
                 images.push(_img);
             })
         }

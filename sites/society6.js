@@ -42,7 +42,7 @@ let Society6 = class extends Initial{
             market: location.host
         };
         console.log(product);
-        this.push(product);
+        this.push([product]);
     }
 
     getProducts() {

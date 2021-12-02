@@ -8,9 +8,18 @@ let Shopify = class extends Initial{
         }
 
         init() {
+            if (document.querySelector('.exp-template')){
+                let last = document.querySelectorAll('.exp-template').length;
+                document.querySelectorAll('.exp-template').forEach(function (el, key) {
+                    if(key !== last-1)
+                        el.remove()
+                });
+            }
             if (document.querySelector('.exp-template') !== null) {
                 let button = document.querySelector('button.exp-btn-push')
+                console.log(button);
                 button.addEventListener("click", (e) => {
+                    console.log('dvh')
                     e.preventDefault();
                     button.classList.add("is-loading");
                     if (this.href.indexOf("/products/") !== -1) {

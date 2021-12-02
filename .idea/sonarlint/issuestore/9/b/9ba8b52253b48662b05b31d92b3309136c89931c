@@ -1,0 +1,80 @@
+
+ujavascript:S3776"TRefactor this function to reduce its Cognitive Complexity from 90 to the 15 allowed.(·¨‹¯ÿÿÿÿÿ
+ejavascript:S1848"DEither remove this useless object instantiation of "Etsy" or use it.(ß““¾ûÿÿÿÿ
+ejavascript:S1848"IEither remove this useless object instantiation of "Redbubble" or use it.(Ó–ëË
+gjavascript:S1848"FEither remove this useless object instantiation of "Amazon" or use it.(Œ¹—¶üÿÿÿÿ
+ejavascript:S1848	"DEither remove this useless object instantiation of "Ebay" or use it.(™“Ñ€úÿÿÿÿ
+djavascript:S1848"CEither remove this useless object instantiation of "Woo" or use it.(Î›®¤ıÿÿÿÿ
+ojavascript:S1848"NEither remove this useless object instantiation of "WooThemeCanvas" or use it.(„õ¶éùÿÿÿÿ
+hjavascript:S1848"GEither remove this useless object instantiation of "Shopify" or use it.(ÆÜ¥ÿÿÿÿÿ
+cjavascript:S1848"HEither remove this useless object instantiation of "Puzzlehd" or use it.(¡ÑÍ
+djavascript:S1848"HEither remove this useless object instantiation of "Displate" or use it.(¤ê¯ì
+pjavascript:S1848"OEither remove this useless object instantiation of "Impazazzlewards" or use it.(óº­Òıÿÿÿÿ
+hjavascript:S1848"GEither remove this useless object instantiation of "Dzeetee" or use it.(ØïÌ±øÿÿÿÿ
+kjavascript:S1848!"JEither remove this useless object instantiation of "Viralstyle" or use it.(æ¥Ïàıÿÿÿÿ
+fjavascript:S1848%"JEither remove this useless object instantiation of "TeenPublic" or use it.(ïîí©
+gjavascript:S1848'"FEither remove this useless object instantiation of "Zazzle" or use it.(¸¼ï¶ùÿÿÿÿ
+bjavascript:S1848)"GEither remove this useless object instantiation of "Walmart" or use it.(ÕÆ®0
+ojavascript:S1848+"NEither remove this useless object instantiation of "WooShopTimizer" or use it.(³²Şşüÿÿÿÿ
+ejavascript:S1848-"IEither remove this useless object instantiation of "WooPangja" or use it.(ŠĞÏò
+ejavascript:S1848/"IEither remove this useless object instantiation of "ShirtWoot" or use it.(”èŸ
+hjavascript:S18481"LEither remove this useless object instantiation of "ExpressMyTee" or use it.(¹Ş¬ƒ
+jjavascript:S18483"IEither remove this useless object instantiation of "PayOnTeer" or use it.(÷Ù€Éøÿÿÿÿ
+hjavascript:S18485"GEither remove this useless object instantiation of "Eroltos" or use it.(Ê¿ÛÎøÿÿÿÿ
+kjavascript:S18487"JEither remove this useless object instantiation of "ShirtStore" or use it.(¸Ùë¨ùÿÿÿÿ
+jjavascript:S18489"IEither remove this useless object instantiation of "Snorgtees" or use it.(÷†¦âûÿÿÿÿ
+kjavascript:S1848;"JEither remove this useless object instantiation of "WooBbTheme" or use it.(¹Ö¿ƒşÿÿÿÿ
+djavascript:S1848="IEither remove this useless object instantiation of "Carousell" or use it.(Åˆİi
+djavascript:S1848?"HEither remove this useless object instantiation of "Poshmard" or use it.(úîØ
+ejavascript:S1848A"IEither remove this useless object instantiation of "Anime1688" or use it.(ë™€œ
+ejavascript:S1848C"DEither remove this useless object instantiation of "Wish" or use it.(€ş²Œùÿÿÿÿ
+fjavascript:S1848E"JEither remove this useless object instantiation of "ShopDisney" or use it.(¤‘ŞÔ
+djavascript:S1848G"HEither remove this useless object instantiation of "HotTopic" or use it.(ÃµÂâ
+ijavascript:S1848I"HEither remove this useless object instantiation of "Society6" or use it.(ƒâÇ‡üÿÿÿÿ
+pjavascript:S1848K"OEither remove this useless object instantiation of "Tisortfabrikasi" or use it.(¹Éœâúÿÿÿÿ
+njavascript:S1848M"MEither remove this useless object instantiation of "WooStoreFront" or use it.(ˆî­©úÿÿÿÿ
+kjavascript:S1848O"JEither remove this useless object instantiation of "GearBubble" or use it.(à¶„Êüÿÿÿÿ
+hjavascript:S1848Q"LEither remove this useless object instantiation of "TheShirtList" or use it.(â§Å·
+mjavascript:S1848S"LEither remove this useless object instantiation of "ForFanByFans" or use it.(ª’¸ùÿÿÿÿ
+djavascript:S1848U"HEither remove this useless object instantiation of "MerchBar" or use it.(ˆ†¸²
+fjavascript:S1848W"JEither remove this useless object instantiation of "NerdKungfu" or use it.(¬˜ú
+gjavascript:S1848Y"KEither remove this useless object instantiation of "EuroPosters" or use it.(ËÖâ£
+bjavascript:S1848["FEither remove this useless object instantiation of "Moosfy" or use it.(ìÄºï
+ejavascript:S1848]"IEither remove this useless object instantiation of "Eigengift" or use it.(œ”·Ù
+gjavascript:S1848_"KEither remove this useless object instantiation of "Ktecknonltd" or use it.(™’õÌ
+jjavascript:S1848a"IEither remove this useless object instantiation of "Wyierblog" or use it.(»¶ªĞşÿÿÿÿ
+fjavascript:S1848c"EEither remove this useless object instantiation of "Zavvi" or use it.(ø¸ÑÉşÿÿÿÿ
+ljavascript:S1848e"KEither remove this useless object instantiation of "Codeigniter" or use it.(ÚĞŞøÿÿÿÿ
+ojavascript:S1848g"NEither remove this useless object instantiation of "Teeshirtpalace" or use it.(µÓÌŒşÿÿÿÿ
+fjavascript:S1848i"JEither remove this useless object instantiation of "mhempearth" or use it.(´ˆàœ
+gjavascript:S1848k"KEither remove this useless object instantiation of "Spreadshirt" or use it.(¤Åå©
+jjavascript:S1848o"NEither remove this useless object instantiation of "Fineartamerica" or use it.(á²Áå
+jjavascript:S1848q"IEither remove this useless object instantiation of "Lorajewel" or use it.(µ¾‰–ıÿÿÿÿ
+ejavascript:S1848s"DEither remove this useless object instantiation of "Ubuy" or use it.(Êş÷›üÿÿÿÿ
+ejavascript:S1848u"IEither remove this useless object instantiation of "Rdynolabs" or use it.(çÙŞ”
+jjavascript:S1848w"IEither remove this useless object instantiation of "Mumzworld" or use it.(¿·ÁÇøÿÿÿÿ
+djavascript:S1848y"HEither remove this useless object instantiation of "Fanatics" or use it.(À—Çé
+cjavascript:S1848{"GEither remove this useless object instantiation of "Pngitem" or use it.(õˆø¬
+ljavascript:S1848}"KEither remove this useless object instantiation of "Carstickers" or use it.(ÀüêĞúÿÿÿÿ
+ojavascript:S1848"NEither remove this useless object instantiation of "Getstickerpack" or use it.(ä²¢öûÿÿÿÿ
+fjavascript:S1848"IEither remove this useless object instantiation of "Peastores" or use it.(Ôˆ¥ı
+cjavascript:S1848ƒ"FEither remove this useless object instantiation of "Chaest" or use it.(ÁÁåÍ
+ejavascript:S1848…"HEither remove this useless object instantiation of "Mikeypet" or use it.(¬¿ç³
+djavascript:S1848‡"GEither remove this useless object instantiation of "Cosandi" or use it.(Õ›Ÿï
+ijavascript:S1848‰"GEither remove this useless object instantiation of "Chyroll" or use it.(÷º–œÿÿÿÿÿ
+ljavascript:S1848‹"JEither remove this useless object instantiation of "Sealiontee" or use it.(ÚÈäØşÿÿÿÿ
+`javascript:S1848"CEither remove this useless object instantiation of "Wix" or use it.(µ™İ¶
+hjavascript:S1848"KEither remove this useless object instantiation of "Trendsdelta" or use it.(âä¿ç
+mjavascript:S1848‘"PEither remove this useless object instantiation of "StyledComponents" or use it.(…çì
+;javascript:S125”"Remove this commented out code.(í´Š”
+hjavascript:S1848–"KEither remove this useless object instantiation of "Trendsdelta" or use it.(âä¿ç
+kjavascript:S1848˜"IEither remove this useless object instantiation of "Cafepress" or use it.(ãÑ„–üÿÿÿÿ
+Ljavascript:S1862™"*This branch duplicates the one on line 151( „Âúÿÿÿÿ
+kjavascript:S1848š"IEither remove this useless object instantiation of "Cafepress" or use it.(ãÑ„–üÿÿÿÿ
+ijavascript:S1848œ"LEither remove this useless object instantiation of "Myspreadshop" or use it.(¢áƒ¥
+mjavascript:S1848"KEither remove this useless object instantiation of "Flinkmagnet" or use it.(ò×şÿÿÿÿ
+kjavascript:S1848 "IEither remove this useless object instantiation of "Emponline" or use it.(Š°¤¸ÿÿÿÿÿ
+mjavascript:S1848¢"KEither remove this useless object instantiation of "Trendswanna" or use it.(ŠÆŠóúÿÿÿÿ
+jjavascript:S1848¤"HEither remove this useless object instantiation of "Bestsuts" or use it.(‡Éµûÿÿÿÿ
+kjavascript:S1848¦"IEither remove this useless object instantiation of "Rightjake" or use it.(ÛËÅäúÿÿÿÿ
+kjavascript:S1848¨"IEither remove this useless object instantiation of "Printfuns" or use it.(¸éÿ›úÿÿÿÿ

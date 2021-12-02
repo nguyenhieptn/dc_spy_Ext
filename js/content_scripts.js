@@ -17,8 +17,7 @@ document.addEventListener('readystatechange', function () {
                 new Woo();
             } else if (document.querySelector("body.wvs-theme-resources")) {
                 new WooThemeCanvas();
-            }
-            else if (document.querySelector("#shopify-digital-wallet")) {
+            } else if (document.querySelector("#shopify-digital-wallet")) {
                 new Shopify();
             } else if (typeof window.sbsdk !== "undefined" || document.getElementById('sentry-cdn') != null) {
                 injectScript(chrome.extension.getURL('sites/klaviyo.js'), 'body');
@@ -74,7 +73,7 @@ document.addEventListener('readystatechange', function () {
                 new Society6();
             } else if (location.host === 'www.tisortfabrikasi.com') {
                 new Tisortfabrikasi();
-            } else if (document.querySelector('body.theme-storefront') || ((document.querySelector('body.archive') || document.querySelector('body.single-product')) &&  document.querySelector('body.woocommerce'))) {
+            } else if (document.querySelector('body.theme-storefront') || ((document.querySelector('body.archive') || document.querySelector('body.single-product')) && document.querySelector('body.woocommerce'))) {
                 new WooStoreFront();
             } else if (location.host === "www.gearbubble.com" || ['www.familysistershops.com'].indexOf(location.host) !== -1) {
                 new GearBubble();
@@ -102,103 +101,76 @@ document.addEventListener('readystatechange', function () {
                 new Codeigniter();
             } else if (location.host === "www.teeshirtpalace.com") {
                 new Teeshirtpalace();
-            }
-            else if (location.host === "www.mhempearth.com") {
+            } else if (location.host === "www.mhempearth.com") {
                 new mhempearth();
-            }
-            else if (location.host === "www.spreadshirt.com") {
+            } else if (location.host === "www.spreadshirt.com") {
                 new Spreadshirt();
-            }else if (location.host === "fineartamerica.com") {
+            } else if (location.host === "fineartamerica.com"
+                || document.querySelector('#searchEngineResultsParentDiv .searchengineresultdiv')
+                    || document.querySelector('#productPreviewDiv')) {
                 new Fineartamerica();
-            }else if (location.host === "www.lorajewel.com") {
+            } else if (location.host === "www.lorajewel.com") {
                 new Lorajewel();
-            }else if (location.host.indexOf('www.ubuy') !== -1) {
+            } else if (location.host.indexOf('www.ubuy') !== -1) {
                 new Ubuy();
-            }else if (location.host === "www.rdynolabs.com") {
+            } else if (location.host === "www.rdynolabs.com") {
                 new Rdynolabs();
-            }else if (location.host === "www.mumzworld.com") {
+            } else if (location.host === "www.mumzworld.com") {
                 new Mumzworld();
-            }else if (location.host === "www.fanatics.com") {
+            } else if (location.host === "www.fanatics.com") {
                 new Fanatics();
-            }else if (location.host === "www.pngitem.com") {
+            } else if (location.host === "www.pngitem.com") {
                 new Pngitem();
-            }else if (location.host === "www.carstickers.com") {
+            } else if (location.host === "www.carstickers.com") {
                 new Carstickers();
-            }else if (location.host === "getstickerpack.com") {
+            } else if (location.host === "getstickerpack.com") {
                 new Getstickerpack();
-            }else if (location.host === "peastores.com") {
+            } else if (location.host === "peastores.com") {
                 new Peastores();
-            }else if (location.host === "chaest.com") {
+            } else if (location.host === "chaest.com") {
                 new Chaest();
-            }else if (location.host === "www.mikeypet.com") {
+            } else if (location.host === "www.mikeypet.com") {
                 new Mikeypet();
-            }
-            else if (location.host === "cosandi.com") {
+            } else if (location.host === "cosandi.com") {
                 new Cosandi();
-            }
-            else if (location.host === "www.chyroll.com") {
+            } else if (location.host === "www.chyroll.com") {
                 new Chyroll();
-            }else if (location.host === "sealiontee.com") {
+            } else if (location.host === "sealiontee.com") {
                 new Sealiontee();
-            }else if (document.querySelector('#wix-first-paint')) {
+            } else if (document.querySelector('#wix-first-paint')) {
                 new Wix();
-            }
-            else if (location.host === "trendsdelta.com") {
+            } else if (location.host === "trendsdelta.com") {
                 new Trendsdelta();
-            }
-            else if(document.querySelector('#scroll-mark'))
-            {
+            } else if (document.querySelector('#scroll-mark')) {
                 new StyledComponents()
-            }
-            else if(document.querySelector('#vite-legacy-entry'))
-            {
+            } else if (document.querySelector('#vite-legacy-entry')) {
                 injectScript(chrome.extension.getURL('sites/vitelegacy.js'), 'body');
                 // new Vitelegacy();
-            }
-            else if(location.host === "merchgears.com")
-            {
+            } else if (location.host === "merchgears.com") {
                 new Trendsdelta();
-            }
-            else if(location.host === "www.cafepress.com")
-            {
+            } else if (location.host === "www.cafepress.com") {
                 new Cafepress();
-            }
-            else if(location.host === "www.cafepress.com")
-            {
+            } else if (location.host === "www.cafepress.com") {
                 new Cafepress();
-            }
-            else if(location.host.indexOf("myspreadshop.com") !== -1)
-            {
+            } else if (location.host.indexOf("myspreadshop.com") !== -1) {
                 new Myspreadshop();
-            }
-            else if(location.host.indexOf("flinkmagnet.com") !== -1)
-            {
+            } else if (location.host.indexOf("flinkmagnet.com") !== -1) {
                 new Flinkmagnet();
-            }
-            else if(location.host.indexOf("emp-online.com") !== -1)
-            {
+            } else if (location.host.indexOf("emp-online.com") !== -1) {
                 new Emponline();
-            }
-            else if(location.host.indexOf("trendswanna.com") !== -1)
-            {
+            } else if (location.host.indexOf("trendswanna.com") !== -1) {
                 new Trendswanna();
-            }
-            else if(location.host.indexOf("bestsuts.com") !== -1)
-            {
+            } else if (location.host.indexOf("bestsuts.com") !== -1) {
                 new Bestsuts();
-            }
-            else if(location.host.indexOf("rightjake.com") !== -1)
-            {
+            } else if (location.host.indexOf("rightjake.com") !== -1) {
                 new Rightjake();
-            }
-            else if(location.host.indexOf("printfuns.com") !== -1)
-            {
+            } else if (location.host.indexOf("printfuns.com") !== -1) {
                 new Printfuns();
             }
 
             function injectScript(file, node) {
                 let th = document.getElementsByTagName(node)[0];
-                let initial =  document.createElement('script');
+                let initial = document.createElement('script');
                 initial.setAttribute('type', 'text/javascript');
                 initial.setAttribute('src', chrome.extension.getURL('js/initial.js'));
                 initial.setAttribute('data-sv', DataCenter);

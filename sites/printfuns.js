@@ -26,7 +26,7 @@ let Printfuns = class extends Initial {
         let images = [];
         let banner;
         document.querySelectorAll('#p-sliderproduct img').forEach(function (image) {
-            images.push(image.getAttribute('data-src='));
+            images.push(image.getAttribute('data-src'));
         });
         banner = images.shift();
         let pId = location.pathname;

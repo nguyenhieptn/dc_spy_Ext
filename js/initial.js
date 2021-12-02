@@ -55,7 +55,7 @@ class Initial {
                 let img = await this.getBlob(image);
                 _images.push(img);
                 count++;
-                if (count == 5) {
+                if (count == 8) {
                     break;
                 }
             }
