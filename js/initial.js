@@ -31,7 +31,14 @@ class Initial {
 
     getBlob = async function (url) {
         let that = this;
-        return fetch(url).then(response => response.blob())
+        return fetch(
+            url,
+            {
+                headers: {
+                    'Cache-Control': 'no-cache'
+                }
+            }
+            ).then(response => response.blob())
             .then(async function (blob) {
                 return await that.blobToBase64(blob);
             })
@@ -55,7 +62,7 @@ class Initial {
                 let img = await this.getBlob(image);
                 _images.push(img);
                 count++;
-                if (count == 8) {
+                if (count == 5) {
                     break;
                 }
             }
