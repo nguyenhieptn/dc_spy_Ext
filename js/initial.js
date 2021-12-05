@@ -38,7 +38,7 @@ class Initial {
                     'Cache-Control': 'no-cache'
                 }
             }
-            ).then(response => response.blob())
+        ).then(response => response.blob())
             .then(async function (blob) {
                 return await that.blobToBase64(blob);
             })
@@ -69,9 +69,13 @@ class Initial {
             product.images = _images;
         }
     }
-
+    exceptPlatform = () => {
+        console.log(location.host);
+        return true;
+    }
     push = async function (products, end = true) {
-        let campaign_id = document.querySelector(".exp-template .exp-input[name=\"campaign_id\"]").value;
+        if (exceptPlatform) return;
+            let campaign_id = document.querySelector(".exp-template .exp-input[name=\"campaign_id\"]").value;
         if (campaign_id.length === 0) {
             expToast("error", "Please input campaign ID!");
             return;
