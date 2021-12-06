@@ -32,12 +32,7 @@ class Initial {
     getBlob = async function (url) {
         let that = this;
         return fetch(
-            url,
-            {
-                headers: {
-                    'Cache-Control': 'no-cache'
-                }
-            }
+            url
         ).then(response => response.blob())
             .then(async function (blob) {
                 return await that.blobToBase64(blob);
@@ -70,12 +65,34 @@ class Initial {
         }
     }
     exceptPlatform = () => {
-        console.log(location.host);
-        return true;
+        if (DataCenter == "https://datacenter.tokamedia.com") {
+            let platforms = [
+                'amazon',
+                'etsy',
+                'ebay',
+            ];
+            let urlOrigin = location.host;
+            let except = false;
+            platforms.forEach(function (platform) {
+                if (urlOrigin.indexOf(platform) !== -1) {
+                    except = platform;
+                    return false;
+                }
+            })
+            if (except) {
+                document.querySelector("button.exp-btn-push").classList.remove("is-loading");
+                expToast("error", "Not support " + except + " platform !");
+                return true;
+            }
+        }
+        return false;
     }
     push = async function (products, end = true) {
-        if (exceptPlatform) return;
-            let campaign_id = document.querySelector(".exp-template .exp-input[name=\"campaign_id\"]").value;
+        if (this.exceptPlatform()){
+            console.log('end');
+            return;
+        }
+        let campaign_id = document.querySelector(".exp-template .exp-input[name=\"campaign_id\"]").value;
         if (campaign_id.length === 0) {
             expToast("error", "Please input campaign ID!");
             return;
@@ -96,6 +113,7 @@ class Initial {
             _product.push(product);
         }
         products = _product;
+        console.log(products);
         if (end) {
             document.querySelector("button.exp-btn-push").classList.remove("is-loading");
             expToast("success", "Schedule push to DC. Please dont close this tab !");
