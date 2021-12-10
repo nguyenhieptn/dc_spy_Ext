@@ -1,4 +1,4 @@
-let TeenPublic = class extends Initial{
+let TeenPublic = class extends Initial {
     constructor() {
         super();
         this.domain = location.origin;
@@ -46,33 +46,37 @@ let TeenPublic = class extends Initial{
             };
             products.push(product);
         });
-    
-          this.push(products);
+
+        this.push(products);
     }
 
     getProduct() {
         let title;
-        if(document.querySelector("#exp-custom-title") && document.querySelector("#exp-custom-title").value !== "")
-        {
+        if (document.querySelector("#exp-custom-title") && document.querySelector("#exp-custom-title").value !== "") {
             title = document.querySelector("#exp-custom-title").value;
-        }
-        else
-        {
+        } else {
             title = document.querySelector(".m-design__content .m-design__title h1").innerText;
         }
         let store = "teepublic";
         let pId = location.href.substr(25);
         let images = [];
         if (document.querySelector(".m-product-preview__thumbs"))
-            document.querySelector(".m-product-preview__thumbs").querySelectorAll('div.jsProductPreviewThumb img').forEach(function (el) {
-                images.push(el.getAttribute("src"));
-            });
-        else return;
+            if (document.querySelector(".m-product-preview__thumbs").querySelectorAll('div.jsProductPreviewThumb img').length > 0)
+                document.querySelector(".m-product-preview__thumbs").querySelectorAll('div.jsProductPreviewThumb img').forEach(function (el) {
+                    images.push(el.getAttribute("src"));
+                });
+            else if(document.querySelector(".m-product-preview__thumbs").querySelectorAll('.jsProductPreviewThumb img').length > 0)
+            {
+                document.querySelector(".m-product-preview__thumbs").querySelectorAll('.jsProductPreviewThumb img').forEach(function (el) {
+                    images.push(el.getAttribute("src"));
+                });
+            }
+
+            else return;
         let banner;
         if (document.querySelector('#exp-banner-type') && document.querySelector('#exp-banner-type').value === 'art') {
             banner = images.pop();
-        }
-        else
+        } else
             banner = images.shift();
         let type = "";
         let product = {
