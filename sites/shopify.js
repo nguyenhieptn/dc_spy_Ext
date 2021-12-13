@@ -177,7 +177,7 @@ let Shopify = class extends Initial{
         }
 
         pushProduct(products, end = true) {
-          if(products.length > 20)
+          if(products.length > 15)
           {
               let _products = products.splice(0, 20);
               this._pushProduct(_products, end);
