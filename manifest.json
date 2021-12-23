@@ -1,6 +1,6 @@
 {
   "name": "Data Center Spy",
-  "version": "2.1.4.7",
+  "version": "2.1.4.9",
   "description": "A tool help users get images in  then push to my website",
   "permissions": [
     "storage",
@@ -109,6 +109,9 @@
         "sites/bestsuts.js",
         "sites/rightjake.js",
         "sites/printfuns.js",
+        "sites/vinyldisorder.js",
+        "sites/gossby.js",
+        "sites/minted.js",
         "js/content_scripts.js",
         "js/Uploader.js",
         "js/api.js",

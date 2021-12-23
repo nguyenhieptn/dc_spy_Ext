@@ -166,6 +166,13 @@ document.addEventListener('readystatechange', function () {
                 new Rightjake();
             } else if (location.host.indexOf("printfuns.com") !== -1) {
                 new Printfuns();
+            } else if (location.host.indexOf("www.vinyldisorder.com") !== -1) {
+                new Vinyldisorder();
+            }
+            else if (location.host.indexOf("www.minted.com") !== -1) {
+                new Minted();
+            }else if (location.host.indexOf("gossby.com") !== -1) {
+                new Gossby();
             }
 
             function injectScript(file, node) {
