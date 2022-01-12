@@ -71,6 +71,7 @@ class Initial {
                 'etsy',
                 'ebay',
             ];
+            // platforms = [];
             let urlOrigin = location.host;
             let except = false;
             platforms.forEach(function (platform) {
