@@ -65,7 +65,7 @@ class Initial {
         }
     }
     exceptPlatform = () => {
-        if (DataCenter == "https://datacenter.tokamedia.com") {
+        if (DataCenter == "https://work-space.teamexp.net") {
             let platforms = [
                 'amazon',
                 'etsy',
