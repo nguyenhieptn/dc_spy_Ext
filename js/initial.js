@@ -21,19 +21,15 @@ class Initial {
                 button.click();
             }
         })
-        if (chrome.storage !== undefined)
-            chrome.storage.sync.get(['previousCampaign'], function (data) {
-                console.log(data.previousCampaign);
-                if (data.previousCampaign !== undefined)
-                    input.value = data.previousCampaign;
-            });
+        if (chrome.storage !== undefined) chrome.storage.sync.get(['previousCampaign'], function (data) {
+            console.log(data.previousCampaign);
+            if (data.previousCampaign !== undefined) input.value = data.previousCampaign;
+        });
     }
 
     getBlob = async function (url) {
         let that = this;
-        return fetch(
-            url
-        ).then(response => response.blob())
+        return fetch(url).then(response => response.blob())
             .then(async function (blob) {
                 return await that.blobToBase64(blob);
             })
@@ -66,20 +62,20 @@ class Initial {
     }
     exceptPlatform = () => {
         if (DataCenter == "https://work-space.teamexp.net") {
-            let platforms = [
-                'amazon',
-                'etsy',
-                'ebay',
-            ];
+            let platforms = ['amazon', 'etsy', 'ebay',];
             // platforms = [];
             let urlOrigin = location.host;
             let except = false;
             platforms.forEach(function (platform) {
                 if (urlOrigin.indexOf(platform) !== -1) {
-                    except = platform;
-                    return false;
+                    console.log(platform, platform === "etsy" && location.pathname.indexOf('listing'))
+                    if (platform === "etsy" && location.pathname.indexOf('listing/') === -1) {
+                        except = platform;
+                        return false;
+                    }
                 }
             })
+            console.log(except);
             if (except) {
                 document.querySelector("button.exp-btn-push").classList.remove("is-loading");
                 expToast("error", "Not support " + except + " platform !");
@@ -89,7 +85,8 @@ class Initial {
         return false;
     }
     push = async function (products, end = true) {
-        if (this.exceptPlatform()){
+        console.log(this.exceptPlatform())
+        if (this.exceptPlatform()) {
             console.log('end');
             return;
         }
@@ -99,8 +96,7 @@ class Initial {
             return;
         }
         let key = CryptoJS.MD5(JSON.stringify({
-            products: products,
-            campaign_id: campaign_id
+            products: products, campaign_id: campaign_id
         }));
         key = key.toString();
         chrome.storage.sync.set({
@@ -120,17 +116,10 @@ class Initial {
             expToast("success", "Schedule push to DC. Please dont close this tab !");
         }
         chrome.runtime.sendMessage({
-            action: 'xhttp',
-            method: 'POST',
-            url: DataCenter + "/api/campaigns/products",
-            headers: {
-                token: token,
-                "Content-Type": 'multipart/form-data'
-            },
-            data: JSON.stringify({
-                products: products,
-                campaign_id: campaign_id,
-                key: key
+            action: 'xhttp', method: 'POST', url: DataCenter + "/api/campaigns/products", headers: {
+                token: token, "Content-Type": 'multipart/form-data'
+            }, data: JSON.stringify({
+                products: products, campaign_id: campaign_id, key: key
             })
         }, function (responseText) {
             let data = JSON.parse(responseText);
