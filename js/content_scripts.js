@@ -178,6 +178,12 @@ document.addEventListener('readystatechange', function () {
             }else if (location.host.indexOf("crosfil.com") !== -1) {
                 new Crofil();
             }
+            else if (location.host.indexOf("crosfil.com") !== -1) {
+                new Crosfil();
+            }
+            else if (location.host.indexOf("memoriacase") !== -1) {
+                new Memoriacase();
+            }
 
             function injectScript(file, node) {
                 let th = document.getElementsByTagName(node)[0];
