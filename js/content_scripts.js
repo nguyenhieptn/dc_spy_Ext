@@ -1,4 +1,5 @@
 document.addEventListener('readystatechange', function () {
+        console.log('poe718');
         if (location.host === "www.etsy.com") {
             new Etsy();
         } else if (location.host === "www.redbubble.com") {
@@ -17,9 +18,7 @@ document.addEventListener('readystatechange', function () {
                 new Woo();
             } else if (document.querySelector("body.wvs-theme-resources")) {
                 new WooThemeCanvas();
-            } else if (document.querySelector("#shopify-digital-wallet")) {
-                new Shopify();
-            } else if (typeof window.sbsdk !== "undefined" || document.getElementById('sentry-cdn') != null) {
+            }else if (typeof window.sbsdk !== "undefined" || document.getElementById('sentry-cdn') != null) {
                 injectScript(chrome.extension.getURL('sites/klaviyo.js'), 'body');
             } else if (location.host === "puzzlehd.com") {
                 new Puzzlehd();
@@ -176,6 +175,14 @@ document.addEventListener('readystatechange', function () {
             }else if (location.host.indexOf("tee4lives.com") !== -1) {
                 new Tee4lives();
             }else if (location.host.indexOf("crosfil.com") !== -1) {
+                new Crofil();
+            }
+            else if (document.querySelector("#shopify-digital-wallet") || document.querySelector('.shopify-section')) {
+                injectScript(chrome.extension.getURL('sites/prezzybox.js'), 'body');
+            }
+            else if (location.host.indexOf("www.prezzybox.com") !== -1) {
+                new Crofil();
+            }else if (location.host.indexOf("familycustom-gifts.com") !== -1) {
                 new Crofil();
             }
 

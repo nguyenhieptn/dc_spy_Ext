@@ -182,6 +182,7 @@ class Initial {
             } else {
                 expToast("error", data.msg);
             }
+            document.querySelector("button.exp-btn-push").classList.remove("is-loading");
         });
     }
 
