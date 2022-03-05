@@ -143,8 +143,7 @@ let StoreFront = class extends Initial{
             expToast("error", "No more product!");
             return;
         } else {
-            console.log(products);
-            this.push(products);
+            this.pushInject(products)
         }
     }
 

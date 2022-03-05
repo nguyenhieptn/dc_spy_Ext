@@ -7,13 +7,15 @@ function isURL(str) {
 }
 let html = "<div id=\"exp-snackbar\"></div>";
 document.body.appendChild(parseHTML(html));
-console.log(chrome.storage.local);
-chrome.storage.local.get(["user"],function(data){
-  if(data.user === undefined) return false;
-  token = data.user.api_token;
-  host = data.user.api_host;
-  user = data.user;
-  if(host.length === 0) return;
-  if(host.indexOf("https") === 0 || host.indexOf("http") === 0) DataCenter = host;
-  else DataCenter = "https://"+host;
-});
+if(chrome.storage !== undefined)
+{
+  chrome.storage.local.get(["user"],function(data){
+    if(data.user === undefined) return false;
+    token = data.user.api_token;
+    host = data.user.api_host;
+    user = data.user;
+    if(host.length === 0) return;
+    if(host.indexOf("https") === 0 || host.indexOf("http") === 0) DataCenter = host;
+    else DataCenter = "https://"+host;
+  });
+}
