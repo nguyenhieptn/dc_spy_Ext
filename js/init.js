@@ -7,6 +7,7 @@ function isURL(str) {
 }
 let html = "<div id=\"exp-snackbar\"></div>";
 document.body.appendChild(parseHTML(html));
+console.log(chrome.storage.local);
 chrome.storage.local.get(["user"],function(data){
   if(data.user === undefined) return false;
   token = data.user.api_token;

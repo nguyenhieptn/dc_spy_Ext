@@ -143,20 +143,7 @@ let StoreFront = class extends Initial{
             expToast("error", "No more product!");
             return;
         } else {
-            // let xhttp = new XMLHttpRequest();
-            // xhttp.onload = function () {
-            //     callback(JSON.parse(xhttp.responseText));
-            // };
-            // xhttp.onerror = function () {
-            //     callback(JSON.parse(xhttp.responseText));
-            // };
-            // xhttp.open("POST", '//' + this.host + "/api/campaigns/products", true);
-            // xhttp.setRequestHeader("token", this.token);
-            // xhttp.setRequestHeader('Content-Type', 'application/json;charset=UTF-8');
-            // xhttp.send(JSON.stringify({
-            //     products: products,
-            //     campaign_id: campaign_id
-            // }));
+            console.log(products);
             this.push(products);
         }
     }

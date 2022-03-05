@@ -1,4 +1,47 @@
 class Initial {
+
+    getDomain = () => {
+        let domain;
+        if (typeof DataCenter !== undefined) {
+            let initialEl = document.querySelector("#exp-embed-initial");
+            if (initialEl) {
+                console.log(initialEl.getAttribute('data-sv'));
+                if (initialEl.getAttribute('data-sv') !== "null") {
+                    var Datacenter = initialEl.getAttribute('data-sv');
+                } else {
+                    expToast("error", "DC SPY Missing Token!");
+                    return;
+                }
+            }
+
+        } else {
+            domain = Datacenter;
+        }
+
+        if (typeof DataCenter === undefined) {
+            expToast("error", "Missing domain! contact dev");
+            return;
+        }
+        return domain
+    }
+
+    getToken = () => {
+        if (typeof DataCenter !== undefined) {
+            let initialEl = document.querySelector("#exp-embed-initial");
+            if (initialEl) {
+                console.log(initialEl.getAttribute('data-sv'));
+                if (initialEl.getAttribute('data-sv') !== "null") {
+                    return initialEl.getAttribute('data-token');
+                } else {
+                    expToast("error", "DC SPY Missing Token!");
+                    return;
+                }
+            }
+        } else {
+            return token
+        }
+    }
+
     build() {
         let template = document.createElement("div");
         template.classList.add("exp-template");
@@ -61,6 +104,7 @@ class Initial {
         }
     }
     exceptPlatform = () => {
+        if (typeof DataCenter !== undefined) return false;
         if (DataCenter == "https://work-space.teamexp.net") {
             let platforms = ['amazon', 'etsy', 'ebay',];
             // platforms = [];
@@ -99,11 +143,13 @@ class Initial {
             products: products, campaign_id: campaign_id
         }));
         key = key.toString();
-        chrome.storage.sync.set({
-            previousCampaign: campaign_id
-        }, function () {
-            return campaign_id;
-        });
+        if (chrome.storage !== undefined) {
+            chrome.storage.sync.set({
+                previousCampaign: campaign_id
+            }, function () {
+                return campaign_id;
+            });
+        }
         let _product = [];
         for (const product of products) {
             const _udpated = await this.updateImages(product);
@@ -114,6 +160,11 @@ class Initial {
         if (end) {
             document.querySelector("button.exp-btn-push").classList.remove("is-loading");
             expToast("success", "Schedule push to DC. Please dont close this tab !");
+        }
+        if (typeof DataCenter == "undefined")
+        {
+            var DataCenter = this.getDomain();
+            var token = this.getToken();
         }
         chrome.runtime.sendMessage({
             action: 'xhttp', method: 'POST', url: DataCenter + "/api/campaigns/products", headers: {

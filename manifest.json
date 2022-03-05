@@ -124,12 +124,16 @@
     }
   ],
   "web_accessible_resources" : [
+    "js/crypto/core.js",
+    "js/crypto/md5.js",
     "sites/klaviyo.js",
     "sites/vitelegacy.js",
     "sites/store_front.js",
     "js/Uploader.js",
     "js/api.js",
-    "js/initial.js"
+    "js/initial.js",
+    "js/init.js",
+    "js/helpers.js"
   ],
   "background": {
     "scripts": ["js/background.js"],
