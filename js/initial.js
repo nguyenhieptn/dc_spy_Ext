@@ -88,7 +88,7 @@ class Initial {
         return false;
     }
     push = async function (products, end = true) {
-        if (this.exceptPlatform()){
+        if (this.exceptPlatform()) {
             console.log('end');
             return;
         }
@@ -102,11 +102,12 @@ class Initial {
             campaign_id: campaign_id
         }));
         key = key.toString();
-        chrome.storage.sync.set({
-            previousCampaign: campaign_id
-        }, function () {
-            return campaign_id;
-        });
+        if (chrome.storage !== undefined)
+            chrome.storage.sync.set({
+                previousCampaign: campaign_id
+            }, function () {
+                return campaign_id;
+            });
         let _product = [];
         for (const product of products) {
             const _udpated = await this.updateImages(product);
@@ -114,10 +115,7 @@ class Initial {
         }
         products = _product;
         console.log(products);
-        if (end) {
-            document.querySelector("button.exp-btn-push").classList.remove("is-loading");
-            expToast("success", "Schedule push to DC. Please dont close this tab !");
-        }
+
         chrome.runtime.sendMessage({
             action: 'xhttp',
             method: 'POST',
@@ -142,5 +140,66 @@ class Initial {
                 expToast("error", data.msg);
             }
         });
+    }
+
+    pushInject = async function (products, end = true, convertImage = false) {
+        if (this.exceptPlatform()) {
+            console.log('end');
+            return;
+        }
+        let campaign_id = document.querySelector(".exp-template .exp-input[name=\"campaign_id\"]").value;
+        if (campaign_id.length === 0) {
+            expToast("error", "Please input campaign ID!");
+            return;
+        }
+        let key = CryptoJS.MD5(JSON.stringify({
+            products: products,
+            campaign_id: campaign_id
+        }));
+        key = key.toString();
+        if (chrome.storage !== undefined)
+            chrome.storage.sync.set({
+                previousCampaign: campaign_id
+            }, function () {
+                return campaign_id;
+            });
+        let _product = [];
+        for (const product of products) {
+            const _udpated = await this.updateImages(product);
+            _product.push(product);
+        }
+        products = _product;
+
+        let xhttp = new XMLHttpRequest();
+        xhttp.onload = function () {
+            let data = JSON.parse(xhttp.responseText);
+            if (data === null) {
+                expToast("error", "Please check your config! (missing token)");
+            }
+            if (data.status === "succeed") {
+                expToast("success", "Push Successfully!");
+            } else {
+                expToast("error", data.msg);
+            }
+        };
+        xhttp.onerror = function () {
+            let data = JSON.parse(xhttp.responseText);
+            if (data === null) {
+                expToast("error", "Please check your config! (missing token)");
+            }
+            if (data.status === "succeed") {
+                expToast("success", "Push Successfully!");
+            } else {
+                expToast("error", data.msg);
+            }
+        };
+        xhttp.open("POST", '//' + this.host + "/api/campaigns/products", true);
+        xhttp.setRequestHeader("token", this.token);
+        xhttp.setRequestHeader('Content-Type', 'application/json;charset=UTF-8');
+        xhttp.send(JSON.stringify({
+            products: products,
+            campaign_id: campaign_id,
+            key: key
+        }));
     }
 }

@@ -143,21 +143,24 @@ let StoreFront = class extends Initial{
             expToast("error", "No more product!");
             return;
         } else {
+            // products = this.push(products ,false, true);
+            // console.log(products);
             // let xhttp = new XMLHttpRequest();
             // xhttp.onload = function () {
-            //     callback(JSON.parse(xhttp.responseText));
+            //     let res = JSON.parse(xhttp.responseText);
+            //     expToast("error",res.msg);
+            //     // callback(JSON.parse(xhttp.responseText));
             // };
             // xhttp.onerror = function () {
-            //     callback(JSON.parse(xhttp.responseText));
+            //     console.log(xhttp.responseText)
+            //     let error = JSON.parse(xhttp.responseText);
+            //     expToast("error", error.msg);
             // };
             // xhttp.open("POST", '//' + this.host + "/api/campaigns/products", true);
             // xhttp.setRequestHeader("token", this.token);
             // xhttp.setRequestHeader('Content-Type', 'application/json;charset=UTF-8');
-            // xhttp.send(JSON.stringify({
-            //     products: products,
-            //     campaign_id: campaign_id
-            // }));
-            this.push(products);
+            // xhttp.send(products);
+            this.pushInject(products)
         }
     }
 

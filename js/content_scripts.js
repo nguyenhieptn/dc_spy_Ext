@@ -173,10 +173,51 @@ document.addEventListener('readystatechange', function () {
                 new Minted();
             }else if (location.host.indexOf("gossby.com") !== -1) {
                 new Gossby();
+            }else if (location.host.indexOf("tee4lives.com") !== -1) {
+                new Tee4lives();
+            }else if (location.host.indexOf("crosfil.com") !== -1) {
+                new Crofil();
             }
 
             function injectScript(file, node) {
                 let th = document.getElementsByTagName(node)[0];
+
+                let helper = document.createElement('script');
+                helper.setAttribute('type', 'text/javascript');
+                helper.setAttribute('src', chrome.extension.getURL('js/helpers.js'));
+                helper.setAttribute('data-sv', DataCenter);
+                helper.setAttribute('data-token', token);
+                helper.setAttribute('data-host', host);
+                helper.setAttribute('id', 'exp-embed-helper');
+                th.appendChild(helper);
+
+                let init = document.createElement('script');
+                init.setAttribute('type', 'text/javascript');
+                init.setAttribute('src', chrome.extension.getURL('js/init.js'));
+                init.setAttribute('data-sv', DataCenter);
+                init.setAttribute('data-token', token);
+                init.setAttribute('data-host', host);
+                init.setAttribute('id', 'exp-embed-init');
+                th.appendChild(init);
+
+                let crypto = document.createElement('script');
+                crypto.setAttribute('type', 'text/javascript');
+                crypto.setAttribute('src', chrome.extension.getURL('js/crypto/core.js'));
+                crypto.setAttribute('data-sv', DataCenter);
+                crypto.setAttribute('data-token', token);
+                crypto.setAttribute('data-host', host);
+                crypto.setAttribute('id', 'exp-embed-crypto-core');
+                th.appendChild(crypto);
+
+                let cryptoMd5 = document.createElement('script');
+                cryptoMd5.setAttribute('type', 'text/javascript');
+                cryptoMd5.setAttribute('src', chrome.extension.getURL('js/crypto/md5.js'));
+                cryptoMd5.setAttribute('data-sv', DataCenter);
+                cryptoMd5.setAttribute('data-token', token);
+                cryptoMd5.setAttribute('data-host', host);
+                cryptoMd5.setAttribute('id', 'exp-embed-crypto-core');
+                th.appendChild(cryptoMd5);
+
                 let initial = document.createElement('script');
                 initial.setAttribute('type', 'text/javascript');
                 initial.setAttribute('src', chrome.extension.getURL('js/initial.js'));
@@ -185,6 +226,7 @@ document.addEventListener('readystatechange', function () {
                 initial.setAttribute('data-host', host);
                 initial.setAttribute('id', 'exp-embed-initial');
                 th.appendChild(initial);
+
                 let s = document.createElement('script');
                 s.setAttribute('type', 'text/javascript');
                 s.setAttribute('src', file);
