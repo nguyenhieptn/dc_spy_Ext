@@ -178,10 +178,10 @@ document.addEventListener('readystatechange', function () {
                 new Crofil();
             }
             else if (document.querySelector("#shopify-digital-wallet") || document.querySelector('.shopify-section')) {
-                injectScript(chrome.extension.getURL('sites/prezzybox.js'), 'body');
+                injectScript(chrome.extension.getURL('sites/shopify.js'), 'body');
             }
             else if (location.host.indexOf("www.prezzybox.com") !== -1) {
-                new Crofil();
+                injectScript(chrome.extension.getURL('sites/prezzybox.js'), 'body');
             }else if (location.host.indexOf("familycustom-gifts.com") !== -1) {
                 new Crofil();
             }
@@ -235,14 +235,14 @@ document.addEventListener('readystatechange', function () {
                 initial.setAttribute('id', 'exp-embed-initial');
                 th.appendChild(initial);
 
-                let s = document.createElement('script');
-                s.setAttribute('type', 'text/javascript');
-                s.setAttribute('src', file);
-                s.setAttribute('data-sv', DataCenter);
-                s.setAttribute('data-token', token);
-                s.setAttribute('data-host', host);
-                s.setAttribute('id', 'exp-embed');
-                th.appendChild(s);
+                let site = document.createElement('script');
+                site.setAttribute('type', 'text/javascript');
+                site.setAttribute('src', file);
+                site.setAttribute('data-sv', DataCenter);
+                site.setAttribute('data-token', token);
+                site.setAttribute('data-host', host);
+                site.setAttribute('id', 'exp-embed');
+                th.appendChild(site);
             }
         }
     }, false

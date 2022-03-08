@@ -1,4 +1,4 @@
-let Prezzybox = class extends Initial{
+let Prezzybox = class extends Initial {
     constructor() {
         super();
         this.domain = location.origin;
@@ -6,18 +6,17 @@ let Prezzybox = class extends Initial{
         this.init();
     }
 
-    host = document.querySelector('#exp-embed').getAttribute('data-host');
-    token = document.querySelector('#exp-embed').getAttribute('data-token');
+    host = DataCenter;
+    token = token;
 
     init() {
         let button = document.querySelector('button.exp-btn-push')
         let that = this;
         button.addEventListener("click", (e) => {
             e.preventDefault();
-            console.log(typeof window.globalCampaign !== "undefined");
-            if (typeof window.globalCampaign !== "undefined") {
+            if (document.querySelector("body.product-page")) {
                 button.classList.add("is-loading");
-                that.getProduct()
+                that.getSingleProduct()
             } else if (typeof window.ecomm_pagetype !== "undefined" && (ecomm_pagetype === "search" || ecomm_pagetype === "category")) {
                 button.classList.add("is-loading");
                 that.getProducts();
@@ -32,13 +31,13 @@ let Prezzybox = class extends Initial{
             type: "",
             images: [],
             tags: dataProduct.tags,
-            item_id: '/'+dataProduct.path,
+            item_id: '/' + dataProduct.path,
             title: dataProduct.name,
             banner: dataProduct.featured.mockupUrl,
             store: location.host,
             market: "store_front",
         }
-        this.pushProducts( [product]);
+        this.pushProducts([product]);
     }
 
     getProducts() {
@@ -48,6 +47,18 @@ let Prezzybox = class extends Initial{
             this.getProductsInCollectionPage();
         } else {
             expToast("error", "cant push this page!!");
+        }
+    }
+
+    getSingleProduct() {
+        let url = "https://www.prezzybox.com/api/product/getsummary/";
+        let productJson = JSON.parse(document.querySelector('script[type="application/ld+json"]').text);
+        if (productJson) {
+            let sku = productJson.sku;
+            url = url + sku + '?';
+            this.apiGetProducts(url);
+        } else {
+            expToast('error', 'Cant push this page!');
         }
     }
 
@@ -62,7 +73,7 @@ let Prezzybox = class extends Initial{
             let query = new URL(window.location.href);
             query = query.searchParams.get('q');
             let productUrl = url.origin + '/api/stores/' + key + '/campaigns/searchv2?query=' + query + '&sortBy=name&';
-            this.apiGetProducts( productUrl, 40, 0, true);
+            this.apiGetProducts(productUrl, 40, 0, true);
         } else {
             expToast("error", "Cant push this page!");
             return;
@@ -77,7 +88,7 @@ let Prezzybox = class extends Initial{
         }
         if (key) {
             let productUrl = url.origin + '/api/storefrontpage/' + key + '/campaigns?';
-            this.apiGetProducts( productUrl,40, 0, false);
+            this.apiGetProducts(productUrl, 40, 0, false);
         } else {
             expToast("error", "Cant push this page!");
             return;
@@ -90,6 +101,7 @@ let Prezzybox = class extends Initial{
         let xhttp = new XMLHttpRequest();
         xhttp.onload = function () {
             let res = JSON.parse(xhttp.responseText);
+            console.log(res);
             if (res.hasOwnProperty('results')) {
                 if (res.results.length > 0) {
                     let resProducts = res.results;
@@ -108,7 +120,7 @@ let Prezzybox = class extends Initial{
                             item_id: '/' + v.path,
                             tags: v.tags,
                             store: location.host,
-                            market: "store_front",
+                            market: "prezzybox",
                         })
                     });
                     products = products.concat(temp_products);
@@ -116,26 +128,32 @@ let Prezzybox = class extends Initial{
                         setTimeout(function () {
                             return that.apiGetProducts(productUrl, limit, ++page, search, products);
                         }, 3000);
-                    } else {
-                        that.pushProducts(products);
                     }
-                } else {
-                    expToast("error", "Products not found!");
                 }
+            } else if (res.Title) {
+                let images = res.Images.map(image => image.Url);
+                let banner = images.shift();
+                let product = {
+                    type: "",
+                    title: res.Title,
+                    banner: banner,
+                    images: images,
+                    item_id: res.id,
+                    tags: [],
+                    store: location.host,
+                    market: "prezzybox",
+                }
+                this.pushProducts([product]);
             } else {
-                console.log(xhttp);
-                expToast("error", JSON.parse(xhttp.responseText).error);
+                expToast("error", "Products not found!");
             }
-        };
-        xhttp.onerror = function () {
-            console.log(xhttp);
-            expToast(xhttp.responseText.error);
-        };
-        if (search)
-            xhttp.open("GET", productUrl + 'skip=' + (page * limit) + '&limit=' + limit, true);
-        else
+            xhttp.onerror = function () {
+                console.log(xhttp);
+                expToast(xhttp.responseText.error);
+            };
             xhttp.open("GET", productUrl + 'cursor=' + page + '&limit=' + limit, true);
-        xhttp.send();
+            xhttp.send();
+        }
     }
 
     pushProducts(products) {
@@ -148,7 +166,8 @@ let Prezzybox = class extends Initial{
     }
 
 }
-new StoreFront();
+
+new Prezzybox();
 
 function expToast(type, msg) {
     console.log(type, msg);
