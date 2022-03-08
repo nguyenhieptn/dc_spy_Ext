@@ -178,7 +178,8 @@ document.addEventListener('readystatechange', function () {
                 new Crofil();
             }
             else if (document.querySelector("#shopify-digital-wallet") || document.querySelector('.shopify-section')) {
-                injectScript(chrome.extension.getURL('sites/shopify.js'), 'body');
+                // injectScript(chrome.extension.getURL('sites/shopify.js'), 'body');
+                new Shopify();
             }
             else if (location.host.indexOf("www.prezzybox.com") !== -1) {
                 injectScript(chrome.extension.getURL('sites/prezzybox.js'), 'body');

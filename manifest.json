@@ -1,6 +1,6 @@
 {
   "name": "Data Center Spy",
-  "version": "2.1.5.7",
+  "version": "2.1.5.8",
   "description": "A tool help users get images in  then push to my website",
   "permissions": [
     "storage",
