@@ -182,8 +182,8 @@ document.addEventListener('readystatechange', function () {
             }
             else if (location.host.indexOf("www.prezzybox.com") !== -1) {
                 injectScript(chrome.extension.getURL('sites/prezzybox.js'), 'body');
-            }else if (location.host.indexOf("familycustom-gifts.com") !== -1) {
-                new Crofil();
+            }else if (location.host.indexOf('www.gifts.ie') !== -1) {
+                new Giftsie();
             }
 
             function injectScript(file, node) {
@@ -235,14 +235,14 @@ document.addEventListener('readystatechange', function () {
                 initial.setAttribute('id', 'exp-embed-initial');
                 th.appendChild(initial);
 
-                let site = document.createElement('script');
-                site.setAttribute('type', 'text/javascript');
-                site.setAttribute('src', file);
-                site.setAttribute('data-sv', DataCenter);
-                site.setAttribute('data-token', token);
-                site.setAttribute('data-host', host);
-                site.setAttribute('id', 'exp-embed');
-                th.appendChild(site);
+                let injectSite = document.createElement('script');
+                injectSite.setAttribute('type', 'text/javascript');
+                injectSite.setAttribute('src', file);
+                injectSite.setAttribute('data-sv', DataCenter);
+                injectSite.setAttribute('data-token', token);
+                injectSite.setAttribute('data-host', host);
+                injectSite.setAttribute('id', 'exp-embed');
+                th.appendChild(injectSite);
             }
         }
     }, false

@@ -187,10 +187,6 @@ class Initial {
     }
 
     pushInject = async function (products, end = true, convertImage = false) {
-        if (this.exceptPlatform()) {
-            console.log('end');
-            return;
-        }
         let campaign_id = document.querySelector(".exp-template .exp-input[name=\"campaign_id\"]").value;
         if (campaign_id.length === 0) {
             expToast("error", "Please input campaign ID!");
@@ -237,8 +233,10 @@ class Initial {
                 expToast("error", data.msg);
             }
         };
-        xhttp.open("POST", '//' + this.host + "/api/campaigns/products", true);
-        xhttp.setRequestHeader("token", this.token);
+        let host = document.querySelector('#exp-embed').getAttribute('data-sv');
+        let token = document.querySelector('#exp-embed').getAttribute('data-token');
+        xhttp.open("POST", host + "/api/campaigns/products", true);
+        xhttp.setRequestHeader("token", token);
         xhttp.setRequestHeader('Content-Type', 'application/json;charset=UTF-8');
         xhttp.send(JSON.stringify({
             products: products,

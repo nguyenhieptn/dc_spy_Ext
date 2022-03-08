@@ -12,42 +12,30 @@ let Prezzybox = class extends Initial {
     init() {
         let button = document.querySelector('button.exp-btn-push')
         let that = this;
+        console.log(button)
         button.addEventListener("click", (e) => {
             e.preventDefault();
             if (document.querySelector("body.product-page")) {
                 button.classList.add("is-loading");
                 that.getSingleProduct()
-            } else if (typeof window.ecomm_pagetype !== "undefined" && (ecomm_pagetype === "search" || ecomm_pagetype === "category")) {
-                button.classList.add("is-loading");
-                that.getProducts();
-            } else
+            }
+            // else if (document.querySelector("body.category-page ")) {
+            //     button.classList.add("is-loading");
+            //     that.getProductsCategory();
+            // } else if (document.querySelector("body.category-page ")) {
+            //     button.classList.add("is-loading");
+            //     that.getProductsCategory();
+            // }
+            else
                 expToast("error", "Cant crawl this page!");
         })
     }
 
-    getProduct() {
-        let dataProduct = window.globalCampaign;
-        let product = {
-            type: "",
-            images: [],
-            tags: dataProduct.tags,
-            item_id: '/' + dataProduct.path,
-            title: dataProduct.name,
-            banner: dataProduct.featured.mockupUrl,
-            store: location.host,
-            market: "store_front",
-        }
-        this.pushProducts([product]);
-    }
-
-    getProducts() {
-        if (window.ecomm_pagetype === "search") {
-            this.getProductsInSearchPage();
-        } else if (window.ecomm_pagetype === "category") {
-            this.getProductsInCollectionPage();
-        } else {
-            expToast("error", "cant push this page!!");
-        }
+    getProductsCategory() {
+        let url = "https://www.prezzybox.com/api/product/index?page=1&itemsPerPage=72&sort=category_default&order=desc&loadData=false";
+        let categoryId = document.querySelector('meta[name="category-id"]').getAttribute('content');
+        url += "&categoryid="+categoryId;
+        this.apiGetProducts(url);
     }
 
     getSingleProduct() {
@@ -96,15 +84,15 @@ let Prezzybox = class extends Initial {
 
     }
 
-    apiGetProducts(productUrl, limit = 40, page = 0, search = false, products = []) {
+    apiGetProducts(productUrl, limit = 72, page = 0, search = false, products = []) {
         let that = this;
         let xhttp = new XMLHttpRequest();
         xhttp.onload = function () {
             let res = JSON.parse(xhttp.responseText);
             console.log(res);
-            if (res.hasOwnProperty('results')) {
-                if (res.results.length > 0) {
-                    let resProducts = res.results;
+            if (res.hasOwnProperty('Data')) {
+                if (res.Data.length > 0) {
+                    let resProducts = res.Data;
                     let temp_products = [];
                     resProducts.forEach(function (v, k) {
                         let banner = v.mockupUrlSmall;
@@ -124,7 +112,7 @@ let Prezzybox = class extends Initial {
                         })
                     });
                     products = products.concat(temp_products);
-                    if (res.more) {
+                    if (page < res.PagesAvailable) {
                         setTimeout(function () {
                             return that.apiGetProducts(productUrl, limit, ++page, search, products);
                         }, 3000);
@@ -139,21 +127,23 @@ let Prezzybox = class extends Initial {
                     banner: banner,
                     images: images,
                     item_id: res.id,
+                    source_url: location.href,
                     tags: [],
                     store: location.host,
                     market: "prezzybox",
                 }
-                this.pushProducts([product]);
+                console.log(product);
+                that.pushProducts([product]);
             } else {
                 expToast("error", "Products not found!");
             }
-            xhttp.onerror = function () {
-                console.log(xhttp);
-                expToast(xhttp.responseText.error);
-            };
-            xhttp.open("GET", productUrl + 'cursor=' + page + '&limit=' + limit, true);
-            xhttp.send();
         }
+        xhttp.onerror = function () {
+            console.log(xhttp);
+            expToast(xhttp.responseText.error);
+        };
+        xhttp.open("GET", productUrl + 'cursor=' + page + '&limit=' + limit, true);
+        xhttp.send();
     }
 
     pushProducts(products) {
@@ -164,7 +154,6 @@ let Prezzybox = class extends Initial {
             this.pushInject(products)
         }
     }
-
 }
 
 new Prezzybox();
