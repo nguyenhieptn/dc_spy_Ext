@@ -185,6 +185,13 @@ document.addEventListener('readystatechange', function () {
                 injectScript(chrome.extension.getURL('sites/prezzybox.js'), 'body');
             }else if (location.host.indexOf('www.gifts.ie') !== -1) {
                 new Giftsie();
+            }else if (location.host.indexOf('helloyoucandles.com') !== -1) {
+                new Helloyoucandles();
+            }else if (location.host.indexOf('the-pebble-tree-602373.shoplightspeed.com') !== -1) {
+                new Pebble();
+            }
+            else if (location.host.indexOf('www.giftsforyounow.com') !== -1) {
+                new Giftsforyounow();
             }
 
             function injectScript(file, node) {

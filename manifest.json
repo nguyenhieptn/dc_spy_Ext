@@ -1,6 +1,6 @@
 {
   "name": "Data Center Spy",
-  "version": "2.1.5.8",
+  "version": "2.1.5.9",
   "description": "A tool help users get images in  then push to my website",
   "permissions": [
     "storage",
@@ -115,6 +115,9 @@
         "sites/tee4lives.js",
         "sites/crofil.js",
         "sites/giftsie.js",
+        "sites/helloyoucandles.js",
+        "sites/pebble.js",
+        "sites/giftsforyounow.js",
         "js/content_scripts.js",
         "js/Uploader.js",
         "js/api.js",
