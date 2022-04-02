@@ -88,8 +88,10 @@ let Etsy = class extends Initial{
             }
             else
             {
-                expToast("error","Cant crawl this page contact dev!");
-                return;
+                let locationPathName = location.pathname.split("/");
+                item_id = locationPathName[2];
+                // expToast("error","Cant crawl this page contact dev!");
+                // return;
             }
         }
         console.log(item_id)

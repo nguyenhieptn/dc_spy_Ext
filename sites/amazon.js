@@ -51,6 +51,7 @@ let Amazon = class extends Initial{
     }
 
     getProduct() {
+        console.log('hello');
         let title = document.querySelector("#productTitle").innerText.trim();
         let elm = document.querySelector("#bylineInfo");
         let store = (elm) ? elm.innerText : "";
@@ -79,8 +80,17 @@ let Amazon = class extends Initial{
             let url = el.getAttribute("data-old-hires");
             if (isURL(url))
                 images.push(url);
+            else
+            {
+                url = el.getAttribute("src");
+                images.push(url);
+            }
         });
-        let banner = images.shift();
+        let banner;
+        if(images.length > 0)
+        {
+            banner = images.shift();
+        }
         let product = {
             title: title,
             banner: banner,

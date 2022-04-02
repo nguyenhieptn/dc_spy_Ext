@@ -1,6 +1,6 @@
 {
   "name": "Data Center Spy",
-  "version": "2.1.5.8",
+  "version": "2.1.6.1",
   "description": "A tool help users get images in  then push to my website",
   "permissions": [
     "storage",
@@ -20,14 +20,14 @@
     "128": "icons/128.png",
     "512": "icons/512.png"
   },
-  "content_scripts":[
+  "content_scripts": [
     {
-      "matches":[
+      "matches": [
         "https://*/*",
         "http://*/*"
       ],
       "run_at": "document_end",
-      "js":[
+      "js": [
         "js/helpers.js",
         "js/init.js",
         "js/initial.js",
@@ -121,10 +121,12 @@
         "js/crypto/core.js",
         "js/crypto/md5.js"
       ],
-      "css" : ["css/content-scripts.css"]
+      "css": [
+        "css/content-scripts.css"
+      ]
     }
   ],
-  "web_accessible_resources" : [
+  "web_accessible_resources": [
     "js/crypto/core.js",
     "js/crypto/md5.js",
     "sites/klaviyo.js",
@@ -138,7 +140,9 @@
     "sites/prezzybox.js"
   ],
   "background": {
-    "scripts": ["js/background.js"],
+    "scripts": [
+      "js/background.js"
+    ],
     "persistent": true
   },
   "manifest_version": 2

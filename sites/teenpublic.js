@@ -29,6 +29,10 @@ let TeenPublic = class extends Initial {
             let elm = el.querySelector(".m-tiles__design a img");
             let banner = elm.getAttribute("data-src");
             let title = elm.getAttribute("alt");
+            if(title === "")
+            {
+                title = el.querySelector('div.m-tiles__infos .m-tiles__title a').textContent;
+            }
             let pId = el.querySelector('.m-tiles__preview').getAttribute("href");
             let tags = [];
             let tagsStr = el.querySelector('.m-tiles__tag-secondary').textContent;

@@ -43,33 +43,35 @@ class Initial {
     }
 
     build() {
-        let template = document.createElement("div");
-        template.classList.add("exp-template");
-        let input = document.createElement("input");
-        input.type = "number";
-        input.name = "campaign_id";
-        input.placeholder = "Campaign ID";
-        input.classList.add("exp-input");
-        template.appendChild(input);
-        let button = document.createElement("button");
-        button.classList.add("exp-btn-push");
-        button.classList.add("exp-btn");
-        button.setAttribute("type", "button");
-        button.innerText = "Push Data";
-        template.appendChild(button);
-        document.body.appendChild(template);
+        if (document.querySelector('.exp-template') === null) {
+            let template = document.createElement("div");
+            template.classList.add("exp-template");
+            let input = document.createElement("input");
+            input.type = "number";
+            input.name = "campaign_id";
+            input.placeholder = "Campaign ID";
+            input.classList.add("exp-input");
+            template.appendChild(input);
+            let button = document.createElement("button");
+            button.classList.add("exp-btn-push");
+            button.classList.add("exp-btn");
+            button.setAttribute("type", "button");
+            button.innerText = "Push Data";
+            template.appendChild(button);
+            document.body.appendChild(template);
 
-        input.addEventListener('keyup', function (e) {
-            if (e.key === 'Enter') {
-                button.click();
-            }
-        })
-        if (chrome.storage !== undefined)
-            chrome.storage.sync.get(['previousCampaign'], function (data) {
-                console.log(data.previousCampaign);
-                if (data.previousCampaign !== undefined)
-                    input.value = data.previousCampaign;
-            });
+            input.addEventListener('keyup', function (e) {
+                if (e.key === 'Enter') {
+                    button.click();
+                }
+            })
+            if (chrome.storage !== undefined)
+                chrome.storage.sync.get(['previousCampaign'], function (data) {
+                    console.log(data.previousCampaign);
+                    if (data.previousCampaign !== undefined)
+                        input.value = data.previousCampaign;
+                });
+        }
     }
 
     getBlob = async function (url) {
