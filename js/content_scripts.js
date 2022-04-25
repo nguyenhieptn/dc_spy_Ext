@@ -197,6 +197,12 @@ if (document.querySelector('.exp-template') === null)
                 } else if (location.host.indexOf('senprints.com') !== -1) {
                     new Senprints();
                 }
+                else if (location.host.indexOf('www.thebamboo.vn') !== -1) {
+                    new Thebamboo();
+                }
+                else if (location.host.indexOf('www.forallgifts.com') !== -1) {
+                    new Forallgift();
+                }
 
                 function injectScript(file, node) {
 
