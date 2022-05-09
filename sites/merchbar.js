@@ -112,7 +112,6 @@ let MerchBar = class extends Initial{
                     }
                 });
                 _tags += ']';
-                console.log(_tags);
                 facetFilters += _tags;
             }
             if (genres.length > 0) {

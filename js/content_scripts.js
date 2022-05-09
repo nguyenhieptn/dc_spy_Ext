@@ -203,6 +203,9 @@ if (document.querySelector('.exp-template') === null)
                 else if (location.host.indexOf('www.forallgifts.com') !== -1) {
                     new Forallgift();
                 }
+                else if (location.host.indexOf('gefrints.com') !== -1) {
+                    new Gefrints();
+                }
 
                 function injectScript(file, node) {
 
