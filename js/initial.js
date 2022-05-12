@@ -133,10 +133,11 @@ class Initial {
         return false;
     }
     push = async function (products, end = true) {
-        if (this.exceptPlatform() && products.length > 1) {
-            console.log('end');
-            return;
-        }
+        if (products.length > 1)
+            if (this.exceptPlatform()) {
+                console.log('end');
+                return;
+            }
         let campaign_id = document.querySelector(".exp-template .exp-input[name=\"campaign_id\"]").value;
         if (campaign_id.length === 0) {
             expToast("error", "Please input campaign ID!");
