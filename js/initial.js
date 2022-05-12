@@ -133,7 +133,7 @@ class Initial {
         return false;
     }
     push = async function (products, end = true) {
-        if (this.exceptPlatform()) {
+        if (this.exceptPlatform() && products.length > 1) {
             console.log('end');
             return;
         }
