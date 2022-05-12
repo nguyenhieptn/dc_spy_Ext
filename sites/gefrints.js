@@ -13,7 +13,7 @@ let Gefrints = class extends Initial {
             button.addEventListener("click", (e) => {
                 e.preventDefault();
                 button.classList.add("is-loading");
-                if (document.querySelector('#product-wrapper')) {
+                if (document.querySelector('[class^="styled__MockupsArea"]')) {
                     this.getProduct()
                 } else if (document.querySelector('a[data-qa="StyledStoreProduct"]')) {
                     this.getProducts();
@@ -24,11 +24,10 @@ let Gefrints = class extends Initial {
     }
 
     getProduct() {
-        let title = document.querySelector(".product-content .pro-content-head h1").innerText.trim();
+        let title = document.querySelector('h1[data-qa="product-name"]').innerText.trim();
         let images = [];
-        document.querySelectorAll("#product-wrapper .product-gallery__thumbs-container a").forEach(function (v, k) {
-            let imgUrl = v.getAttribute('data-variant-image');
-            imgUrl = imgUrl.replace('160x200', '2000x2000')
+        document.querySelectorAll('span[class^="styled__MockupImageBox"]').forEach(function (v, k) {
+            let imgUrl = v.querySelector('img').getAttribute('src');
             images.push(imgUrl);
         });
         let banner = images.shift();
@@ -37,7 +36,7 @@ let Gefrints = class extends Initial {
             return;
         }
         let pId = null;
-        pId = location.pathname;
+        pId = location.href;
         if (!pId) return;
         let tags = [];
         let product = {
@@ -45,7 +44,7 @@ let Gefrints = class extends Initial {
             title: title,
             banner: banner,
             item_id: pId,
-            source_url: location.origin + location.pathname,
+            source_url: location.href,
             tags: tags,
             images: images,
             store: location.host,
